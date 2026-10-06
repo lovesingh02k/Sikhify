@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+.DS_Store
+# Runtime data: the database and uploaded images (back these up; never commit them)
+server/data/
+server/uploads/

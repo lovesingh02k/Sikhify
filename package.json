@@ -1,0 +1,36 @@
+{
+  "name": "sikhify",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.js",
+    "build": "vite build",
+    "preview": "node scripts/dev.js --preview",
+    "start": "node server/index.js",
+    "test": "node --test \"tests/*.test.js\"",
+    "admin:create": "node server/scripts/create-admin.js",
+    "gurdwaras:fetch-wikidata": "node server/scripts/fetch-wikidata-gurdwaras.js",
+    "gurdwaras:import": "node server/scripts/import-gurdwaras.js",
+    "gurdwaras:dev-fixtures": "node server/scripts/seed-dev-gurdwaras.js"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "leaflet": "^1.9.4",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest",
+    "vite": "latest"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tailwindcss": "^3.4.17"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

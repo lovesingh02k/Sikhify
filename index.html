@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore the teachings, history and beauty of Sikhism: the daily Hukamnama, Gurbani with meanings, Nitnem, Sikh history, Kirtan and Katha." />
+    <meta name="theme-color" content="#0F2242" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sikhify" />
+    <meta property="og:title" content="Sikhify — Discover. Learn. Live Sikhism." />
+    <meta property="og:description" content="Explore the teachings, history and beauty of Sikhism: the daily Hukamnama, Gurbani with meanings, Nitnem, Sikh history, Kirtan and Katha." />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Devanagari is only downloaded when Hindi text is on screen (unicode-range subsets). -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <script>
+      try {
+        if (JSON.parse(localStorage.getItem('sikhify:theme')) === 'dark') document.documentElement.classList.add('theme-dark');
+      } catch (e) {}
+    </script>
+    <title>Sikhify — Discover. Learn. Live Sikhism.</title>
+  </head>
+  <body class="font-body text-ink-900 bg-[--color-bg-page]">
+    <div id="root"></div>
+    <noscript>
+      <p style="padding:2rem;font-family:sans-serif;text-align:center">Sikhify needs JavaScript to show Gurbani, lessons and the daily Hukamnama. Please enable JavaScript and reload the page.</p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
