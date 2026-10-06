@@ -1,0 +1,111 @@
+{
+  "guru-nanak-dev-ji": {
+    "width": 1772,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-angad-dev-ji": {
+    "width": 1776,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-amar-das-ji": {
+    "width": 1772,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-ram-das-ji": {
+    "width": 1655,
+    "height": 2229,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-arjan-dev-ji": {
+    "width": 1776,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-hargobind-sahib-ji": {
+    "width": 1772,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-har-rai-ji": {
+    "width": 1772,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-har-krishan-ji": {
+    "width": 1772,
+    "height": 2362,
+    "widths": [
+      240,
+      360,
+      480,
+      720
+    ],
+    "fallback": 480
+  },
+  "guru-tegh-bahadur-ji": {
+    "width": 432,
+    "height": 500,
+    "widths": [
+      240,
+      360,
+      432
+    ],
+    "fallback": 432
+  },
+  "guru-gobind-singh-ji": {
+    "width": 660,
+    "height": 900,
+    "widths": [
+      240,
+      360,
+      480,
+      660
+    ],
+    "fallback": 480
+  }
+}
