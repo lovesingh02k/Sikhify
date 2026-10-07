@@ -5,7 +5,7 @@
  * while a function instance stays warm.
  */
 import { loadConfig } from '../backend/src/config.js';
-import { openDatabaseForConfig } from '../backend/src/db/database.js';
+import { openDatabaseForConfig, describeDatabase, schemaVersion } from '../backend/src/db/database.js';
 import { seedMediaIfEmpty } from '../backend/src/db/seedMedia.js';
 import { createMailer } from '../backend/src/lib/mailer.js';
 import { createApp } from '../backend/src/app.js';
@@ -23,6 +23,8 @@ async function runtime() {
         throw new Error('SIKHIFY_DATABASE_AUTH_TOKEN is not configured. Add the Turso database token in Vercel Environment Variables.');
       }
       const db = await openDatabaseForConfig(config);
+      // Safe to log: provider + hostname only (never the token).
+      console.info(`[sikhify] database: ${describeDatabase(config).label}, schema version ${schemaVersion(db)}`);
       await seedMediaIfEmpty(db, (m) => console.info('[db] ' + m));
       const mailer = createMailer(config, console);
       const handler = createApp({ db, config, mailer, log: console });

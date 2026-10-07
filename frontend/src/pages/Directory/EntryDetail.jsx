@@ -87,7 +87,9 @@ export default function EntryDetail({ type }) {
           <div className={`sk-dentry-head${hasMedia ? ' has-media' : ''}`}>
             <div>
               <p className="page-hero-eyebrow">{e && e.category ? `${t.label} · ${e.category}` : t.label}</p>
-              <h1 className="page-hero-title" id="page-title">{e ? e.title : state.error ? t.plural : <span className="sr-only">Loading…</span>}</h1>
+              {/* Keyed like PageHero: the title is split into lines by GSAP SplitText, so when the
+                  record loads React must replace the heading rather than patch children GSAP has moved. */}
+              <h1 key={e ? 'entry' : state.error ? 'error' : 'loading'} className="page-hero-title" id="page-title">{e ? e.title : state.error ? t.plural : <span className="sr-only">Loading…</span>}</h1>
               {place ? <p className="sk-dentry-place" data-motion="hero-item"><Icon name="pin" size={15} />{place}</p> : null}
               {e && e.summary ? <p className="page-hero-sub sk-dentry-lede">{e.summary}</p> : null}
               {e ? (

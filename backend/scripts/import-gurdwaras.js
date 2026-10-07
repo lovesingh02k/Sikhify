@@ -38,7 +38,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadConfig } from '../src/config.js';
-import { openDatabaseForConfig, isRemoteDatabase } from '../src/db/database.js';
+import { openDatabaseForConfig, isRemoteDatabase, describeDatabase } from '../src/db/database.js';
 import { createGurdwaraStore, parseCsv } from '../src/lib/gurdwaraStore.js';
 
 const args = process.argv.slice(2);
@@ -68,7 +68,8 @@ if (!Array.isArray(rows) || !rows.length) { console.error('The file has no rows.
 const config = loadConfig();
 // Same database as the running site: Turso/libSQL when SIKHIFY_DATABASE_URL is set, else the local file.
 const db = await openDatabaseForConfig(config);
-const target = config.databaseUrl ? `the remote database at ${new URL(config.databaseUrl).host}` : path.relative(process.cwd(), config.dbPath);
+const dest = describeDatabase(config);
+const target = dest.remote ? `TURSO/LIBSQL (${dest.host})` : `LOCAL SQLite (${path.relative(process.cwd(), config.dbPath)})`;
 let user = null;
 if (opt('by')) {
   user = db.prepare("SELECT id, name, role FROM users WHERE email = ? COLLATE NOCASE AND role IN ('admin', 'moderator')").get(opt('by'));
@@ -82,16 +83,22 @@ if (verifyRows && (!apply || !user || user.role !== 'admin')) {
 }
 const store = createGurdwaraStore(db, { remote: isRemoteDatabase(db) });
 
-console.log(`${apply ? 'Importing' : 'Dry run of'} ${rows.length} rows from ${path.relative(process.cwd(), abs)} into ${target}…`);
+console.log(`Source:      ${path.relative(process.cwd(), abs)}
+Destination: ${target}
+Mode:        ${apply ? 'APPLY (writes to the destination)' : 'dry run (nothing is saved)'}
+Rows read:   ${rows.length}`);
 const report = store.importRows(rows, user, { dryRun: !apply });
 
 console.log(`
-  ${apply ? 'Imported' : 'Would import'}:  ${report.imported}
+${apply ? `Imported into ${target}` : `Dry run against ${target}`}
+  Rows read:       ${rows.length}
+  ${apply ? 'Inserted' : 'Would insert'}:  ${report.imported}
   ${apply ? 'Updated' : 'Would update'}:   ${report.updated}
   Unchanged:       ${report.unchanged}
   Duplicates:      ${report.duplicates}
   Invalid:         ${report.invalid}
-  Needs verification (new): ${report.needsVerification}`);
+  Skipped (duplicates + invalid): ${report.duplicates + report.invalid}
+  New records needing verification: ${report.needsVerification}`);
 const problems = report.rows.filter((r) => r.result === 'invalid' || r.result === 'duplicate');
 if (problems.length) {
   console.log('\nRows not imported:');

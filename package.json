@@ -26,7 +26,8 @@
     "gurdwaras:import": "node backend/scripts/import-gurdwaras.js",
     "gurdwaras:import-historic": "node backend/scripts/import-gurdwaras.js backend/seed/gurdwaras/india-historic-gurdwaras.json",
     "gurdwaras:dev-fixtures": "node backend/scripts/seed-dev-gurdwaras.js",
-    "directory:import": "node backend/scripts/import-directory.js"
+    "directory:import": "node backend/scripts/import-directory.js",
+    "directory:diagnose": "node backend/scripts/diagnose-directory.js"
   },
   "engines": {
     "node": ">=22.13"

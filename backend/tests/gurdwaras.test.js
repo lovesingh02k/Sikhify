@@ -191,7 +191,7 @@ test('filters: status, facilities (all must match), services; sorting; distance;
   assert.equal(def.data.items.length, 20);
   assert.equal(def.data.pages, 3);
   assert.equal((await guest.get(city + '&pageSize=50')).data.items.length, 48);
-  assert.equal((await guest.get(city + '&pageSize=1000')).data.items.length, 20, 'only 20 or 50 per page');
+  assert.equal((await guest.get(city + '&pageSize=1000')).data.items.length, 20, 'unsupported sizes fall back to 20');
   assert.equal((await guest.get(city + '&status=active,temporarily_closed')).data.total, 60);
   assert.equal((await guest.get(city + '&status=temporarily_closed,needs_verification')).data.total, 12);
   assert.equal((await guest.get(city + '&status=active,temporarily_closed,needs_verification&facilities=langar,wheelchair_access')).data.total, 60, 'facilities: every selected one must match');

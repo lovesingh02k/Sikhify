@@ -212,7 +212,7 @@ export default function GurdwaraSuggest() {
               <li><span aria-current="page">{kind === 'update' ? 'Suggest an Update' : 'Suggest a Gurdwara'}</span></li>
             </ol>
           </nav>
-          <h1 className="page-hero-title" id="page-title">{kind === 'update' ? <>Suggest an <span className="gold">update</span></> : <>Suggest a <span className="gold">Gurdwara</span></>}</h1>
+          <h1 key={kind} className="page-hero-title" id="page-title">{kind === 'update' ? <>Suggest an <span className="gold">update</span></> : <>Suggest a <span className="gold">Gurdwara</span></>}</h1>
           <p className="page-hero-sub">{kind === 'update' ? 'Help keep this listing accurate.' : 'Can’t find a Gurdwara? Help us grow the directory.'}</p>
         </div>
       </section>

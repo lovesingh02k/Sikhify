@@ -38,7 +38,7 @@ export default function ComingSoon({ page }) {
             </ol>
           </nav>
           <p className="page-hero-eyebrow">{page.eyebrow} · Coming soon</p>
-          <h1 className="page-hero-title" id="page-title">{page.title}</h1>
+          <h1 key={page.title} className="page-hero-title" id="page-title">{page.title}</h1>
           <p className="page-hero-sub">{page.description}</p>
         </div>
       </section>

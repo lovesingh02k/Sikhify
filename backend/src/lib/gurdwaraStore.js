@@ -135,7 +135,8 @@ export function createGurdwaraStore(db, { hideFixtures = false, remote = false }
     const sort = p.sort === 'distance' && origin ? 'distance' : p.sort === 'updated' ? 'updated' : 'name';
     if (sort === 'distance' && !remote) { order = 'g.latitude IS NULL, distance_km(?, ?, g.latitude, g.longitude), g.name COLLATE NOCASE'; orderParams.push(origin.lat, origin.lng); }
     if (sort === 'updated') order = 'g.updated_at DESC, g.id DESC';
-    const pageSize = PAGE_SIZES.includes(p.pageSize) ? p.pageSize : PAGE_SIZES[0];
+    // The UI offers PAGE_SIZES; API callers may ask for any size up to the largest (e.g. pageSize=10). Anything else → the default.
+    const pageSize = Number.isInteger(p.pageSize) && p.pageSize >= 1 && p.pageSize <= Math.max(...PAGE_SIZES) ? p.pageSize : PAGE_SIZES[0];
     const page = Math.max(1, Math.min(p.page || 1, 5000));
     const w = where.join(' AND ');
     let total = db.prepare(`SELECT COUNT(*) AS n ${BASE_FROM} WHERE ${w}`).get(...params).n;

@@ -79,7 +79,7 @@ export default function DirectoryList({ type }) {
           <div className="sk-dlist-hero-grid">
             <div>
               <p className="page-hero-eyebrow">Directory · {t.group}</p>
-              <h1 className="page-hero-title" id="page-title">{t.plural}</h1>
+              <h1 key={t.plural} className="page-hero-title" id="page-title">{t.plural}</h1>
               <p className="page-hero-sub">{t.description}</p>
               <nav aria-label="Actions" className="page-subnav">
                 <Link to={submitTo}>{submitLabel}</Link>

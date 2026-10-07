@@ -117,7 +117,30 @@ The import scripts write to the same database the site uses, so with the Turso v
 $env:SIKHIFY_DATABASE_URL="libsql://your-db.turso.io"
 $env:SIKHIFY_DATABASE_AUTH_TOKEN="your-turso-token"
 
+npm run directory:diagnose -- --no-http                   # what the database holds now (read-only)
+
 npm run directory:import                                  # dry run
 npm run directory:import -- --apply --publish             # knowledge directory (published, "Pending" verification)
-npm run gurdwaras:import -- backend/seed/gurdwaras/wikidata-gurdwaras.json --apply   # Gurdwaras (need verification in the admin)
+
+npm run gurdwaras:import -- backend/seed/gurdwaras/wikidata-gurdwaras.json            # dry run
+npm run gurdwaras:import -- backend/seed/gurdwaras/wikidata-gurdwaras.json --apply    # Gurdwaras (need verification in the admin)
+
+npm run gurdwaras:import-historic                                                     # dry run
+npm run gurdwaras:import-historic -- --apply --verify --by <your-admin-email>         # Panj Takht + historic Gurdwaras, verified by you
+
+npm run directory:diagnose -- --api https://<your-site>.vercel.app                    # check the deployed API
 ```
+
+Every script prints `Destination: TURSO/LIBSQL (<host>)` or `LOCAL SQLite (<file>)` before it writes — check it.
+Re-running any import is safe: records are matched by `external_ref` / slug and updated, never duplicated.
+
+**Why the public directory can show "0 Gurdwaras Found":** the public listing shows only records that are
+*active and verified*. The Wikidata import alone creates only "needs verification" records, so the list stays
+empty until the historic import runs with `--verify` (or an admin verifies records in `/admin/gurdwaras`).
+`--verify` records your name in each record's verification log, so use it only for a file whose sources you accept.
+
+**`backend/.env` and local development:** if `SIKHIFY_DATABASE_URL` is in `backend/.env`, `npm run dev` also uses
+Turso (the API prints `database: Turso/libSQL` on start). To develop against `backend/data/sikhify.db`, comment out
+the two Turso lines in `backend/.env` (`# SIKHIFY_DATABASE_URL=…`) and keep them in your shell only when importing.
+`npm run directory:diagnose -- --db local` reads the local file regardless.
+Tests (`npm test`) always use throwaway local databases, whatever `backend/.env` says.

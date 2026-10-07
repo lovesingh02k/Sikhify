@@ -25,7 +25,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadConfig } from '../src/config.js';
-import { openDatabaseForConfig, transaction, parseJson } from '../src/db/database.js';
+import { openDatabaseForConfig, transaction, parseJson, describeDatabase } from '../src/db/database.js';
 import { cleanEntry, assertPublishable } from '../src/lib/entries.js';
 import { slugify } from '../src/lib/util.js';
 import { CONTENT_TYPES } from '../../shared/contentTypes.js';
@@ -131,21 +131,27 @@ if (isMain) {
 
   const config = loadConfig();
   const db = await openDatabaseForConfig(config);
-  const target = config.databaseUrl ? `the remote database at ${new URL(config.databaseUrl).host}` : path.relative(process.cwd(), config.dbPath);
+  const dest = describeDatabase(config);
+  const target = dest.remote ? `TURSO/LIBSQL (${dest.host})` : `LOCAL SQLite (${path.relative(process.cwd(), config.dbPath)})`;
   let user = null;
   if (opt('by')) {
     user = db.prepare("SELECT id FROM users WHERE email = ? COLLATE NOCASE AND role IN ('admin', 'moderator')").get(opt('by'));
     if (!user) { console.error(`No admin or moderator with the email ${opt('by')}.`); process.exit(1); }
   }
   const total = sets.reduce((n, s) => n + s.records.length, 0);
-  console.log(`${apply ? 'Importing' : 'Dry run of'} ${total} records from ${files.length} file(s) into ${target}${publish ? ' (publish)' : ' (as drafts)'}…`);
+  console.log(`Source:      ${files.map((f) => path.basename(f)).join(', ')}
+Destination: ${target}
+Mode:        ${apply ? 'APPLY (writes to the destination)' : 'dry run (nothing is saved)'}${publish ? ', publish' : ', as drafts'}
+Rows read:   ${total}`);
   const report = importDirectory(db, sets, { dryRun: !apply, publish, user });
   console.log(`
-  ${apply ? 'Imported' : 'Would import'}:  ${report.imported}
+${apply ? `Imported into ${target}` : `Dry run against ${target}`}
+  ${apply ? 'Inserted' : 'Would insert'}:  ${report.imported}
   ${apply ? 'Updated' : 'Would update'}:   ${report.updated}
   Unchanged:       ${report.unchanged}
   Kept (edited in the admin): ${report.kept}
-  Invalid:         ${report.invalid}`);
+  Invalid (skipped): ${report.invalid}
+  Verification:    new records are "pending" (an admin verifies them in /admin/content)`);
   const problems = report.rows.filter((r) => r.result === 'invalid');
   if (problems.length) {
     console.log('\nRecords not imported:');

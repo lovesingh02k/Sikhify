@@ -17,7 +17,7 @@ import path from 'node:path';
 import { createRouter, HttpError, sendJson, readBody, parseCookies, serializeCookie, unauthorized, forbidden } from './lib/http.js';
 import { hashToken, createRateLimiter } from './lib/security.js';
 import { can } from '../../shared/roles.js';
-import { parseJson } from './db/database.js';
+import { parseJson, isRemoteDatabase, schemaVersion } from './db/database.js';
 
 import registerAuth from './routes/auth.js';
 import registerUsers from './routes/users.js';
@@ -47,7 +47,8 @@ const SETTINGS_DEFAULTS = {
 
 export function createApp({ db, config, mailer, log = console }) {
   const router = createRouter();
-  router.get('/api/health', () => ({ ok: true, service: 'sikhify-api' }));
+  // Safe diagnostics only: which kind of database and its schema version (no hostnames, URLs or tokens).
+  router.get('/api/health', () => ({ ok: true, service: 'sikhify-api', database: { provider: isRemoteDatabase(db) ? 'Turso/libSQL' : 'local SQLite', schemaVersion: schemaVersion(db) } }));
   const limits = {
     auth: createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 }),
     reset: createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5 }),

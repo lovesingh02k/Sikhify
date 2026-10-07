@@ -334,6 +334,11 @@ export function openDatabase(file) {
 export async function openDatabaseForConfig(config) {
   const url = String(config.databaseUrl || '').trim();
   if (!url) return openDatabase(config.dbPath);
+  const target = describeDatabase(config);
+  if (!target.host) throw new Error('SIKHIFY_DATABASE_URL is not a valid URL (expected libsql://<database>.turso.io)');
+  if (!config.databaseAuthToken && !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(target.host)) {
+    throw new Error(`SIKHIFY_DATABASE_URL points at ${target.host} but SIKHIFY_DATABASE_AUTH_TOKEN is not set`);
+  }
 
   const { default: LibsqlDatabase } = await import('libsql');
   const db = new LibsqlDatabase(url, { authToken: config.databaseAuthToken || undefined });
@@ -344,6 +349,23 @@ export async function openDatabaseForConfig(config) {
 }
 
 export const isRemoteDatabase = (db) => remoteDatabases.has(db);
+
+/**
+ * Which database a config selects, safe to log or print: the provider and the
+ * hostname (remote) or file path (local) — never the URL's credentials or the token.
+ *   SIKHIFY_DATABASE_URL set   → Turso/libSQL
+ *   otherwise                  → local SQLite file (SIKHIFY_DB_PATH, default backend/data/sikhify.db)
+ */
+export function describeDatabase(config) {
+  const url = String(config.databaseUrl || '').trim();
+  if (!url) return { provider: 'local SQLite', remote: false, host: '', path: config.dbPath, label: `local SQLite (${config.dbPath})` };
+  let host = '';
+  try { host = new URL(url).hostname; } catch { /* reported by openDatabaseForConfig */ }
+  return { provider: 'Turso/libSQL', remote: true, host, path: '', label: `Turso/libSQL (${host || 'invalid URL'})` };
+}
+
+/** Highest applied migration, for diagnostics. */
+export const schemaVersion = (db) => Number(db.prepare('SELECT MAX(version) AS v FROM schema_migrations').get().v || 0);
 
 function migrate(db) {
   db.exec('CREATE TABLE IF NOT EXISTS schema_migrations (version INTEGER PRIMARY KEY, applied_at TEXT NOT NULL)');

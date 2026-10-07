@@ -1629,6 +1629,12 @@ html.theme-dark .sk-guru-card-gurmukhi, html.theme-dark .sk-guru-card-cta, html.
 .sk-gsearch-country{ flex: 0 1 200px; min-width: 150px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 0.92rem; padding: 0.6rem 0.75rem; }
 .sk-gsearch-country:focus-visible{ outline: 2px solid var(--gold-500); outline-offset: 1px; }
 .sk-gsearch-btn{ flex: 0 0 auto; padding-left: 1.6rem; padding-right: 1.6rem; }
+/* One focus indicator per control. The field's inset ring (:focus-within above) is the input's
+   indicator, so the global input:focus-visible outline would draw a second, offset box inside it.
+   The gold button gets a contrasting ring (a gold ring around gold reads as a doubled border) and
+   keeps its own corner radius (the global button:focus-visible rule squares it to 4px). */
+.sk-gsearch-input:focus-visible{ outline: none; }
+.sk-gsearch-btn:focus-visible{ outline: 2px solid var(--text); outline-offset: 2px; border-radius: var(--radius-btn); }
 .sk-gsearch-error{ position:relative; margin-top: 0.6rem; color: #FDBA8C; font-size: 0.86rem; }
 @media (max-width: 560px){ .sk-gsearch-country, .sk-gsearch-btn{ flex: 1 1 100%; } }
 .sk-gquick{ position:relative; margin-top: 1.1rem; display:flex; flex-wrap:wrap; align-items:center; gap: 0.6rem; }

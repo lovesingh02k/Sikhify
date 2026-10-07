@@ -20,7 +20,8 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, info) {
-    if (import.meta.env.DEV) console.error('[Sikhify] page crashed:', error, info?.componentStack);
+    // A render error in the browser (not an API response): the status screen shows the generic "500" copy.
+    if (import.meta.env.DEV) console.error(`[Sikhify] page crashed while rendering ${window.location.pathname} (browser error, not an HTTP response): ${error?.name || 'Error'}: ${error?.message || error}`, error, info?.componentStack);
   }
 
   render() {

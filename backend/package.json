@@ -12,7 +12,8 @@
     "gurdwaras:import": "node scripts/import-gurdwaras.js",
     "gurdwaras:import-historic": "node scripts/import-gurdwaras.js seed/gurdwaras/india-historic-gurdwaras.json",
     "gurdwaras:dev-fixtures": "node scripts/seed-dev-gurdwaras.js",
-    "directory:import": "node scripts/import-directory.js"
+    "directory:import": "node scripts/import-directory.js",
+    "directory:diagnose": "node scripts/diagnose-directory.js"
   },
   "dependencies": {
     "libsql": "^0.5.17"

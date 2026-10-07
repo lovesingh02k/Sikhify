@@ -38,7 +38,8 @@ export function loadConfig(overrides = {}) {
     port: Number(env.PORT || 8787),
     host: env.HOST || (production ? '0.0.0.0' : '127.0.0.1'),
     dbPath: path.resolve(BACKEND_ROOT, env.SIKHIFY_DB_PATH || 'data/sikhify.db'),
-    databaseUrl: env.SIKHIFY_DATABASE_URL || '',
+    // Tests (`node --test`) always use their own throwaway SQLite files, even when backend/.env points at Turso.
+    databaseUrl: env.NODE_TEST_CONTEXT ? '' : env.SIKHIFY_DATABASE_URL || '',
     databaseAuthToken: env.SIKHIFY_DATABASE_AUTH_TOKEN || '',
     uploadDir: path.resolve(BACKEND_ROOT, env.SIKHIFY_UPLOAD_DIR || 'uploads'),
     distDir: path.resolve(REPO_ROOT, 'frontend/dist'),
