@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { getYouTubeVideoId, youTubeEmbedUrl, isYouTubeVideoId } from '../shared/youtube.js';
 
-const ID = 'qrEANarrvz0'; // a real video from src/data/media.js
+const ID = 'qrEANarrvz0'; // a real video from shared/data/media.js
 
 test('extracts IDs from every supported URL form', () => {
   const cases = [

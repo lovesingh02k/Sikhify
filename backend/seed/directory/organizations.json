@@ -1,0 +1,91 @@
+{
+  "type": "organization",
+  "retrieved": "2026-10-07",
+  "note": "Each official website was opened on the retrieval date or (where the site blocks automated requests) matched against Wikidata's official-website property. Founding years are given only where Wikipedia and Wikidata agree; cities only where a source states the headquarters.",
+  "records": [
+    {
+      "title": "Shiromani Gurdwara Parbandhak Committee (SGPC)",
+      "org_type": "Religious", "country": "India", "city": "Amritsar", "website": "https://sgpc.net/", "founded": "1920",
+      "summary": "Manages gurdwaras in Punjab, Himachal Pradesh and Chandigarh, including Sri Darbar Sahib, Amritsar.",
+      "source": "Official website; Wikipedia; Wikidata (Q7498941)",
+      "references": [{ "label": "Official website", "url": "https://sgpc.net/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Shiromani_Gurdwara_Parbandhak_Committee" }, { "label": "Wikidata — Q7498941", "url": "https://www.wikidata.org/wiki/Q7498941" }]
+    },
+    {
+      "title": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "org_type": "Religious", "country": "India", "city": "Delhi", "website": "https://dsgmc.in/",
+      "summary": "Manages the gurdwaras of Delhi, along with educational institutions, hospitals, old-age homes and libraries.",
+      "source": "Official website; Wikipedia",
+      "references": [{ "label": "Official website", "url": "https://dsgmc.in/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Delhi_Sikh_Gurdwara_Management_Committee" }]
+    },
+    {
+      "title": "Chief Khalsa Diwan",
+      "org_type": "Religious", "country": "India", "city": "Amritsar", "website": "https://www.chiefkhalsadiwan.com/",
+      "summary": "The central organisation of the Singh Sabhas of Punjab, an apolitical body concerned with religious, educational and social work.",
+      "source": "Official website; Wikipedia; Wikidata (Q5096822)",
+      "references": [{ "label": "Official website", "url": "https://www.chiefkhalsadiwan.com/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Chief_Khalsa_Diwan" }, { "label": "Wikidata — Q5096822", "url": "https://www.wikidata.org/wiki/Q5096822" }]
+    },
+    {
+      "title": "All India Pingalwara Charitable Society",
+      "org_type": "Charity / Seva", "country": "India", "city": "Amritsar", "website": "https://pingalwara.org/",
+      "summary": "Pingalwara, the home for the sick and disabled founded by Bhagat Puran Singh in Amritsar.",
+      "source": "Official website; Wikipedia",
+      "references": [{ "label": "Official website", "url": "https://pingalwara.org/" }, { "label": "Wikipedia — Pingalwara", "url": "https://en.wikipedia.org/wiki/Pingalwara" }, { "label": "Wikipedia — Bhagat Puran Singh", "url": "https://en.wikipedia.org/wiki/Bhagat_Puran_Singh" }]
+    },
+    {
+      "title": "Khalsa Aid",
+      "org_type": "Charity / Seva", "country": "United Kingdom", "city": "Slough", "website": "https://www.khalsaaid.org/",
+      "summary": "An international humanitarian NGO providing aid in disaster areas and civil conflict zones around the world.",
+      "source": "Official website; Wikipedia; Wikidata (Q6399841)",
+      "references": [{ "label": "Official website", "url": "https://www.khalsaaid.org/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Khalsa_Aid" }, { "label": "Wikidata — Q6399841", "url": "https://www.wikidata.org/wiki/Q6399841" }]
+    },
+    {
+      "title": "UNITED SIKHS",
+      "org_type": "Charity / Seva", "website": "https://unitedsikhs.org/",
+      "summary": "A civil and human rights, humanitarian aid and disaster relief non-governmental organisation affiliated with the United Nations.",
+      "source": "Official website; Wikipedia; Wikidata (Q16917503)",
+      "references": [{ "label": "Official website", "url": "https://unitedsikhs.org/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/United_Sikhs" }, { "label": "Wikidata — Q16917503", "url": "https://www.wikidata.org/wiki/Q16917503" }]
+    },
+    {
+      "title": "The Sikh Coalition",
+      "org_type": "Advocacy", "country": "United States", "city": "New York City", "website": "https://www.sikhcoalition.org/",
+      "summary": "A Sikh American non-profit that defends Sikh civil rights, with offices in New York City, Washington, D.C. and Fremont, California.",
+      "source": "Wikipedia; Wikidata (Q7513643)",
+      "references": [{ "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Sikh_Coalition" }, { "label": "Wikidata — Q7513643", "url": "https://www.wikidata.org/wiki/Q7513643" }]
+    },
+    {
+      "title": "Sikh American Legal Defense and Education Fund (SALDEF)",
+      "org_type": "Advocacy", "country": "United States", "website": "https://saldef.org/",
+      "summary": "A national non-profit civil rights and educational organisation that protects and promotes the civil rights of Sikh Americans.",
+      "source": "Official website; Wikipedia; Wikidata (Q16931523)",
+      "references": [{ "label": "Official website", "url": "https://saldef.org/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Sikh_American_Legal_Defense_and_Education_Fund" }, { "label": "Wikidata — Q16931523", "url": "https://www.wikidata.org/wiki/Q16931523" }]
+    },
+    {
+      "title": "World Sikh Organization of Canada",
+      "org_type": "Advocacy", "country": "Canada", "city": "Ottawa", "website": "https://www.worldsikh.org/", "founded": "1984",
+      "summary": "A non-profit organisation that represents and promotes the interests of Sikhs in Canada.",
+      "source": "Wikipedia; Wikidata (Q17062331)",
+      "references": [{ "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/World_Sikh_Organization" }, { "label": "Wikidata — Q17062331", "url": "https://www.wikidata.org/wiki/Q17062331" }]
+    },
+    {
+      "title": "Sikh Research Institute (SikhRI)",
+      "org_type": "Educational", "website": "https://sikhri.org/",
+      "summary": "A Sikh educational organisation: \"Learn, Understand, Apply Sikhi\".",
+      "source": "Official website",
+      "references": [{ "label": "Official website — About", "url": "https://sikhri.org/about" }]
+    },
+    {
+      "title": "Basics of Sikhi",
+      "org_type": "Educational", "country": "United Kingdom", "website": "https://www.basicsofsikhi.com/",
+      "summary": "A UK Sikh educational initiative and charity sharing Sikh teachings through videos, Q&As, a blog and a podcast.",
+      "source": "Official website; Wikipedia",
+      "references": [{ "label": "Official website", "url": "https://www.basicsofsikhi.com/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Basics_of_Sikhi" }]
+    },
+    {
+      "title": "Sikh Missionary Society (U.K.)",
+      "org_type": "Educational", "country": "United Kingdom", "website": "https://www.sikhmissionarysociety.org/",
+      "summary": "A society whose aim is the advancement of the Sikh faith in the UK and abroad.",
+      "source": "Official website",
+      "references": [{ "label": "Official website", "url": "https://www.sikhmissionarysociety.org/" }]
+    }
+  ]
+}

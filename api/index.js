@@ -4,11 +4,11 @@
  * file as a Node.js Function; the singleton below reuses the database/app
  * while a function instance stays warm.
  */
-import { loadConfig } from '../server/config.js';
-import { openDatabaseForConfig } from '../server/db/database.js';
-import { seedMediaIfEmpty } from '../server/db/seedMedia.js';
-import { createMailer } from '../server/lib/mailer.js';
-import { createApp } from '../server/app.js';
+import { loadConfig } from '../backend/src/config.js';
+import { openDatabaseForConfig } from '../backend/src/db/database.js';
+import { seedMediaIfEmpty } from '../backend/src/db/seedMedia.js';
+import { createMailer } from '../backend/src/lib/mailer.js';
+import { createApp } from '../backend/src/app.js';
 
 let runtimePromise;
 

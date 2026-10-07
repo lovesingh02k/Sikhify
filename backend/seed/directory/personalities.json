@@ -1,0 +1,317 @@
+{
+  "type": "personality",
+  "retrieved": "2026-10-07",
+  "note": "Dates are given only where English Wikipedia and Wikidata agree; where they disagree (e.g. Bhai Mani Singh) the dates are left empty. Summaries are written for Sikhify from the referenced articles. Images are the Wikidata image (P18) of each item, hosted on Wikimedia Commons, with author and licence in image_credit; none are used where the Wikidata image does not show the subject.",
+  "records": [
+    {
+      "title": "Baba Deep Singh",
+      "category": "Shaheed",
+      "born": "1682",
+      "died": "1757",
+      "era": "18th century",
+      "summary": "One of the most revered martyrs in Sikh history and the first head of the Misl Shaheedan Tarna Dal.",
+      "contribution": "Remembered for his sacrifice and devotion to the Gurus' teachings. He is one of two Sikhs commemorated by a shrine at the Golden Temple complex marking their martyrdom, and is traditionally counted among the Sikhs who gathered the scattered writings of the Dasam Granth.",
+      "source": "Wikipedia; Wikidata (Q1182405)",
+      "references": [
+        {
+          "label": "Wikipedia — Baba Deep Singh",
+          "url": "https://en.wikipedia.org/wiki/Baba_Deep_Singh"
+        },
+        {
+          "label": "Wikidata — Q1182405",
+          "url": "https://www.wikidata.org/wiki/Q1182405"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Akali Deep Singh.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Akali_Deep_Singh.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Akali_Deep_Singh.jpg",
+      "image_credit": "Unknown 20th century Sikh painter, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhai Mani Singh",
+      "category": "Shaheed",
+      "era": "17th–18th century",
+      "summary": "Sikh scholar and martyr, a childhood companion of Guru Gobind Singh and custodian of Harmandir Sahib.",
+      "contribution": "Took the vows of the Khalsa in 1699 and was sent by Guru Gobind Singh to take charge of Harmandir Sahib in Amritsar. Tradition holds that he transcribed the Guru Granth Sahib as Guru Gobind Singh recited it, and that he helped gather the writings of the Dasam Granth. Sources differ on his dates of birth and death.",
+      "related_people": [
+        "Guru Gobind Singh"
+      ],
+      "source": "Wikipedia; Wikidata (Q2900622)",
+      "references": [
+        {
+          "label": "Wikipedia — Bhai Mani Singh",
+          "url": "https://en.wikipedia.org/wiki/Bhai_Mani_Singh"
+        },
+        {
+          "label": "Wikidata — Q2900622",
+          "url": "https://www.wikidata.org/wiki/Q2900622"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Detail of Bhai Mani Singh from a painting kept at Takht Damdama Sahib.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Detail_of_Bhai_Mani_Singh_from_a_painting_kept_at_Takht_Damdama_Sahib.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Detail_of_Bhai_Mani_Singh_from_a_painting_kept_at_Takht_Damdama_Sahib.jpg",
+      "image_credit": "Unknown artist, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Banda Singh Bahadur",
+      "category": "Historical personality",
+      "born": "1670",
+      "died": "1716",
+      "era": "18th century",
+      "summary": "Military commander of the Khalsa who led the struggle against the Mughal Empire after meeting Guru Gobind Singh in 1708.",
+      "contribution": "Formerly the ascetic Madho Das Bairagi at Nanded, he became a disciple of Guru Gobind Singh in 1708, received five arrows from the Guru as a blessing, and assembled a fighting force at Khanda, Sonipat.",
+      "related_people": [
+        "Guru Gobind Singh"
+      ],
+      "source": "Wikipedia; Wikidata (Q3630410)",
+      "references": [
+        {
+          "label": "Wikipedia — Banda Singh Bahadur",
+          "url": "https://en.wikipedia.org/wiki/Banda_Singh_Bahadur"
+        },
+        {
+          "label": "Wikidata — Q3630410",
+          "url": "https://www.wikidata.org/wiki/Q3630410"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Banda Singh Bahadur.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Banda_Singh_Bahadur.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/59/Banda_Singh_Bahadur.jpg",
+      "image_credit": "Sikh Heritage Museum (by unknown photographer), Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Mai Bhago",
+      "category": "Sikh women",
+      "born": "1670",
+      "died": "1720",
+      "era": "17th–18th century",
+      "summary": "Also known as Mata Bhag Kaur, she led Sikh soldiers against the Mughals in 1705 and is revered as a warrior saint.",
+      "contribution": "Rallied the forty Sikhs who had left Guru Gobind Singh during the siege of Anandpur Sahib and brought them back to fight.",
+      "source": "Wikipedia; Wikidata (Q6735108)",
+      "references": [
+        {
+          "label": "Wikipedia — Mai Bhago",
+          "url": "https://en.wikipedia.org/wiki/Mai_Bhago"
+        },
+        {
+          "label": "Wikidata — Q6735108",
+          "url": "https://www.wikidata.org/wiki/Q6735108"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Sikh Warrior princess- Mai Bhago Kaur.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Sikh_Warrior_princess-_Mai_Bhago_Kaur.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Sikh_Warrior_princess-_Mai_Bhago_Kaur.jpg",
+      "image_credit": "Unknown artist, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhai Gurdas",
+      "category": "Writer",
+      "born": "1551",
+      "died": "1636",
+      "era": "16th–17th century",
+      "summary": "Sikh writer, historian and preacher; the scribe of the early version of the Guru Granth Sahib.",
+      "contribution": "Served as amanuensis to Guru Arjan in compiling the scripture and as Jathedar of the Akal Takht. His Vaaran are popularly called \"the key to the Guru Granth Sahib\".",
+      "books": [
+        "Varan Bhai Gurdas"
+      ],
+      "source": "Wikipedia; Wikidata (Q192302)",
+      "references": [
+        {
+          "label": "Wikipedia — Bhai Gurdas",
+          "url": "https://en.wikipedia.org/wiki/Bhai_Gurdas"
+        },
+        {
+          "label": "Wikidata — Q192302",
+          "url": "https://www.wikidata.org/wiki/Q192302"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Bhai Gurdas scribing Adi Granth.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Bhai_Gurdas_scribing_Adi_Granth.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Bhai_Gurdas_scribing_Adi_Granth.jpg/1280px-Bhai_Gurdas_scribing_Adi_Granth.jpg",
+      "image_credit": "Jaimal Singh Naqqash, Mehtab Singh Naqqash, and Hukum Singh, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Maharaja Ranjit Singh",
+      "category": "Historical personality",
+      "born": "1780",
+      "died": "1839",
+      "era": "Sikh Empire",
+      "summary": "Founder and first Maharaja of the Sikh Empire, ruling from 1801 until his death in 1839.",
+      "source": "Wikipedia; Wikidata (Q332620)",
+      "references": [
+        {
+          "label": "Wikipedia — Ranjit Singh",
+          "url": "https://en.wikipedia.org/wiki/Ranjit_Singh"
+        },
+        {
+          "label": "Wikidata — Q332620",
+          "url": "https://www.wikidata.org/wiki/Q332620"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Maharaj Ranjit Singh.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Maharaj_Ranjit_Singh.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Maharaj_Ranjit_Singh.jpg/1280px-Maharaj_Ranjit_Singh.jpg",
+      "image_credit": "Colonel James Skinner (1778-1841), Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Hari Singh Nalwa",
+      "category": "Soldier",
+      "born": "1791",
+      "died": "1837",
+      "era": "Sikh Empire",
+      "summary": "Commander-in-chief of the Sikh Khalsa Army who extended the Sikh Empire's frontier to the mouth of the Khyber Pass.",
+      "contribution": "Known for his role in the conquests of Kasur, Sialkot, Attock, Multan, Kashmir, Peshawar and Jamrud.",
+      "related_people": [
+        "Maharaja Ranjit Singh"
+      ],
+      "source": "Wikipedia; Wikidata (Q3631373)",
+      "references": [
+        {
+          "label": "Wikipedia — Hari Singh Nalwa",
+          "url": "https://en.wikipedia.org/wiki/Hari_Singh_Nalwa"
+        },
+        {
+          "label": "Wikidata — Q3631373",
+          "url": "https://www.wikidata.org/wiki/Q3631373"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Hari Singh Nalwa british museum.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Hari_Singh_Nalwa_british_museum.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Hari_Singh_Nalwa_british_museum.jpg",
+      "image_credit": "Sir John Mcqueen, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhai Vir Singh",
+      "category": "Writer",
+      "born": "1872",
+      "died": "1957",
+      "era": "Singh Sabha movement",
+      "summary": "Poet, scholar and theologian of the Sikh revival, considered the father of modern Punjabi literature.",
+      "contribution": "An important figure of the Singh Sabha movement who played a major part in renewing the Punjabi literary tradition.",
+      "source": "Wikipedia; Wikidata (Q3631340)",
+      "references": [
+        {
+          "label": "Wikipedia — Vir Singh (writer)",
+          "url": "https://en.wikipedia.org/wiki/Vir_Singh_(writer)"
+        },
+        {
+          "label": "Wikidata — Q3631340",
+          "url": "https://www.wikidata.org/wiki/Q3631340"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Vir Singh 1972 stamp of India.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Vir_Singh_1972_stamp_of_India.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Vir_Singh_1972_stamp_of_India.jpg",
+      "image_credit": "India Post, Government of India, GODL-India, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhai Kahn Singh Nabha",
+      "category": "Scholar",
+      "born": "1861",
+      "died": "1938",
+      "era": "Singh Sabha movement",
+      "summary": "Sikh scholar, lexicographer and encyclopedist, best known for the Mahan Kosh.",
+      "contribution": "Compiled the Mahan Kosh, the first Punjabi encyclopedia, published in 1930, and took part in the Singh Sabha movement.",
+      "books": [
+        "Mahan Kosh"
+      ],
+      "source": "Wikipedia; Wikidata (Q6347061)",
+      "references": [
+        {
+          "label": "Wikipedia — Kahn Singh Nabha",
+          "url": "https://en.wikipedia.org/wiki/Kahn_Singh_Nabha"
+        },
+        {
+          "label": "Wikidata — Q6347061",
+          "url": "https://www.wikidata.org/wiki/Q6347061"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Photograph of Kahn Singh of Nabha.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Photograph_of_Kahn_Singh_of_Nabha.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Photograph_of_Kahn_Singh_of_Nabha.jpg",
+      "image_credit": "Unknown artist, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhagat Puran Singh",
+      "category": "Social worker",
+      "born": "1904",
+      "died": "1992",
+      "era": "20th century",
+      "summary": "Writer, environmentalist and philanthropist who founded Pingalwara in Amritsar in 1947.",
+      "contribution": "Dedicated his life to humanitarian work, establishing Pingalwara, a home for the sick and disabled, and campaigned on pollution and soil erosion.",
+      "source": "Wikipedia; Wikidata (Q4900602)",
+      "references": [
+        {
+          "label": "Wikipedia — Bhagat Puran Singh",
+          "url": "https://en.wikipedia.org/wiki/Bhagat_Puran_Singh"
+        },
+        {
+          "label": "Wikidata — Q4900602",
+          "url": "https://www.wikidata.org/wiki/Q4900602"
+        }
+      ]
+    },
+    {
+      "title": "Jassa Singh Ahluwalia",
+      "category": "Historical personality",
+      "born": "1718",
+      "died": "1783",
+      "era": "Sikh Confederacy (Misls)",
+      "summary": "Supreme leader of the Dal Khalsa and Misldar of the Ahluwalia Misl; founder of Kapurthala State in 1772.",
+      "source": "Wikipedia; Wikidata (Q1639665)",
+      "references": [
+        {
+          "label": "Wikipedia — Jassa Singh Ahluwalia",
+          "url": "https://en.wikipedia.org/wiki/Jassa_Singh_Ahluwalia"
+        },
+        {
+          "label": "Wikidata — Q1639665",
+          "url": "https://www.wikidata.org/wiki/Q1639665"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Jassa Singh Ahluwalia 1985 stamp of India.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Jassa_Singh_Ahluwalia_1985_stamp_of_India.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Jassa_Singh_Ahluwalia_1985_stamp_of_India.jpg",
+      "image_credit": "India Post, Government of India, GODL-India, via Wikimedia Commons"
+    },
+    {
+      "title": "Bhai Taru Singh",
+      "category": "Shaheed",
+      "born": "1720",
+      "died": "1745",
+      "era": "18th century",
+      "summary": "Sikh martyr who chose to have his scalp removed rather than cut his hair and give up his faith.",
+      "source": "Wikipedia; Wikidata (Q4900771)",
+      "references": [
+        {
+          "label": "Wikipedia — Bhai Taru Singh",
+          "url": "https://en.wikipedia.org/wiki/Bhai_Taru_Singh"
+        },
+        {
+          "label": "Wikidata — Q4900771",
+          "url": "https://www.wikidata.org/wiki/Q4900771"
+        }
+      ]
+    }
+  ]
+}

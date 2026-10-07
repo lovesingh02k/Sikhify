@@ -1,0 +1,23 @@
+{
+  "name": "@sikhify/backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test \"tests/*.test.js\"",
+    "admin:create": "node scripts/create-admin.js",
+    "gurdwaras:fetch-wikidata": "node scripts/fetch-wikidata-gurdwaras.js",
+    "gurdwaras:import": "node scripts/import-gurdwaras.js",
+    "gurdwaras:import-historic": "node scripts/import-gurdwaras.js seed/gurdwaras/india-historic-gurdwaras.json",
+    "gurdwaras:dev-fixtures": "node scripts/seed-dev-gurdwaras.js",
+    "directory:import": "node scripts/import-directory.js"
+  },
+  "dependencies": {
+    "libsql": "^0.5.17"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}

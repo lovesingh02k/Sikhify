@@ -25,6 +25,7 @@ export const COMMON_FIELDS = [
   { name: 'summary', label: 'Short summary', kind: 'textarea', max: 600, help: 'One or two sentences shown on cards and in search.' },
   { name: 'body', label: 'Full description', kind: 'textarea', max: 20000, rows: 8 },
   { name: 'image_url', label: 'Image URL', kind: 'url', help: 'Only use an image you have permission to publish.' },
+  { name: 'image_credit', label: 'Image credit', kind: 'text', max: 300, help: 'Who made the image and its licence, e.g. “Photo: A. Singh, CC BY-SA 4.0, via Wikimedia Commons”.' },
 ];
 
 const COUNTRY = { name: 'country', label: 'Country', kind: 'text', max: 80 };
@@ -37,7 +38,7 @@ const VIDEOS = { name: 'videos', label: 'YouTube videos', kind: 'youtube', help:
 
 export const CONTENT_TYPES = {
   // Gurdwaras have their own relational module: the Global Gurdwara Directory
-  // (server/routes/gurdwaras.js, /directory/gurdwaras). They are not a generic entry type.
+  // (backend/src/routes/gurdwaras.js, /directory/gurdwaras). They are not a generic entry type.
   event: {
     label: 'Event', plural: 'Events', path: 'events', group: 'Community',
     description: 'Gurpurabs, Nagar Kirtans, Samagams, Kirtan Darbars and educational events.',

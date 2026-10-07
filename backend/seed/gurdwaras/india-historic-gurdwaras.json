@@ -1,0 +1,1796 @@
+{
+  "source": "Sikhify — historic Gurdwaras of India (curated)",
+  "retrieved": "2026-10-07",
+  "note": "Hand-curated from the cited sources: official Gurdwara and Sikh institution websites (SGPC, DSGMC, Takht Sachkhand Sri Hazur Abchalnagar Sahib, Takht Sri Patna Sahib), English Wikipedia and Wikidata. Coordinates are Wikidata values and are left empty where Wikidata gives the same copied coordinate to different Gurdwaras or has none. Photos are from Wikimedia Commons with their author and licence. Descriptions are written for Sikhify. Fields that could not be confirmed are empty — no addresses, phone numbers, timings or facilities are guessed. Rows with a wikidata:… reference update the record imported from the Wikidata dataset instead of creating a second one.",
+  "records": [
+    {
+      "external_ref": "wikidata:Q118893",
+      "designation": "takht",
+      "name": "Sri Akal Takht Sahib",
+      "official_name": "Sri Akal Takht Sahib",
+      "also_known_as": "Akal Takht; Akal Bunga",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Amritsar",
+      "city": "Amritsar",
+      "latitude": 31.620611,
+      "longitude": 74.875333,
+      "established_year": 1606,
+      "management_organization": "Shiromani Gurdwara Parbandhak Committee (SGPC)",
+      "description": "The foremost of the five Takhts, the seats of temporal authority of the Sikhs. Guru Hargobind Sahib established it in 1606, facing Sri Harmandir Sahib within the Darbar Sahib complex in Amritsar, as a place to administer justice and consider temporal matters. It remains the seat of the Jathedar of the Akal Takht and the place from which decisions concerning the Sikh community are issued.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Akal_takhat_amritsar.jpg/1280px-Akal_takhat_amritsar.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Akal_takhat_amritsar.jpg/500px-Akal_takhat_amritsar.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Sri Akal Takht Sahib in the Darbar Sahib complex, Amritsar",
+          "credit": "Amarpreet.singh.in at English Wikipedia",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Akal_takhat_amritsar.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Akal Takht",
+          "url": "https://en.wikipedia.org/wiki/Akal_Takht",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q118893)",
+          "url": "https://www.wikidata.org/wiki/Q118893",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        },
+        {
+          "name": "SGPC — Sri Harmandir Sahib",
+          "url": "https://sgpc.net/sri-harmandir-sahib-2/",
+          "type": "sgpc"
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q30938",
+      "designation": "takht",
+      "name": "Takht Sri Kesgarh Sahib",
+      "official_name": "Takht Sri Kesgarh Sahib",
+      "also_known_as": "Keshgarh Sahib; Kesgarh Qila",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Rupnagar",
+      "city": "Anandpur Sahib",
+      "latitude": 31.235,
+      "longitude": 76.498889,
+      "management_organization": "Shiromani Gurdwara Parbandhak Committee (SGPC)",
+      "description": "One of the five Takhts, at Anandpur Sahib in the foothills of the Shivaliks. It stands at the place associated with the creation of the Khalsa by Guru Gobind Singh Ji on Vaisakhi in 1699, and was one of the forts Guru Sahib built to defend Anandpur Sahib.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Takht_Sri_Keshgarh_Sahib.jpg/1280px-Takht_Sri_Keshgarh_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Takht_Sri_Keshgarh_Sahib.jpg/500px-Takht_Sri_Keshgarh_Sahib.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Takht Sri Kesgarh Sahib, Anandpur Sahib — the birthplace of the Khalsa",
+          "credit": "Jasleen Kaur",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Takht_Sri_Keshgarh_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Takht Sri Keshgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Sri_Keshgarh_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q30938)",
+          "url": "https://www.wikidata.org/wiki/Q30938",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        },
+        {
+          "name": "Wikidata (Q6395031)",
+          "url": "https://www.wikidata.org/wiki/Q6395031",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q30924",
+      "designation": "takht",
+      "name": "Takht Sri Patna Sahib",
+      "official_name": "Takht Sri Harimandir Ji, Patna Sahib",
+      "also_known_as": "Takht Sri Harimandir Sahib; Patna Sahib",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Patna",
+      "latitude": 25.596062,
+      "longitude": 85.230063,
+      "website": "https://takhatpatnasahib.in/en/",
+      "description": "One of the five Takhts, in the old city of Patna on the bank of the Ganges. It marks the birthplace of Guru Gobind Singh Ji, the tenth Guru, born here in 1666; Guru Nanak Dev Ji and Guru Tegh Bahadur Ji also visited Patna. The building has been rebuilt at least twice — in the early nineteenth century after a fire, and in the mid-twentieth century after an earthquake.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Harmandir_Patna.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/Harmandir_Patna.jpg/500px-Harmandir_Patna.jpg",
+          "width": 1280,
+          "height": 1365,
+          "alt": "Takht Sri Harimandir Ji, Patna Sahib — birthplace of Guru Gobind Singh Ji",
+          "credit": "Neelsb (English Wikipedia)",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Harmandir_Patna.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Takht Sri Patna Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Sri_Patna_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q30924)",
+          "url": "https://www.wikidata.org/wiki/Q30924",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        },
+        {
+          "name": "Takht Sri Harimandir Ji, Patna Sahib — official website",
+          "url": "https://takhatpatnasahib.in/en/",
+          "type": "official_website"
+        }
+      ],
+      "clear": [
+        "established_year"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q3694968",
+      "designation": "takht",
+      "name": "Takht Sri Hazur Sahib",
+      "official_name": "Takht Sachkhand Sri Hazur Abchalnagar Sahib",
+      "also_known_as": "Hazur Sahib; Sachkhand Sahib; Abchalnagar",
+      "country": "IN",
+      "state": "Maharashtra",
+      "district": "Nanded",
+      "city": "Nanded",
+      "latitude": 19.1528,
+      "longitude": 77.319,
+      "website": "https://hazursahib.com/",
+      "description": "One of the five Takhts, on the bank of the Godavari at Nanded. It stands where Guru Gobind Singh Ji spent his final days and where he left this world in 1708, having passed Guruship to Sri Guru Granth Sahib. The inner chamber, the Angitha Sahib, is built over the place of his cremation. The present building was raised between 1832 and 1837 under Maharaja Ranjit Singh.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Hazur_Sahib.jpg/1280px-Hazur_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Hazur_Sahib.jpg/500px-Hazur_Sahib.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Takht Sachkhand Sri Hazur Abchalnagar Sahib on the bank of the Godavari, Nanded",
+          "credit": "Subhag Singh",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Hazur_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Hazur Sahib",
+          "url": "https://en.wikipedia.org/wiki/Hazur_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q3694968)",
+          "url": "https://www.wikidata.org/wiki/Q3694968",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        },
+        {
+          "name": "Takht Sachkhand Sri Hazur Abchalnagar Sahib — History",
+          "url": "https://hazursahib.com/web/history",
+          "type": "official_website",
+          "notes": "Official website of Takht Sachkhand Sri Hazur Abchalnagar Sahib, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q48375",
+      "designation": "takht",
+      "name": "Takht Sri Damdama Sahib",
+      "official_name": "Takht Sri Darbar Sahib Damdama Sahib",
+      "also_known_as": "Damdama Sahib; Guru Ki Kashi",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Bathinda",
+      "city": "Talwandi Sabo",
+      "latitude": 29.986937,
+      "longitude": 75.078562,
+      "management_organization": "Shiromani Gurdwara Parbandhak Committee (SGPC)",
+      "description": "One of the five Takhts, at Talwandi Sabo near Bathinda. Guru Gobind Singh Ji stayed here after the battles of 1704–05, and here the full recension of the Sikh scripture, including the Bani of Guru Tegh Bahadur Ji, was prepared in 1705 — the version installed as Sri Guru Granth Sahib.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg/1280px-Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg/500px-Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Takht Sri Damdama Sahib, Talwandi Sabo",
+          "credit": "Kuldeepburjbhalaike",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Takht_Sri_Damdama_Sahib,_Talwandi_Sabo.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Takht Sri Damdama Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Sri_Damdama_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q48375)",
+          "url": "https://www.wikidata.org/wiki/Q48375",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ],
+      "clear": [
+        "established_year"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q180422",
+      "designation": "historic",
+      "name": "Sri Harmandir Sahib",
+      "official_name": "Sri Harmandir Sahib (Sri Darbar Sahib)",
+      "also_known_as": "Golden Temple; Darbar Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Amritsar",
+      "city": "Amritsar",
+      "latitude": 31.62,
+      "longitude": 74.876667,
+      "management_organization": "Shiromani Gurdwara Parbandhak Committee (SGPC)",
+      "description": "The pre-eminent Gurdwara of the Sikhs, set in the Amrit Sarovar at Amritsar. Built under Guru Arjan Dev Ji, it was completed in 1589, and in 1604 Guru Sahib installed the Adi Granth here. Its four entrances welcome people from every direction, and its Langar serves a free meal to all visitors. The complex also holds Sri Akal Takht Sahib.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Hamandir_Sahib_%28Golden_Temple%29.jpg/1280px-Hamandir_Sahib_%28Golden_Temple%29.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Hamandir_Sahib_%28Golden_Temple%29.jpg/500px-Hamandir_Sahib_%28Golden_Temple%29.jpg",
+          "width": 1280,
+          "height": 853,
+          "alt": "Sri Harmandir Sahib (Golden Temple) in the Amrit Sarovar, Amritsar",
+          "credit": "Oleg Yunakov",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Hamandir_Sahib_(Golden_Temple).jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "SGPC — Sri Harmandir Sahib",
+          "url": "https://sgpc.net/sri-harmandir-sahib-2/",
+          "type": "sgpc"
+        },
+        {
+          "name": "Wikipedia — Golden Temple",
+          "url": "https://en.wikipedia.org/wiki/Golden_Temple",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q180422)",
+          "url": "https://www.wikidata.org/wiki/Q180422",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q924374",
+      "designation": "historic",
+      "name": "Gurdwara Baba Atal Rai Sahib",
+      "also_known_as": "Gurdwara Baba Atal Sahib; Baba Atal",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Amritsar",
+      "city": "Amritsar",
+      "latitude": 31.617306,
+      "longitude": 74.877111,
+      "description": "A nine-storey tower, around forty metres high, a short walk from Sri Harmandir Sahib. It is dedicated to Baba Atal Rai, the young son of Guru Hargobind Sahib and Mata Nanaki.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Baba_Atal_Amritsar.jpg/1280px-Baba_Atal_Amritsar.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Baba_Atal_Amritsar.jpg/500px-Baba_Atal_Amritsar.jpg",
+          "width": 1280,
+          "height": 1707,
+          "alt": "The nine-storey tower of Gurdwara Baba Atal Rai Sahib, Amritsar",
+          "credit": "Amarpreet.singh.in at English Wikipedia",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Baba_Atal_Amritsar.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Baba Atal",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Baba_Atal",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q924374)",
+          "url": "https://www.wikidata.org/wiki/Q924374",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619988",
+      "designation": "historic",
+      "name": "Gurdwara Sri Tarn Taran Sahib",
+      "official_name": "Gurdwara Sri Darbar Sahib, Tarn Taran",
+      "also_known_as": "Darbar Sahib Tarn Taran",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Tarn Taran",
+      "city": "Tarn Taran",
+      "latitude": 31.451708,
+      "longitude": 74.925217,
+      "description": "Established by Guru Arjan Dev Ji, the fifth Guru, in the town of Tarn Taran near Amritsar. Its sarovar is the largest of any Gurdwara, and the monthly Amavas (new-moon) gathering draws large numbers of pilgrims.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/The_Sarovar_besides_the_GurudwaraTarn_Taran_Sahib%2C_Punjab%2C_India.jpg/1280px-The_Sarovar_besides_the_GurudwaraTarn_Taran_Sahib%2C_Punjab%2C_India.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/The_Sarovar_besides_the_GurudwaraTarn_Taran_Sahib%2C_Punjab%2C_India.jpg/500px-The_Sarovar_besides_the_GurudwaraTarn_Taran_Sahib%2C_Punjab%2C_India.jpg",
+          "width": 1280,
+          "height": 851,
+          "alt": "The sarovar beside Gurdwara Sri Tarn Taran Sahib",
+          "credit": "Giridhar Appaji Nag Y from Bangalore, India",
+          "license": "CC BY 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:The_Sarovar_besides_the_GurudwaraTarn_Taran_Sahib,_Punjab,_India.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Sri Tarn Taran Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Sri_Tarn_Taran_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619988)",
+          "url": "https://www.wikidata.org/wiki/Q5619988",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619956",
+      "designation": "historic",
+      "name": "Gurdwara Sri Dukh Nivaran Sahib",
+      "also_known_as": "Dukh Niwaran Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Patiala",
+      "city": "Patiala",
+      "latitude": 30.347083,
+      "longitude": 76.396083,
+      "description": "A historic Gurdwara in Patiala, in what was once the village of Lehal. It is associated with Guru Tegh Bahadur Ji, and Sangat come to its sarovar with faith in its healing — the name means “remover of suffering”.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Gurdwara_Dukh_Nivaran_Sahib%2C_Patiala.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Gurdwara_Dukh_Nivaran_Sahib%2C_Patiala.jpg/500px-Gurdwara_Dukh_Nivaran_Sahib%2C_Patiala.jpg",
+          "width": 1280,
+          "height": 852,
+          "alt": "Gurdwara Sri Dukh Nivaran Sahib, Patiala",
+          "credit": "Harpreet Singh",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Dukh_Nivaran_Sahib,_Patiala.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Dukh Nivaran Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Dukh_Nivaran_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619956)",
+          "url": "https://www.wikidata.org/wiki/Q5619956",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619960",
+      "designation": "historic",
+      "name": "Gurdwara Sri Fatehgarh Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Fatehgarh Sahib",
+      "city": "Fatehgarh Sahib",
+      "latitude": 30.617385,
+      "longitude": 76.388754,
+      "description": "Stands where the younger Sahibzade of Guru Gobind Singh Ji — Baba Zorawar Singh and Baba Fateh Singh — were martyred in 1705 on the orders of Wazir Khan, governor of Sirhind, after refusing to give up their faith. The underground Bhora Sahib marks the place. The Gurdwara also commemorates the conquest of Sirhind by the Sikhs under Banda Singh Bahadur in 1710.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Gurdwara_Fatehgarh_Sahib.jpg/1280px-Gurdwara_Fatehgarh_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Gurdwara_Fatehgarh_Sahib.jpg/500px-Gurdwara_Fatehgarh_Sahib.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Main building of Gurdwara Sri Fatehgarh Sahib",
+          "credit": "Kuldeepburjbhalaike",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Fatehgarh_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Fatehgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Fatehgarh_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Fatehgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Fatehgarh_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619960)",
+          "url": "https://www.wikidata.org/wiki/Q5619960",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619963",
+      "designation": "historic",
+      "name": "Gurdwara Sri Jyoti Sarup Sahib",
+      "also_known_as": "Jyoti Saroop Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Fatehgarh Sahib",
+      "city": "Fatehgarh Sahib",
+      "latitude": 30.645407,
+      "longitude": 76.40462,
+      "description": "Near Fatehgarh Sahib, at the place where Mata Gujri Ji and the two younger Sahibzade were cremated in 1705. Diwan Todar Mal is remembered for buying the land for the cremation.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Gurdwara_Jyoti_Saroop.jpg/1280px-Gurdwara_Jyoti_Saroop.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/Gurdwara_Jyoti_Saroop.jpg/500px-Gurdwara_Jyoti_Saroop.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Jyoti Sarup Sahib, Fatehgarh Sahib",
+          "credit": "Hari Singh",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Jyoti_Saroop.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Fatehgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Fatehgarh_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619963)",
+          "url": "https://www.wikidata.org/wiki/Q5619963",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q16640631",
+      "designation": "historic",
+      "name": "Gurdwara Sri Ber Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Kapurthala",
+      "city": "Sultanpur Lodhi",
+      "latitude": 31.216519,
+      "longitude": 75.185025,
+      "description": "On the bank of the Kali Bein rivulet at Sultanpur Lodhi. It marks the place where Guru Nanak Dev Ji had the spiritual experience that began his mission, after which he proclaimed “there is no Hindu, there is no Musalman”. The ber (jujube) tree in the complex is associated with Guru Sahib.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Ber_Sahib.jpg/1280px-Ber_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Ber_Sahib.jpg/500px-Ber_Sahib.jpg",
+          "width": 1280,
+          "height": 929,
+          "alt": "Gurdwara Sri Ber Sahib, Sultanpur Lodhi",
+          "credit": "Jiwanjot (Jjsingh1981 (talk))",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ber_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Sri Ber Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Sri_Ber_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q16640631)",
+          "url": "https://www.wikidata.org/wiki/Q16640631",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q16640655",
+      "designation": "historic",
+      "name": "Gurdwara Sri Patalpuri Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Rupnagar",
+      "city": "Kiratpur Sahib",
+      "latitude": 31.178062,
+      "longitude": 76.563187,
+      "description": "On the bank of the Sutlej at Kiratpur Sahib. Guru Hargobind Sahib and Guru Har Rai Sahib were cremated here, and the ashes of Guru Har Krishan Sahib were immersed here. It is the place where many Sikh families immerse the ashes of their loved ones.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Gurdwara_Patalpuri%2C_in_Kiratpur%2C_Punjab%2C_India.jpg/1280px-Gurdwara_Patalpuri%2C_in_Kiratpur%2C_Punjab%2C_India.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Gurdwara_Patalpuri%2C_in_Kiratpur%2C_Punjab%2C_India.jpg/500px-Gurdwara_Patalpuri%2C_in_Kiratpur%2C_Punjab%2C_India.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Patalpuri Sahib, Kiratpur Sahib",
+          "credit": "Hari Singh",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Patalpuri,_in_Kiratpur,_Punjab,_India.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Patalpuri Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Patalpuri_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q16640655)",
+          "url": "https://www.wikidata.org/wiki/Q16640655",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5620472",
+      "designation": "historic",
+      "name": "Gurdwara Baba Gurditta Ji",
+      "also_known_as": "Dehra Baba Gurditta",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Rupnagar",
+      "city": "Kiratpur Sahib",
+      "latitude": 31.181941,
+      "longitude": 76.57101,
+      "description": "A hilltop Gurdwara at Kiratpur Sahib in memory of Baba Gurditta Ji (1613–1638), the eldest son of Guru Hargobind Sahib and father of Guru Har Rai Sahib.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Photograph_of_Gurdwara_Baba_Gurditta_in_Kiratpur%2C_as_published_in_the_Mahan_Kosh_%281930%29.jpg/1280px-Photograph_of_Gurdwara_Baba_Gurditta_in_Kiratpur%2C_as_published_in_the_Mahan_Kosh_%281930%29.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Photograph_of_Gurdwara_Baba_Gurditta_in_Kiratpur%2C_as_published_in_the_Mahan_Kosh_%281930%29.jpg/500px-Photograph_of_Gurdwara_Baba_Gurditta_in_Kiratpur%2C_as_published_in_the_Mahan_Kosh_%281930%29.jpg",
+          "width": 1280,
+          "height": 834,
+          "alt": "Historical photograph of Gurdwara Baba Gurditta Ji, Kiratpur, published in the Mahan Kosh (1930)",
+          "credit": "Published by Kahn Singh of Nabha [Kahn Singh Nabha]",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Photograph_of_Gurdwara_Baba_Gurditta_in_Kiratpur,_as_published_in_the_Mahan_Kosh_(1930).jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Baba Gurditta",
+          "url": "https://en.wikipedia.org/wiki/Baba_Gurditta",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5620472)",
+          "url": "https://www.wikidata.org/wiki/Q5620472",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q30643652",
+      "designation": "historic",
+      "name": "Gurdwara Baba Bakala Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Amritsar",
+      "city": "Baba Bakala",
+      "latitude": 31.555438,
+      "longitude": 75.264062,
+      "description": "About 42 km from Amritsar, associated with Guru Tegh Bahadur Ji, Mata Ganga Ji and Bhai Makhan Shah Lubana — who, in Sikh tradition, recognised Guru Tegh Bahadur Ji here as the ninth Guru. The main complex contains four Gurdwaras.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/7/74/Gurdwara_Baba_Bakala_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Gurdwara_Baba_Bakala_Sahib.jpg/500px-Gurdwara_Baba_Bakala_Sahib.jpg",
+          "width": 1280,
+          "height": 921,
+          "alt": "Gurdwara Baba Bakala Sahib in daylight",
+          "credit": "Savraj",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Baba_Bakala_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Baba Bakala Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Baba_Bakala_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q30643652)",
+          "url": "https://www.wikidata.org/wiki/Q30643652",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q65768122",
+      "designation": "historic",
+      "name": "Gurdwara Sri Baoli Sahib, Goindwal Sahib",
+      "also_known_as": "Goindwal Baoli Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Tarn Taran",
+      "city": "Goindwal Sahib",
+      "latitude": 31.364187,
+      "longitude": 75.144688,
+      "description": "At Goindwal on the bank of the Beas, the seat of Guru Amar Das Ji, the third Guru. The baoli — a stepwell of 84 steps built under Guru Amar Das Ji — is the centre of the Gurdwara.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Gurudwara_Goindwal_Sahib.jpg/1280px-Gurudwara_Goindwal_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Gurudwara_Goindwal_Sahib.jpg/500px-Gurudwara_Goindwal_Sahib.jpg",
+          "width": 1280,
+          "height": 1273,
+          "alt": "The Baoli Sahib at Goindwal Sahib",
+          "credit": "Jasleen Kaur",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Goindwal_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Goindwal",
+          "url": "https://en.wikipedia.org/wiki/Goindwal",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q65768122)",
+          "url": "https://www.wikidata.org/wiki/Q65768122",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q65925171",
+      "designation": "historic",
+      "name": "Gurdwara Sri Darbar Sahib, Dera Baba Nanak",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Gurdaspur",
+      "city": "Dera Baba Nanak",
+      "latitude": 32.034188,
+      "longitude": 75.026438,
+      "description": "In the border town of Dera Baba Nanak, founded by descendants of Guru Nanak Dev Ji. The town faces Gurdwara Darbar Sahib Kartarpur across the border in Pakistan, and is the Indian end of the Kartarpur Corridor opened in 2019.",
+      "sources": [
+        {
+          "name": "Wikipedia — Dera Baba Nanak",
+          "url": "https://en.wikipedia.org/wiki/Dera_Baba_Nanak",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q65925171)",
+          "url": "https://www.wikidata.org/wiki/Q65925171",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q127377604",
+      "designation": "historic",
+      "name": "Gurdwara Sri Sis Ganj Sahib, Anandpur Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Rupnagar",
+      "city": "Anandpur Sahib",
+      "latitude": 31.2374,
+      "longitude": 76.4982,
+      "description": "At Anandpur Sahib, where the head of Guru Tegh Bahadur Ji — brought from Delhi by Bhai Jaita after the Guru’s martyrdom in 1675 — was cremated.",
+      "sources": [
+        {
+          "name": "Wikipedia — Anandpur Sahib",
+          "url": "https://en.wikipedia.org/wiki/Anandpur_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q127377604)",
+          "url": "https://www.wikidata.org/wiki/Q127377604",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q114166085",
+      "designation": "historic",
+      "name": "Gurdwara Sri Kandh Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Gurdaspur",
+      "city": "Batala",
+      "latitude": 31.806839,
+      "longitude": 75.203981,
+      "description": "In Batala, marking the marriage of Guru Nanak Dev Ji and Mata Sulakhni Ji. A preserved mud wall (kandh) from the time of the wedding gives the Gurdwara its name.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Kandh_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Kandh_Sahib.jpg/500px-Kandh_Sahib.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Kandh Sahib, Batala — the marriage place of Guru Nanak Dev Ji",
+          "credit": "Vipsachinverma",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Kandh_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Batala",
+          "url": "https://en.wikipedia.org/wiki/Batala",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q114166085)",
+          "url": "https://www.wikidata.org/wiki/Q114166085",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-pb-chamkaur-sahib-garhi-sahib",
+      "designation": "historic",
+      "name": "Gurdwara Sri Garhi Sahib, Chamkaur Sahib",
+      "also_known_as": "Garhi Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Rupnagar",
+      "city": "Chamkaur Sahib",
+      "description": "Marks the mud fortress (garhi) at Chamkaur where Guru Gobind Singh Ji and a small band of Sikhs held out against a much larger Mughal force in December 1704. The elder Sahibzade, Baba Ajit Singh and Baba Jujhar Singh, were martyred in the battle.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Gurudwara_shri_garhi_sahib_Chamkaur_sahib_-_panoramio.jpg/1280px-Gurudwara_shri_garhi_sahib_Chamkaur_sahib_-_panoramio.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Gurudwara_shri_garhi_sahib_Chamkaur_sahib_-_panoramio.jpg/500px-Gurudwara_shri_garhi_sahib_Chamkaur_sahib_-_panoramio.jpg",
+          "width": 1280,
+          "height": 719,
+          "alt": "Gurdwara Sri Garhi Sahib, Chamkaur Sahib",
+          "credit": "baljinder kang",
+          "license": "CC BY 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_shri_garhi_sahib_Chamkaur_sahib_-_panoramio.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Battle of Chamkaur",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Chamkaur",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Chamkaur Sahib",
+          "url": "https://en.wikipedia.org/wiki/Chamkaur_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-pb-muktsar-darbar-sahib",
+      "designation": "historic",
+      "name": "Gurdwara Sri Darbar Sahib, Sri Muktsar Sahib",
+      "also_known_as": "Gurdwara Tuti Gandhi Sahib",
+      "country": "IN",
+      "state": "Punjab",
+      "district": "Sri Muktsar Sahib",
+      "city": "Sri Muktsar Sahib",
+      "description": "Commemorates the Battle of Khidrana in 1705 and the Chali Mukte — the forty Sikhs who fell fighting for Guru Gobind Singh Ji and whom he blessed as liberated (mukte), giving the town its name. The annual Maghi Mela is held here.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Gurudwara_Muktsar_Sahib.jpg/1280px-Gurudwara_Muktsar_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Gurudwara_Muktsar_Sahib.jpg/500px-Gurudwara_Muktsar_Sahib.jpg",
+          "width": 1280,
+          "height": 678,
+          "alt": "Gurdwara Sri Darbar Sahib, Sri Muktsar Sahib",
+          "credit": "Jagmeet23",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Muktsar_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Sri Muktsar Sahib",
+          "url": "https://en.wikipedia.org/wiki/Sri_Muktsar_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Battle of Muktsar",
+          "url": "https://en.wikipedia.org/wiki/Battle_of_Muktsar",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q2375435",
+      "designation": "historic",
+      "name": "Gurdwara Bangla Sahib",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "New Delhi",
+      "city": "New Delhi",
+      "latitude": 28.6267,
+      "longitude": 77.2089,
+      "website": "https://dsgmc.in/DharmParchar/GurdwaraBanglaSahib",
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "Near Connaught Place, associated with Guru Har Krishan Sahib, the eighth Guru, who stayed here in 1664 in the bungalow of Raja Jai Singh of Amber and served those suffering in an epidemic. The sarovar in the complex is visited by Sangat for its water. A shrine was first raised here by Sardar Baghel Singh in 1783.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Front_view_of_Gurudwara_Bangla_Sahib%2C_Delhi.jpg/1280px-Front_view_of_Gurudwara_Bangla_Sahib%2C_Delhi.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Front_view_of_Gurudwara_Bangla_Sahib%2C_Delhi.jpg/500px-Front_view_of_Gurudwara_Bangla_Sahib%2C_Delhi.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Front view of Gurdwara Bangla Sahib, New Delhi",
+          "credit": "Ken Wieland from Philadelphia, USA",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Front_view_of_Gurudwara_Bangla_Sahib,_Delhi.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Bangla Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraBanglaSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Gurdwara Bangla Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Bangla_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q2375435)",
+          "url": "https://www.wikidata.org/wiki/Q2375435",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ],
+      "clear": [
+        "established_year"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5620491",
+      "designation": "historic",
+      "name": "Gurdwara Sis Ganj Sahib",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "Central Delhi",
+      "city": "Delhi",
+      "address": "Chandni Chowk",
+      "latitude": 28.6558,
+      "longitude": 77.2325,
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "In Chandni Chowk, Old Delhi, at the site where Guru Tegh Bahadur Ji, the ninth Guru, was martyred in 1675 on the orders of the emperor Aurangzeb for defending the freedom of others to practise their faith. A shrine was first built here by Sardar Baghel Singh in 1783.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Gurdwara_sis_ganj.jpg/1280px-Gurdwara_sis_ganj.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Gurdwara_sis_ganj.jpg/500px-Gurdwara_sis_ganj.jpg",
+          "width": 1280,
+          "height": 853,
+          "alt": "Gurdwara Sis Ganj Sahib, Chandni Chowk, Delhi",
+          "credit": "Supreet Sethi http://supreetsethi.net",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_sis_ganj.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Sis Ganj Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraSisGanjSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Gurdwara Sis Ganj Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Sis_Ganj_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5620491)",
+          "url": "https://www.wikidata.org/wiki/Q5620491",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619976",
+      "designation": "historic",
+      "name": "Gurdwara Rakab Ganj Sahib",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "New Delhi",
+      "city": "New Delhi",
+      "address": "Pandit Pant Marg",
+      "latitude": 28.618187,
+      "longitude": 77.204813,
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "Near Parliament House, marking the place where the body of Guru Tegh Bahadur Ji was cremated in 1675 by Lakhi Shah Vanjara, who set fire to his own house to do so. The Gurdwara was built after Sardar Baghel Singh entered Delhi in 1783, and today houses the offices of the DSGMC.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d4/Gurdwara_Rakabganj_Sahib%2C_Delhi.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Gurdwara_Rakabganj_Sahib%2C_Delhi.jpg/500px-Gurdwara_Rakabganj_Sahib%2C_Delhi.jpg",
+          "width": 1280,
+          "height": 794,
+          "alt": "Gurdwara Rakab Ganj Sahib, New Delhi",
+          "credit": "https://www.flickr.com/photos/vm2827/",
+          "license": "CC BY-SA 2.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Rakabganj_Sahib,_Delhi.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Rakab Ganj Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraRakabGanjSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Gurdwara Rakab Ganj Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Rakab_Ganj_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619976)",
+          "url": "https://www.wikidata.org/wiki/Q5619976",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619974",
+      "designation": "historic",
+      "name": "Gurdwara Nanak Piao Sahib",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "North West Delhi",
+      "city": "Delhi",
+      "address": "Grand Trunk Road, near Sabzi Mandi",
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "On the Grand Trunk Road in north-west Delhi, where Guru Nanak Dev Ji stayed in a garden with Bhai Mardana during the reign of Sikandar Lodi. Guru Sahib served water from a well here to tired travellers — piao means a place where water is given — and the offerings were shared in Langar.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/%E0%A8%97%E0%A9%81%E0%A8%B0%E0%A8%A6%E0%A9%81%E0%A8%86%E0%A8%B0%E0%A8%BE_%E0%A8%A8%E0%A8%BE%E0%A8%A8%E0%A8%95_%E0%A8%AA%E0%A8%BF%E0%A8%86%E0%A8%93_%E0%A8%B8%E0%A8%BE%E0%A8%B9%E0%A8%BF%E0%A8%AC.jpg/1280px-%E0%A8%97%E0%A9%81%E0%A8%B0%E0%A8%A6%E0%A9%81%E0%A8%86%E0%A8%B0%E0%A8%BE_%E0%A8%A8%E0%A8%BE%E0%A8%A8%E0%A8%95_%E0%A8%AA%E0%A8%BF%E0%A8%86%E0%A8%93_%E0%A8%B8%E0%A8%BE%E0%A8%B9%E0%A8%BF%E0%A8%AC.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/%E0%A8%97%E0%A9%81%E0%A8%B0%E0%A8%A6%E0%A9%81%E0%A8%86%E0%A8%B0%E0%A8%BE_%E0%A8%A8%E0%A8%BE%E0%A8%A8%E0%A8%95_%E0%A8%AA%E0%A8%BF%E0%A8%86%E0%A8%93_%E0%A8%B8%E0%A8%BE%E0%A8%B9%E0%A8%BF%E0%A8%AC.jpg/500px-%E0%A8%97%E0%A9%81%E0%A8%B0%E0%A8%A6%E0%A9%81%E0%A8%86%E0%A8%B0%E0%A8%BE_%E0%A8%A8%E0%A8%BE%E0%A8%A8%E0%A8%95_%E0%A8%AA%E0%A8%BF%E0%A8%86%E0%A8%93_%E0%A8%B8%E0%A8%BE%E0%A8%B9%E0%A8%BF%E0%A8%AC.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Nanak Piao Sahib, Delhi",
+          "credit": "ਦੀਪਕ ਅਜ਼ੀਜ਼",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:%E0%A8%97%E0%A9%81%E0%A8%B0%E0%A8%A6%E0%A9%81%E0%A8%86%E0%A8%B0%E0%A8%BE_%E0%A8%A8%E0%A8%BE%E0%A8%A8%E0%A8%95_%E0%A8%AA%E0%A8%BF%E0%A8%86%E0%A8%93_%E0%A8%B8%E0%A8%BE%E0%A8%B9%E0%A8%BF%E0%A8%AC.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Nanak Piao Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraNanakPiaoSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Gurdwara Nanak Piao",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Nanak_Piao",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619974)",
+          "url": "https://www.wikidata.org/wiki/Q5619974",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-dl-moti-bagh-sahib",
+      "designation": "historic",
+      "name": "Gurdwara Moti Bagh Sahib",
+      "also_known_as": "Mochi Bagh",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "New Delhi",
+      "city": "New Delhi",
+      "address": "Ring Road, near Dhaula Kuan",
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "On the Ring Road near Dhaula Kuan, where Guru Gobind Singh Ji camped with his Sikhs on arriving in Delhi in 1707. The place was earlier known as Mochi Bagh. Sikh tradition records that Guru Sahib announced his arrival by shooting an arrow that struck the foot of Emperor Bahadur Shah’s throne in the Red Fort.",
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Moti Bagh Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraMotiBaghSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619968",
+      "designation": "historic",
+      "name": "Gurdwara Mata Sundri Ji",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "New Delhi",
+      "city": "New Delhi",
+      "address": "Mata Sundri Road",
+      "latitude": 28.634371,
+      "longitude": 77.233886,
+      "description": "On Mata Sundri Road in central Delhi, on the site of the haveli where Mata Sundri Ji, wife of Guru Gobind Singh Ji, lived. After the Guru left this world in 1708 she guided the Khalsa for some four decades.",
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Mata Sundri",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Mata_Sundri",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619968)",
+          "url": "https://www.wikidata.org/wiki/Q5619968",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619950",
+      "designation": "historic",
+      "name": "Gurdwara Damdama Sahib, Delhi",
+      "country": "IN",
+      "state": "National Capital Territory of Delhi",
+      "district": "New Delhi",
+      "city": "New Delhi",
+      "address": "Near Humayun’s Tomb, Outer Ring Road",
+      "latitude": 28.594746,
+      "longitude": 77.252574,
+      "management_organization": "Delhi Sikh Gurdwara Management Committee (DSGMC)",
+      "description": "Near Humayun’s Tomb, where Guru Gobind Singh Ji met Emperor Bahadur Shah after coming to Delhi in 1707.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Gurudwara_Dumdama_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Gurudwara_Dumdama_Sahib.jpg/500px-Gurudwara_Dumdama_Sahib.jpg",
+          "width": 1280,
+          "height": 853,
+          "alt": "Gurdwara Damdama Sahib, Delhi, seen from the road",
+          "credit": "Ramesh lalwani",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Dumdama_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "DSGMC — Gurdwara Damdama Sahib",
+          "url": "https://dsgmc.in/DharmParchar/GurdwaraDamdamaSahib",
+          "type": "sikh_institution",
+          "notes": "Delhi Sikh Gurdwara Management Committee, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Gurdwara Dam Dama Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Dam_Dama_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619950)",
+          "url": "https://www.wikidata.org/wiki/Q5619950",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619949",
+      "designation": "historic",
+      "name": "Gurdwara Bal Leela Maini Sangat",
+      "also_known_as": "Bal Lila Sahib; Maini Sangat",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Patna",
+      "description": "In a lane close to Takht Sri Patna Sahib, at the house of Raja Fateh Chand Maini. His queen, who had no children, cherished the young Gobind Rai and fed him and his playmates boiled and salted gram — still served here as prasad. Unlike the other Patna Gurdwaras it is served by Nirmala Sikhs.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Photograph_of_Gurdwara_Bal_Leela_Sahib%2C_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1_October_1933.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/Photograph_of_Gurdwara_Bal_Leela_Sahib%2C_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1_October_1933.jpg/500px-Photograph_of_Gurdwara_Bal_Leela_Sahib%2C_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1_October_1933.jpg",
+          "width": 1280,
+          "height": 792,
+          "alt": "Historical photograph of Gurdwara Bal Leela Sahib, Patna, 1933",
+          "credit": "Dhanna Singh Chahal 'Patialvi'",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Photograph_of_Gurdwara_Bal_Leela_Sahib,_by_Dhanna_Singh_Chahal_%27Patialvi%27,_1_October_1933.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Bal Lila Maini Sangat",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Bal_Lila_Maini_Sangat",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619949)",
+          "url": "https://www.wikidata.org/wiki/Q5619949",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ],
+      "clear": [
+        "latitude",
+        "longitude",
+        "established_year",
+        "website"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619954",
+      "designation": "historic",
+      "name": "Gurdwara Gobind Ghat",
+      "also_known_as": "Kangan Ghat; Gurdwara Sri Guru Gobind Singh Ghat",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Patna",
+      "description": "On the Ganges about 650 metres from Takht Sri Patna Sahib. In Sikh tradition the child Gobind Rai threw his gold bangle (kangan) into the river here, which gave the ghat its other name.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Gurdwara_Gobind_Ghat.jpg/1280px-Gurdwara_Gobind_Ghat.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d1/Gurdwara_Gobind_Ghat.jpg/500px-Gurdwara_Gobind_Ghat.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Gobind Ghat (Kangan Ghat), Patna",
+          "credit": "Summit Kumar Shaurya",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Gobind_Ghat.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Gobind Ghat",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Gobind_Ghat",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619954)",
+          "url": "https://www.wikidata.org/wiki/Q5619954",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619961",
+      "designation": "historic",
+      "name": "Gurdwara Handi Sahib",
+      "also_known_as": "Handiwali Sangat",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Danapur",
+      "description": "At Danapur, about 20 km west of old Patna. After Guru Tegh Bahadur Ji returned to Punjab in 1670, his family made their first halt here on leaving Patna, and Mai Jamani served them khichri from a handi (cooking pot) — the origin of the name.",
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Handi Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Handi_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619961)",
+          "url": "https://www.wikidata.org/wiki/Q5619961",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ],
+      "clear": [
+        "latitude",
+        "longitude"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619953",
+      "designation": "historic",
+      "name": "Gurdwara Gai Ghat",
+      "official_name": "Gurdwara Pahila Bara",
+      "also_known_as": "Gau Ghat; Ghai Ghat",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Patna",
+      "description": "In Patna, dedicated to Guru Nanak Dev Ji, whose visit to the city it commemorates — hence its official name, Pahila Bara (“the first”). It is part of the Government of Bihar’s Guru Circuit of Sikh pilgrimage sites.",
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Gai Ghat",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Gai_Ghat",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619953)",
+          "url": "https://www.wikidata.org/wiki/Q5619953",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ],
+      "clear": [
+        "latitude",
+        "longitude"
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619957",
+      "designation": "historic",
+      "name": "Gurdwara Guru Ka Bagh",
+      "country": "IN",
+      "state": "Bihar",
+      "district": "Patna",
+      "city": "Patna",
+      "latitude": 25.576437,
+      "longitude": 85.248188,
+      "description": "About three kilometres east of Takht Sri Patna Sahib, in the garden where Guru Tegh Bahadur Ji arrived on returning from his travels, and where he first met the young Gobind Rai. An old well and the stump of the tamarind tree under which the Sangat received Guru Sahib remain.",
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Guru ka Bagh",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Guru_ka_Bagh",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619957)",
+          "url": "https://www.wikidata.org/wiki/Q5619957",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-mh-nanded-nagina-ghat",
+      "designation": "historic",
+      "name": "Gurdwara Nagina Ghat Sahib",
+      "country": "IN",
+      "state": "Maharashtra",
+      "district": "Nanded",
+      "city": "Nanded",
+      "description": "On the bank of the Godavari, about 400 metres south-west of Takht Sachkhand Sri Hazur Sahib. Tradition tells of a proud merchant who offered Guru Gobind Singh Ji a precious stone (nagina); Guru Sahib cast it into the river, and the humbled merchant found the riverbed full of jewels. The present building was completed in 1968.",
+      "sources": [
+        {
+          "name": "Takht Sachkhand Sri Hazur Abchalnagar Sahib — Gurudwara Nagina Ghat",
+          "url": "https://hazursahib.com/web/gurudwara_nagina_ghat",
+          "type": "official_website",
+          "notes": "Official website of Takht Sachkhand Sri Hazur Abchalnagar Sahib, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-mh-nanded-banda-ghat",
+      "designation": "historic",
+      "name": "Gurdwara Banda Ghat Sahib",
+      "country": "IN",
+      "state": "Maharashtra",
+      "district": "Nanded",
+      "city": "Nanded",
+      "description": "About 400 metres upstream from Nagina Ghat, at the former hermitage of the Bairagi Madho Das. Here, in September 1708, he met Guru Gobind Singh Ji and declared himself the Guru’s banda; he was later initiated into the Khalsa as Banda Singh — Banda Singh Bahadur.",
+      "sources": [
+        {
+          "name": "Takht Sachkhand Sri Hazur Abchalnagar Sahib — Gurudwara Banda Ghat",
+          "url": "https://hazursahib.com/web/gurudwara_banda_ghat",
+          "type": "official_website",
+          "notes": "Official website of Takht Sachkhand Sri Hazur Abchalnagar Sahib, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "sikhify:in-mh-nanded-shikar-ghat",
+      "designation": "historic",
+      "name": "Gurdwara Shikar Ghat Sahib",
+      "country": "IN",
+      "state": "Maharashtra",
+      "district": "Nanded",
+      "city": "Nanded",
+      "description": "On a low hill near the Godavari, about six kilometres from Takht Sachkhand Sri Hazur Sahib, where Guru Gobind Singh Ji came while hunting (shikar). The present white-marble complex was rebuilt through kar seva in the 1960s and early 1970s.",
+      "sources": [
+        {
+          "name": "Takht Sachkhand Sri Hazur Abchalnagar Sahib — Gurudwara Shikar Ghat",
+          "url": "https://hazursahib.com/web/gurudwara_shikar_ghat",
+          "type": "official_website",
+          "notes": "Official website of Takht Sachkhand Sri Hazur Abchalnagar Sahib, read 2026-10-07."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q16640652",
+      "designation": "historic",
+      "name": "Gurdwara Sri Paonta Sahib",
+      "country": "IN",
+      "state": "Himachal Pradesh",
+      "district": "Sirmaur",
+      "city": "Paonta Sahib",
+      "latitude": 30.435312,
+      "longitude": 77.621938,
+      "description": "On the bank of the Yamuna at Paonta Sahib, the town founded by Guru Gobind Singh Ji, who lived here for several years in the 1680s. Much of Guru Sahib’s poetry was composed here, and the Battle of Bhangani (1688) was fought nearby.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Ponta_Sahib.JPG/1280px-Ponta_Sahib.JPG",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Ponta_Sahib.JPG/500px-Ponta_Sahib.JPG",
+          "width": 1280,
+          "height": 895,
+          "alt": "Gurdwara Sri Paonta Sahib on the Yamuna",
+          "credit": "Satdeep gill",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Ponta_Sahib.JPG"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Paonta Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Paonta_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikipedia — Paonta Sahib",
+          "url": "https://en.wikipedia.org/wiki/Paonta_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q16640652)",
+          "url": "https://www.wikidata.org/wiki/Q16640652",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q113584694",
+      "designation": "historic",
+      "name": "Gurdwara Sri Manikaran Sahib",
+      "country": "IN",
+      "state": "Himachal Pradesh",
+      "district": "Kullu",
+      "city": "Manikaran",
+      "description": "In the Parvati valley at Manikaran, known for its hot springs, which are used in the Gurdwara’s Langar. Sikh tradition associates the site with a visit by Guru Nanak Dev Ji with Bhai Mardana.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Manikaran_Gurdwara%2C_a_Holy_place_for_Shikhs_at_Manikaran_01.jpg/1280px-Manikaran_Gurdwara%2C_a_Holy_place_for_Shikhs_at_Manikaran_01.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Manikaran_Gurdwara%2C_a_Holy_place_for_Shikhs_at_Manikaran_01.jpg/500px-Manikaran_Gurdwara%2C_a_Holy_place_for_Shikhs_at_Manikaran_01.jpg",
+          "width": 1280,
+          "height": 720,
+          "alt": "Gurdwara Sri Manikaran Sahib in the Parvati valley",
+          "credit": "Pinakpani",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Manikaran_Gurdwara,_a_Holy_place_for_Shikhs_at_Manikaran_01.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Manikaran",
+          "url": "https://en.wikipedia.org/wiki/Manikaran",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q113584694)",
+          "url": "https://www.wikidata.org/wiki/Q113584694",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q6957398",
+      "designation": "historic",
+      "name": "Gurdwara Sri Nada Sahib",
+      "country": "IN",
+      "state": "Haryana",
+      "district": "Panchkula",
+      "city": "Panchkula",
+      "latitude": 30.694167,
+      "longitude": 76.880833,
+      "description": "On the bank of the Ghaggar in the Shivalik foothills of Panchkula, where Guru Gobind Singh Ji halted on his way from Paonta Sahib to Anandpur Sahib after the Battle of Bhangani in 1688.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Nada_sahib_gurudwara.JPG/1280px-Nada_sahib_gurudwara.JPG",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Nada_sahib_gurudwara.JPG/500px-Nada_sahib_gurudwara.JPG",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Nada Sahib, Panchkula",
+          "credit": "Gaganspidey",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Nada_sahib_gurudwara.JPG"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Nada Sahib",
+          "url": "https://en.wikipedia.org/wiki/Nada_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q6957398)",
+          "url": "https://www.wikidata.org/wiki/Q6957398",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q96187462",
+      "designation": "historic",
+      "name": "Gurdwara Sri Panjokhra Sahib",
+      "country": "IN",
+      "state": "Haryana",
+      "district": "Ambala",
+      "city": "Ambala Cantonment",
+      "latitude": 30.4084,
+      "longitude": 76.8476,
+      "description": "Near Ambala, associated with Guru Har Krishan Sahib, the eighth Guru, who halted here on his journey to Delhi in 1664.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Gurudwara_Panjokhra_Sahib%2C_Haryana.jpg/1280px-Gurudwara_Panjokhra_Sahib%2C_Haryana.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Gurudwara_Panjokhra_Sahib%2C_Haryana.jpg/500px-Gurudwara_Panjokhra_Sahib%2C_Haryana.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Panjokhra Sahib, Haryana",
+          "credit": "Manojkhurana",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Panjokhra_Sahib,_Haryana.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikidata (Q96187462)",
+          "url": "https://www.wikidata.org/wiki/Q96187462",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q8671219",
+      "designation": "historic",
+      "name": "Gurdwara Sri Hemkunt Sahib",
+      "also_known_as": "Hemkund Sahib",
+      "country": "IN",
+      "state": "Uttarakhand",
+      "district": "Chamoli",
+      "city": "Hemkund",
+      "latitude": 30.69929,
+      "longitude": 79.61525,
+      "description": "Beside a glacial lake ringed by seven peaks in the Garhwal Himalaya, at about 4,600 metres. It is devoted to Guru Gobind Singh Ji and is described in the Dasam Granth. Pilgrims trek up from Govindghat on the Rishikesh–Badrinath road; the route is open only in the summer months.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Hemkunt-003.jpg/1280px-Hemkunt-003.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Hemkunt-003.jpg/500px-Hemkunt-003.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Sri Hemkunt Sahib beside the glacial lake",
+          "credit": "Satbir 4",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Hemkunt-003.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Hemkund Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Hemkund_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q8671219)",
+          "url": "https://www.wikidata.org/wiki/Q8671219",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619969",
+      "designation": "historic",
+      "name": "Gurdwara Sri Nanakmatta Sahib",
+      "country": "IN",
+      "state": "Uttarakhand",
+      "district": "Udham Singh Nagar",
+      "city": "Nanakmatta",
+      "latitude": 28.947937,
+      "longitude": 79.810688,
+      "description": "On the Deoha stream in the Terai. Sikh tradition holds that the place, once called Gorakhmata after the Siddh yogis, was renamed Nanakmatta after Guru Nanak Dev Ji visited and held discourse with them. A sacred peepal tree stands in the complex.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Gurdwara_Sri_Nanakmatta_Sahib.jpg/1280px-Gurdwara_Sri_Nanakmatta_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Gurdwara_Sri_Nanakmatta_Sahib.jpg/500px-Gurdwara_Sri_Nanakmatta_Sahib.jpg",
+          "width": 1280,
+          "height": 1280,
+          "alt": "Gurdwara Sri Nanakmatta Sahib and the sacred peepal tree",
+          "credit": "Salujapushpit",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Sri_Nanakmatta_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Nanakmatta",
+          "url": "https://en.wikipedia.org/wiki/Nanakmatta",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619969)",
+          "url": "https://www.wikidata.org/wiki/Q5619969",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5620454",
+      "designation": "historic",
+      "name": "Gurdwara Guru Ka Tal",
+      "country": "IN",
+      "state": "Uttar Pradesh",
+      "district": "Agra",
+      "city": "Agra",
+      "latitude": 27.211669,
+      "longitude": 77.967496,
+      "description": "Near Sikandra in Agra, built over the place where Guru Tegh Bahadur Ji offered himself for arrest to the emperor Aurangzeb’s officials in 1675, before his martyrdom in Delhi.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Gurudwara_Guru_ka_Taal_Agra.jpg/1280px-Gurudwara_Guru_ka_Taal_Agra.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/Gurudwara_Guru_ka_Taal_Agra.jpg/500px-Gurudwara_Guru_ka_Taal_Agra.jpg",
+          "width": 1280,
+          "height": 1707,
+          "alt": "Gurdwara Guru Ka Tal, Agra",
+          "credit": "Aabha Chandna",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Guru_ka_Taal_Agra.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Guru Ka Tal",
+          "url": "https://en.wikipedia.org/wiki/Guru_Ka_Tal",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5620454)",
+          "url": "https://www.wikidata.org/wiki/Q5620454",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q19891658",
+      "designation": "historic",
+      "name": "Gurdwara Sri Nanak Jhira Sahib",
+      "country": "IN",
+      "state": "Karnataka",
+      "district": "Bidar",
+      "city": "Bidar",
+      "latitude": 17.927437,
+      "longitude": 77.507812,
+      "established_year": 1948,
+      "description": "In Bidar, at the spring (jhira) that Sikh tradition says appeared at Guru Nanak Dev Ji’s touch when the town was short of water. The present Gurdwara was built in 1948. Bidar is also the home town of Bhai Sahib Singh, one of the Panj Pyare.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Gurdwara_Nanak_Jhira_Sahib.jpg/1280px-Gurdwara_Nanak_Jhira_Sahib.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Gurdwara_Nanak_Jhira_Sahib.jpg/500px-Gurdwara_Nanak_Jhira_Sahib.jpg",
+          "width": 1280,
+          "height": 851,
+          "alt": "Gurdwara Sri Nanak Jhira Sahib, Bidar",
+          "credit": "Santosh3397",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Nanak_Jhira_Sahib.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Guru Nanak Jhira Sahib",
+          "url": "https://en.wikipedia.org/wiki/Guru_Nanak_Jhira_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q19891658)",
+          "url": "https://www.wikidata.org/wiki/Q19891658",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q66104568",
+      "designation": "historic",
+      "name": "Gurdwara Sri Data Bandi Chhor Sahib",
+      "country": "IN",
+      "state": "Madhya Pradesh",
+      "district": "Gwalior",
+      "city": "Gwalior",
+      "address": "Gwalior Fort",
+      "latitude": 26.220312,
+      "longitude": 78.167312,
+      "description": "Within Gwalior Fort, where Guru Hargobind Sahib was held by the emperor Jahangir. On his release Guru Sahib secured the freedom of 52 imprisoned rajas — remembered as Bandi Chhor Divas, “the day of release of the prisoners”.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Gurudwara_Shri_Data_Bandi_Chhor_Shahib_Gwalior_001_%283%29.jpg/1280px-Gurudwara_Shri_Data_Bandi_Chhor_Shahib_Gwalior_001_%283%29.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Gurudwara_Shri_Data_Bandi_Chhor_Shahib_Gwalior_001_%283%29.jpg/500px-Gurudwara_Shri_Data_Bandi_Chhor_Shahib_Gwalior_001_%283%29.jpg",
+          "width": 1280,
+          "height": 1920,
+          "alt": "Gurdwara Sri Data Bandi Chhor Sahib, Gwalior Fort",
+          "credit": "Suyash Dwivedi",
+          "license": "CC BY-SA 4.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Gurudwara_Shri_Data_Bandi_Chhor_Shahib_Gwalior_001_(3).jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Bandi Chhor Divas",
+          "url": "https://en.wikipedia.org/wiki/Bandi_Chhor_Divas",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q66104568)",
+          "url": "https://www.wikidata.org/wiki/Q66104568",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q27074014",
+      "designation": "historic",
+      "name": "Gurdwara Lakhpat Sahib",
+      "official_name": "Gurdwara Pehli Patshahi, Lakhpat",
+      "also_known_as": "Lakhpat Gurdwara Sahib",
+      "country": "IN",
+      "state": "Gujarat",
+      "district": "Kutch",
+      "city": "Lakhpat",
+      "latitude": 23.826183,
+      "longitude": 68.778087,
+      "description": "In the old port town of Lakhpat in Kutch, where Guru Nanak Dev Ji is believed to have stayed during his Udasis. It holds relics including wooden footwear and a palki associated with Guru Sahib, and is a State Protected Monument of Gujarat.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Lakhpat_Gurdwara_2014-01-27_13-07.jpg/1280px-Lakhpat_Gurdwara_2014-01-27_13-07.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Lakhpat_Gurdwara_2014-01-27_13-07.jpg/500px-Lakhpat_Gurdwara_2014-01-27_13-07.jpg",
+          "width": 1280,
+          "height": 960,
+          "alt": "Gurdwara Lakhpat Sahib, Kutch",
+          "credit": "User:Nizil Shah",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Lakhpat_Gurdwara_2014-01-27_13-07.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Lakhpat Gurdwara Sahib",
+          "url": "https://en.wikipedia.org/wiki/Lakhpat_Gurdwara_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q27074014)",
+          "url": "https://www.wikidata.org/wiki/Q27074014",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q68463871",
+      "designation": "historic",
+      "name": "Gurdwara Sri Mattan Sahib",
+      "country": "IN",
+      "state": "Jammu and Kashmir",
+      "district": "Anantnag",
+      "city": "Mattan",
+      "latitude": 33.762023,
+      "longitude": 75.211234,
+      "description": "At Mattan (Martand) in Kashmir, in memory of Guru Nanak Dev Ji’s visit during his third Udasi and his discourse with Pandit Brahm Das. A handwritten manuscript of Sri Guru Granth Sahib is kept here.",
+      "images": [
+        {
+          "url": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Photograph_of_Gurdwara_Mattan_Sahib%2C_taken_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1934.jpg",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Photograph_of_Gurdwara_Mattan_Sahib%2C_taken_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1934.jpg/500px-Photograph_of_Gurdwara_Mattan_Sahib%2C_taken_by_Dhanna_Singh_Chahal_%27Patialvi%27%2C_1934.jpg",
+          "width": 1280,
+          "height": 774,
+          "alt": "Historical photograph of Gurdwara Sri Mattan Sahib, Kashmir, 1934",
+          "credit": "Dhanna Singh Chahal 'Patialvi'",
+          "license": "Public domain",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Photograph_of_Gurdwara_Mattan_Sahib,_taken_by_Dhanna_Singh_Chahal_%27Patialvi%27,_1934.jpg"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikidata (Q68463871)",
+          "url": "https://www.wikidata.org/wiki/Q68463871",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    },
+    {
+      "external_ref": "wikidata:Q5619983",
+      "designation": "historic",
+      "name": "Gurdwara Sri Guru Tegh Bahadur Sahib, Dhubri",
+      "also_known_as": "Dumdume Gurdwara",
+      "country": "IN",
+      "state": "Assam",
+      "district": "Dhubri",
+      "city": "Dhubri",
+      "latitude": 26.017912,
+      "longitude": 89.99434,
+      "description": "On the bank of the Brahmaputra at Dhubri. Guru Nanak Dev Ji visited the place in the early sixteenth century, and Guru Tegh Bahadur Ji later came here and established the Gurdwara in the seventeenth century.",
+      "images": [
+        {
+          "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Dhubri_Gurdwara1.JPG/1280px-Dhubri_Gurdwara1.JPG",
+          "thumb_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/32/Dhubri_Gurdwara1.JPG/500px-Dhubri_Gurdwara1.JPG",
+          "width": 1280,
+          "height": 960,
+          "alt": "Main building of Gurdwara Sri Guru Tegh Bahadur Sahib, Dhubri",
+          "credit": "Wahabdr",
+          "license": "CC BY-SA 3.0",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Dhubri_Gurdwara1.JPG"
+        }
+      ],
+      "sources": [
+        {
+          "name": "Wikipedia — Gurdwara Sri Guru Tegh Bahadur Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Sri_Guru_Tegh_Bahadur_Sahib",
+          "type": "open_data",
+          "notes": "English Wikipedia article, read 2026-10-07."
+        },
+        {
+          "name": "Wikidata (Q5619983)",
+          "url": "https://www.wikidata.org/wiki/Q5619983",
+          "type": "open_data",
+          "notes": "Coordinates and identifiers, retrieved 2026-10-07 (CC0)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "type": "website",
+  "retrieved": "2026-10-07",
+  "note": "Each URL was opened on the retrieval date, or (where the site blocks automated requests) matched against Wikidata's official-website property.",
+  "records": [
+    {
+      "title": "SikhiToTheMax",
+      "url": "https://www.sikhitothemax.org/", "category": "Gurbani",
+      "summary": "Online Gurbani searcher for Sri Guru Granth Sahib, Sri Dasam Granth Sahib, the Vaaran of Bhai Gurdas and Bhai Nand Lal, and more.",
+      "source": "Official website",
+      "references": [{ "label": "SikhiToTheMax", "url": "https://www.sikhitothemax.org/" }]
+    },
+    {
+      "title": "BaniDB",
+      "url": "https://www.banidb.com/", "category": "Gurbani",
+      "summary": "The Gurbani database and API behind SikhiToTheMax and other Gurbani apps.",
+      "source": "Official website",
+      "references": [{ "label": "BaniDB", "url": "https://www.banidb.com/" }]
+    },
+    {
+      "title": "SearchGurbani.com",
+      "url": "https://www.searchgurbani.com/", "category": "Gurbani",
+      "summary": "Search and read Sri Guru Granth Sahib, Amrit Keertan, Dasam Granth, the Vaaran of Bhai Gurdas and more, with translations and transliterations.",
+      "source": "Official website",
+      "references": [{ "label": "SearchGurbani.com", "url": "https://www.searchgurbani.com/" }]
+    },
+    {
+      "title": "Sri Guru Granth Sahib Darpan",
+      "url": "https://www.gurugranthdarpan.net/", "category": "Gurbani", "language": "Punjabi, Hindi",
+      "summary": "Professor Sahib Singh's commentary on Sri Guru Granth Sahib, in Punjabi and Hindi.",
+      "source": "Official website",
+      "references": [{ "label": "gurugranthdarpan.net", "url": "https://www.gurugranthdarpan.net/" }]
+    },
+    {
+      "title": "SikhNet",
+      "url": "https://www.sikhnet.com/", "category": "Community",
+      "summary": "A Sikh-centric website run as a US not-for-profit for the online \"cyber sangat\".",
+      "source": "Official website; Wikipedia",
+      "references": [{ "label": "SikhNet", "url": "https://www.sikhnet.com/" }, { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/SikhNet" }]
+    },
+    {
+      "title": "SikhiWiki",
+      "url": "https://www.sikhiwiki.org/", "category": "Learning",
+      "summary": "A Sikh-centric online encyclopedia.",
+      "source": "Wikipedia; Wikidata (Q108492465)",
+      "references": [{ "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/SikhiWiki" }, { "label": "Wikidata — Q108492465", "url": "https://www.wikidata.org/wiki/Q108492465" }]
+    },
+    {
+      "title": "Panjab Digital Library",
+      "url": "https://www.panjabdigilib.org/", "category": "History", "country": "India",
+      "summary": "A voluntary organisation digitising and preserving the cultural heritage of Panjab since 2003 — the largest collection of digital material on Panjab.",
+      "source": "Wikipedia; Wikidata (Q7131226)",
+      "references": [{ "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Panjab_Digital_Library" }, { "label": "Wikidata — Q7131226", "url": "https://www.wikidata.org/wiki/Q7131226" }]
+    }
+  ]
+}

@@ -46,6 +46,16 @@ export const SERVICES = [
 export const FACILITY_KEYS = FACILITIES.map((f) => f.key);
 export const SERVICE_KEYS = SERVICES.map((s) => s.key);
 
+/**
+ * Significance of a Gurdwara, set only from a cited source: the five Takhts, and
+ * Gurdwaras connected with the Gurus or major events of Sikh history. Most records have none.
+ */
+export const DESIGNATIONS = {
+  takht: { label: 'Panj Takht', short: 'Takht' },
+  historic: { label: 'Historic Gurdwara', short: 'Historic' },
+};
+export const DESIGNATION_KEYS = Object.keys(DESIGNATIONS);
+
 export const SOURCE_TYPES = {
   official_website: 'Official Gurdwara website',
   sikh_institution: 'Official Sikh institution',
@@ -168,6 +178,8 @@ export function validateGurdwara(input, { requireLocation = true } = {}) {
   } else { data.latitude = null; data.longitude = null; }
 
   const list = (v, allowed) => [...new Set((Array.isArray(v) ? v : String(v || '').split(/[,;|]/)).map((x) => String(x).trim()).filter((x) => allowed.includes(x)))];
+  const designation = String(input.designation ?? '').trim();
+  data.designation = DESIGNATION_KEYS.includes(designation) ? designation : '';
   data.facilities = list(input.facilities, FACILITY_KEYS);
   data.services = list(input.services, SERVICE_KEYS);
   return { data, errors };

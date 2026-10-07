@@ -3,33 +3,30 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "scripts": {
     "dev": "node scripts/dev.js",
-    "dev:web": "vite",
-    "dev:api": "node --watch server/index.js",
-    "build": "vite build",
+    "dev:frontend": "npm run dev -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "dev:web": "npm run dev -w frontend",
+    "dev:api": "npm run dev -w backend",
+    "build": "npm run build -w frontend",
+    "build:frontend": "npm run build -w frontend",
     "preview": "node scripts/dev.js --preview",
-    "start": "node server/index.js",
-    "test": "node --test \"tests/*.test.js\"",
-    "admin:create": "node server/scripts/create-admin.js",
-    "gurdwaras:fetch-wikidata": "node server/scripts/fetch-wikidata-gurdwaras.js",
-    "gurdwaras:import": "node server/scripts/import-gurdwaras.js",
-    "gurdwaras:dev-fixtures": "node server/scripts/seed-dev-gurdwaras.js"
-  },
-  "dependencies": {
-    "gsap": "^3.15.0",
-    "leaflet": "^1.9.4",
-    "react": "latest",
-    "react-dom": "latest",
-    "react-router-dom": "latest",
-    "vite": "latest",
-    "libsql": "^0.5.17"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "latest",
-    "autoprefixer": "latest",
-    "postcss": "latest",
-    "tailwindcss": "^3.4.17"
+    "start": "npm start -w backend",
+    "test": "npm run test:shared && npm run test:frontend && npm run test:backend",
+    "test:shared": "node --test \"tests/*.test.js\"",
+    "test:frontend": "npm test -w frontend",
+    "test:backend": "npm test -w backend",
+    "admin:create": "node backend/scripts/create-admin.js",
+    "gurdwaras:fetch-wikidata": "node backend/scripts/fetch-wikidata-gurdwaras.js",
+    "gurdwaras:import": "node backend/scripts/import-gurdwaras.js",
+    "gurdwaras:import-historic": "node backend/scripts/import-gurdwaras.js backend/seed/gurdwaras/india-historic-gurdwaras.json",
+    "gurdwaras:dev-fixtures": "node backend/scripts/seed-dev-gurdwaras.js",
+    "directory:import": "node backend/scripts/import-directory.js"
   },
   "engines": {
     "node": ">=22.13"

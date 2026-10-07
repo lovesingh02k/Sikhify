@@ -1,0 +1,43 @@
+{
+  "type": "book",
+  "retrieved": "2026-10-07",
+  "note": "Bibliographic details from English Wikipedia. Publisher and ISBN are left empty unless a source states them; links point only to legitimate sources, never to copies of copyrighted books.",
+  "records": [
+    {
+      "title": "Mahan Kosh (Guru Shabad Ratnakar Mahan Kosh)",
+      "kind": "Book", "authors": "Bhai Kahn Singh Nabha", "year": "1930", "subject": "Sikh Studies", "language": "Punjabi",
+      "summary": "The first Punjabi encyclopedia and perhaps the most comprehensive dictionary-encyclopedia on Sikhism, with around 65,000 entries, compiled over fourteen years.",
+      "source": "Wikipedia",
+      "references": [{ "label": "Wikipedia — Mahan Kosh", "url": "https://en.wikipedia.org/wiki/Mahan_Kosh" }]
+    },
+    {
+      "title": "The Encyclopaedia of Sikhism",
+      "kind": "Book", "authors": "Harbans Singh (chief editor)", "publisher": "Punjabi University, Patiala", "year": "1992–1998", "subject": "Sikh Studies", "language": "English",
+      "url": "https://eos.learnpunjabi.org/",
+      "summary": "A four-volume encyclopedia of around 3,500–4,000 entries, with an official online edition published by Punjabi University.",
+      "source": "Wikipedia; official online edition",
+      "references": [{ "label": "Wikipedia — The Encyclopaedia of Sikhism", "url": "https://en.wikipedia.org/wiki/The_Encyclopaedia_of_Sikhism" }, { "label": "Official online edition", "url": "https://eos.learnpunjabi.org/" }]
+    },
+    {
+      "title": "The Sikh Religion: Its Gurus, Sacred Writings and Authors",
+      "kind": "Book", "authors": "Max Arthur Macauliffe", "publisher": "Clarendon Press", "year": "1909", "subject": "Gurbani", "language": "English",
+      "summary": "Macauliffe's magnum opus: a partial English translation of the Guru Granth Sahib together with Sikh history.",
+      "source": "Wikipedia",
+      "references": [{ "label": "Wikipedia — Max Arthur Macauliffe", "url": "https://en.wikipedia.org/wiki/Max_Arthur_Macauliffe" }]
+    },
+    {
+      "title": "A History of the Sikhs",
+      "kind": "Book", "authors": "Khushwant Singh", "year": "1963", "subject": "History", "language": "English",
+      "summary": "Khushwant Singh's history of the Sikhs.",
+      "source": "Wikipedia",
+      "references": [{ "label": "Wikipedia — Khushwant Singh (bibliography)", "url": "https://en.wikipedia.org/wiki/Khushwant_Singh" }]
+    },
+    {
+      "title": "Varan Bhai Gurdas",
+      "kind": "Book", "authors": "Bhai Gurdas", "subject": "Sikh Studies", "language": "Punjabi",
+      "summary": "Also known as Varan Gyan Ratnavali: forty vars traditionally attributed to Bhai Gurdas, popularly regarded as the key to the Sikh scriptures.",
+      "source": "Wikipedia",
+      "references": [{ "label": "Wikipedia — Varan Bhai Gurdas", "url": "https://en.wikipedia.org/wiki/Varan_Bhai_Gurdas" }]
+    }
+  ]
+}

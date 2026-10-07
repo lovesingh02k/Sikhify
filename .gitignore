@@ -1,8 +1,13 @@
 node_modules/
 dist/
 .env
+.env.*
+!.env.example
 .DS_Store
-# Runtime data: the database and uploaded images (back these up; never commit them)
+# Backend runtime data: the database and uploaded images (back these up; never commit them)
+backend/data/
+backend/uploads/
+# Pre-reorganization locations (kept ignored in case an old checkout leaves them behind)
 server/data/
 server/uploads/
 

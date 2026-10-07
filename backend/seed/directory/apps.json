@@ -1,0 +1,32 @@
+{
+  "type": "app",
+  "retrieved": "2026-10-07",
+  "note": "Store links were opened on the retrieval date and the listing's publisher checked. Only listings published by the app's known maker are included.",
+  "records": [
+    {
+      "title": "Sundar Gutka",
+      "platform": "iOS", "category": "Nitnem",
+      "store_url": "https://apps.apple.com/us/app/sundar-gutka/id431446112",
+      "summary": "The daily and extended Sikh prayers (Nitnem), published by Khalis, the makers of SikhiToTheMax.",
+      "source": "App Store listing",
+      "references": [{ "label": "App Store — Sundar Gutka (Khalis, Inc.)", "url": "https://apps.apple.com/us/app/sundar-gutka/id431446112" }]
+    },
+    {
+      "title": "iGurbani",
+      "platform": "Android & iOS", "category": "Gurbani",
+      "store_url": "https://play.google.com/store/apps/details?id=com.akaldesign.igurbani",
+      "website": "https://www.igurbani.com/",
+      "summary": "A Gurbani search engine for Sri Guru Granth Sahib, Sri Dasam Granth Sahib, Bhai Gurdas Ji Vaaran and Bhai Nand Lal Ji, by Akal Design.",
+      "source": "Google Play and App Store listings; official website",
+      "references": [{ "label": "Google Play — iGurbani", "url": "https://play.google.com/store/apps/details?id=com.akaldesign.igurbani" }, { "label": "App Store — iGurbani (Akal Design Technologies Inc)", "url": "https://apps.apple.com/us/app/igurbani/id569235977" }, { "label": "iGurbani website", "url": "https://www.igurbani.com/" }]
+    },
+    {
+      "title": "iSearch Gurbani",
+      "platform": "iOS", "category": "Gurbani",
+      "store_url": "https://apps.apple.com/us/app/isearch-gurbani/id674467937",
+      "summary": "Gurbani search app published by the Gateway to Sikhism Foundation.",
+      "source": "App Store listing",
+      "references": [{ "label": "App Store — iSearch Gurbani (Gateway to Sikhism Foundation)", "url": "https://apps.apple.com/us/app/isearch-gurbani/id674467937" }]
+    }
+  ]
+}

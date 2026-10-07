@@ -1,0 +1,358 @@
+{
+  "type": "heritage",
+  "retrieved": "2026-10-07",
+  "note": "Locations and dates from English Wikipedia, cross-checked with Wikidata. Map links point to the Wikidata coordinates on OpenStreetMap. Gurdwaras as places of worship (address, timings, facilities) belong in the Global Gurdwara Directory; these records describe historical significance. Images are the Wikidata image (P18) of each item, hosted on Wikimedia Commons, with author and licence in image_credit; none are used where the Wikidata image does not show the subject.",
+  "records": [
+    {
+      "title": "Sri Harmandir Sahib (Golden Temple)",
+      "site_type": "Historical Gurdwara",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Amritsar",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.62&mlon=74.876667#map=17/31.62/74.876667",
+      "period": "Brick gurdwara completed 1589; Adi Granth installed 1604",
+      "summary": "The pre-eminent spiritual site of Sikhism, built around the Amrit Sarovar in Amritsar.",
+      "body": "The complex includes the Akal Takht, the offices of the Shiromani Gurdwara Parbandhak Committee, a museum and a langar that serves a free vegetarian meal to all visitors. In 1604 Guru Arjan, the fifth Sikh Guru, placed a copy of the Adi Granth in the gurdwara. The complex is on UNESCO's tentative list of World Heritage Sites.",
+      "timeline": [
+        "1589 — the brick gurdwara is complete",
+        "1604 — Guru Arjan places the Adi Granth in the gurdwara"
+      ],
+      "source": "Wikipedia; Wikidata (Q180422)",
+      "references": [
+        {
+          "label": "Wikipedia — Golden Temple",
+          "url": "https://en.wikipedia.org/wiki/Golden_Temple"
+        },
+        {
+          "label": "Wikidata — Q180422",
+          "url": "https://www.wikidata.org/wiki/Q180422"
+        },
+        {
+          "label": "SGPC — Sri Harmandir Sahib",
+          "url": "https://sgpc.net/sri-harmandir-sahib-2/"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Hamandir Sahib (Golden Temple).jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Hamandir_Sahib_(Golden_Temple).jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Hamandir_Sahib_%28Golden_Temple%29.jpg/1280px-Hamandir_Sahib_%28Golden_Temple%29.jpg",
+      "image_credit": "Oleg Yunakov, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Sri Akal Takht Sahib",
+      "site_type": "Historical Gurdwara",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Amritsar",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.62061&mlon=74.87533#map=18/31.62061/74.87533",
+      "period": "Established 1606",
+      "summary": "The most prominent of the five Takhts, established by Guru Hargobind in 1606 within the Darbar Sahib complex.",
+      "body": "Historically known as Akal Bunga, it was founded as a place to uphold justice and address temporal matters, and remains a place of decision-making for the Sikhs.",
+      "source": "Wikipedia; Wikidata (Q118893)",
+      "references": [
+        {
+          "label": "Wikipedia — Akal Takht",
+          "url": "https://en.wikipedia.org/wiki/Akal_Takht"
+        },
+        {
+          "label": "Wikidata — Q118893",
+          "url": "https://www.wikidata.org/wiki/Q118893"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Akal takhat amritsar.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Akal_takhat_amritsar.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Akal_takhat_amritsar.jpg/1280px-Akal_takhat_amritsar.jpg",
+      "image_credit": "Amarpreet.singh.in at English Wikipedia, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Takht Sri Kesgarh Sahib",
+      "site_type": "Historical Gurdwara",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Anandpur Sahib",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.235&mlon=76.498889#map=17/31.235/76.498889",
+      "period": "Khalsa Panth founded here in 1699",
+      "summary": "One of the five Takhts, where Guru Gobind Singh founded the Khalsa Panth in 1699.",
+      "body": "Originally one of the forts Guru Gobind Singh built around Anandpur Sahib for the defence of the Sikhs. It is in Rupnagar district of Punjab.",
+      "source": "Wikipedia; Wikidata (Q6395031)",
+      "references": [
+        {
+          "label": "Wikipedia — Takht Kesgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Kesgarh_Sahib"
+        },
+        {
+          "label": "Wikidata — Q6395031",
+          "url": "https://www.wikidata.org/wiki/Q6395031"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Takht Sri Keshgarh Sahib.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Takht_Sri_Keshgarh_Sahib.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Takht_Sri_Keshgarh_Sahib.jpg/1280px-Takht_Sri_Keshgarh_Sahib.jpg",
+      "image_credit": "Jasleen Kaur, CC BY-SA 2.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Takht Sri Damdama Sahib",
+      "site_type": "Historical Gurdwara",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Talwandi Sabo",
+      "map_url": "https://www.openstreetmap.org/?mlat=29.986937&mlon=75.078562#map=17/29.986937/75.078562",
+      "period": "1705",
+      "summary": "One of the five Takhts, where Guru Gobind Singh prepared the full version of the Guru Granth Sahib in 1705.",
+      "body": "Located at Talwandi Sabo near Bathinda, in Bathinda district of Punjab.",
+      "source": "Wikipedia; Wikidata (Q48375)",
+      "references": [
+        {
+          "label": "Wikipedia — Takht Sri Damdama Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Sri_Damdama_Sahib"
+        },
+        {
+          "label": "Wikidata — Q48375",
+          "url": "https://www.wikidata.org/wiki/Q48375"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Takht Sri Damdama Sahib, Talwandi Sabo.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Takht_Sri_Damdama_Sahib,_Talwandi_Sabo.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg/1280px-Takht_Sri_Damdama_Sahib%2C_Talwandi_Sabo.jpg",
+      "image_credit": "Kuldeepburjbhalaike, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Takht Sri Harimandir Ji, Patna Sahib",
+      "site_type": "Guru birthplace",
+      "country": "India",
+      "state": "Bihar",
+      "city": "Patna",
+      "map_url": "https://www.openstreetmap.org/?mlat=25.596062&mlon=85.230063#map=17/25.596062/85.230063",
+      "period": "Birthplace of Guru Gobind Singh, 22 December 1666",
+      "summary": "One of the five Takhts, at the birthplace of Guru Gobind Singh in Patna.",
+      "body": "Patna was also visited by Guru Nanak and Guru Tegh Bahadur. The building has been reconstructed at least twice: in the early 19th century after a fire and in the mid-20th century after an earthquake.",
+      "source": "Wikipedia; Wikidata (Q30924); official website",
+      "references": [
+        {
+          "label": "Wikipedia — Takht Sri Patna Sahib",
+          "url": "https://en.wikipedia.org/wiki/Takht_Sri_Patna_Sahib"
+        },
+        {
+          "label": "Wikidata — Q30924",
+          "url": "https://www.wikidata.org/wiki/Q30924"
+        },
+        {
+          "label": "Official website",
+          "url": "https://takhatpatnasahib.in/en/"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Harmandir Patna.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Harmandir_Patna.jpg"
+        }
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Harmandir_Patna.jpg",
+      "image_credit": "Neelsb (English Wikipedia), CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Takht Sachkhand Sri Hazur Abchalnagar Sahib",
+      "site_type": "Historical Gurdwara",
+      "country": "India",
+      "state": "Maharashtra",
+      "city": "Nanded",
+      "map_url": "https://www.openstreetmap.org/?mlat=19.1528&mlon=77.319#map=17/19.1528/77.319",
+      "period": "1708; present building 1832–1837",
+      "summary": "One of the five Takhts, on the banks of the Godavari at Nanded, where Guru Gobind Singh camped and was cremated in 1708.",
+      "body": "The gurdwara was built between 1832 and 1837 by Maharaja Ranjit Singh. Its inner room, the Angitha Sahib, stands over the place of the Guru's cremation.",
+      "source": "Wikipedia; Wikidata (Q3694968)",
+      "references": [
+        {
+          "label": "Wikipedia — Hazur Sahib",
+          "url": "https://en.wikipedia.org/wiki/Hazur_Sahib"
+        },
+        {
+          "label": "Wikidata — Q3694968",
+          "url": "https://www.wikidata.org/wiki/Q3694968"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Hazur Sahib.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Hazur_Sahib.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Hazur_Sahib.jpg/1280px-Hazur_Sahib.jpg",
+      "image_credit": "Subhag Singh, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Gurdwara Janam Asthan, Nankana Sahib",
+      "site_type": "Guru birthplace",
+      "country": "Pakistan",
+      "state": "Punjab",
+      "city": "Nankana Sahib",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.4475&mlon=73.697222#map=17/31.4475/73.697222",
+      "summary": "One of the holiest sites of Sikhism, at the place where Guru Nanak was born.",
+      "body": "Officially listed as a Protected Heritage Monument by the Government of Punjab, Pakistan, and managed by the Pakistan Sikh Gurdwara Parbandhak Committee.",
+      "source": "Wikipedia; Wikidata (Q3695654)",
+      "references": [
+        {
+          "label": "Wikipedia — Gurdwara Janam Asthan",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Janam_Asthan"
+        },
+        {
+          "label": "Wikidata — Q3695654",
+          "url": "https://www.wikidata.org/wiki/Q3695654"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Nankana Sahib.JPG",
+          "url": "https://commons.wikimedia.org/wiki/File:Nankana_Sahib.JPG"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Nankana_Sahib.JPG/1280px-Nankana_Sahib.JPG",
+      "image_credit": "Jeev at English Wikipedia, Public domain, via Wikimedia Commons"
+    },
+    {
+      "title": "Gurdwara Darbar Sahib Kartarpur",
+      "site_type": "Historical Gurdwara",
+      "country": "Pakistan",
+      "state": "Punjab",
+      "city": "Kartarpur",
+      "map_url": "https://www.openstreetmap.org/?mlat=32.087312&mlon=75.016813#map=17/32.087312/75.016813",
+      "period": "Guru Nanak lived here until 1539",
+      "summary": "Stands where Guru Nanak settled and assembled the Sikh community after his travels, living there for 18 years until 1539.",
+      "body": "Kartarpur is a small town beside the Ravi River in Shakargarh Tehsil, Narowal District.",
+      "source": "Wikipedia; Wikidata (Q5619951); Evacuee Trust Property Board",
+      "references": [
+        {
+          "label": "Wikipedia — Gurdwara Darbar Sahib Kartarpur",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Darbar_Sahib_Kartarpur"
+        },
+        {
+          "label": "Wikidata — Q5619951",
+          "url": "https://www.wikidata.org/wiki/Q5619951"
+        },
+        {
+          "label": "ETPB — Kartarpur Corridor",
+          "url": "https://etpb.gov.pk/kartarpur-corridor/"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Kartarpur Guru Nanak.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Kartarpur_Guru_Nanak.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Kartarpur_Guru_Nanak.jpg/1280px-Kartarpur_Guru_Nanak.jpg",
+      "image_credit": "Xubayr Mayo, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Gurdwara Sis Ganj Sahib",
+      "site_type": "Martyrdom site",
+      "country": "India",
+      "state": "Delhi",
+      "city": "Delhi",
+      "map_url": "https://www.openstreetmap.org/?mlat=28.6558&mlon=77.2325#map=18/28.6558/77.2325",
+      "period": "Martyrdom 11 November 1675; first shrine 1783",
+      "summary": "Marks the site in Chandni Chowk where Guru Tegh Bahadur, the ninth Sikh Guru, was executed on 11 November 1675.",
+      "body": "One of the nine historical gurdwaras of Delhi. A first small shrine was built here in 1783 by Baghel Singh.",
+      "source": "Wikipedia; Wikidata (Q5620491)",
+      "references": [
+        {
+          "label": "Wikipedia — Gurdwara Sis Ganj Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Sis_Ganj_Sahib"
+        },
+        {
+          "label": "Wikidata — Q5620491",
+          "url": "https://www.wikidata.org/wiki/Q5620491"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Gurdwara sis ganj.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Gurdwara_sis_ganj.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Gurdwara_sis_ganj.jpg/1280px-Gurdwara_sis_ganj.jpg",
+      "image_credit": "Supreet Sethi http://supreetsethi.net, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Gurdwara Fatehgarh Sahib",
+      "site_type": "Martyrdom site",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Fatehgarh Sahib",
+      "map_url": "https://www.openstreetmap.org/?mlat=30.617385&mlon=76.388754#map=17/30.617385/76.388754",
+      "period": "Martyrdom 9 December 1705; gurdwara built 1843",
+      "summary": "Commemorates the martyrdom of Sahibzada Zorawar Singh and Sahibzada Fateh Singh, the younger sons of Guru Gobind Singh, in 1705.",
+      "body": "The young Sahibzade and their grandmother Mata Gujri were seized by the Mughal army; when the boys refused to convert, they were bricked up alive on the orders of Wazir Khan, governor of Sirhind. The site is named Fatehgarh after the youngest, Fateh Singh.",
+      "source": "Wikipedia; Wikidata (Q5619960)",
+      "references": [
+        {
+          "label": "Wikipedia — Gurdwara Fatehgarh Sahib",
+          "url": "https://en.wikipedia.org/wiki/Gurdwara_Fatehgarh_Sahib"
+        },
+        {
+          "label": "Wikidata — Q5619960",
+          "url": "https://www.wikidata.org/wiki/Q5619960"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Gurdwara Fatehgarh Sahib.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Gurdwara_Fatehgarh_Sahib.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Gurdwara_Fatehgarh_Sahib.jpg/1280px-Gurdwara_Fatehgarh_Sahib.jpg",
+      "image_credit": "Kuldeepburjbhalaike, CC BY-SA 4.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Virasat-e-Khalsa",
+      "site_type": "Museum",
+      "country": "India",
+      "state": "Punjab",
+      "city": "Anandpur Sahib",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.2329&mlon=76.5075#map=17/31.2329/76.5075",
+      "period": "Opened 2011",
+      "summary": "The Khalsa Heritage Complex: a museum of Sikh history close to Takht Sri Kesgarh Sahib.",
+      "body": "It celebrates 500 years of Sikh history and the 300th anniversary of the birth of the Khalsa, and is the most visited Sikh museum.",
+      "source": "Wikipedia; Wikidata (Q7933650)",
+      "references": [
+        {
+          "label": "Wikipedia — Virasat-e-Khalsa",
+          "url": "https://en.wikipedia.org/wiki/Virasat-e-Khalsa"
+        },
+        {
+          "label": "Wikidata — Q7933650",
+          "url": "https://www.wikidata.org/wiki/Q7933650"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Khalsa Heritage Memorial 176 Edit.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Khalsa_Heritage_Memorial_176_Edit.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Khalsa_Heritage_Memorial_176_Edit.jpg/1280px-Khalsa_Heritage_Memorial_176_Edit.jpg",
+      "image_credit": "Sanyambahga, CC BY-SA 3.0, via Wikimedia Commons"
+    },
+    {
+      "title": "Samadhi of Maharaja Ranjit Singh",
+      "site_type": "Monument",
+      "country": "Pakistan",
+      "state": "Punjab",
+      "city": "Lahore",
+      "map_url": "https://www.openstreetmap.org/?mlat=31.5893&mlon=74.3113#map=18/31.5893/74.3113",
+      "period": "Begun 1839, completed about nine years later",
+      "summary": "A 19th-century building in Lahore's Walled City that houses the funerary urn of Maharaja Ranjit Singh.",
+      "body": "Construction was started by his son Kharak Singh after the Maharaja's death in 1839. It stands beside the Lahore Fort, the Badshahi Mosque and Gurdwara Dera Sahib, and was the last major state-funded building of independent Punjab before annexation in 1849.",
+      "source": "Wikipedia; Wikidata (Q3383698)",
+      "references": [
+        {
+          "label": "Wikipedia — Samadhi of Ranjit Singh",
+          "url": "https://en.wikipedia.org/wiki/Samadhi_of_Ranjit_Singh"
+        },
+        {
+          "label": "Wikidata — Q3383698",
+          "url": "https://www.wikidata.org/wiki/Q3383698"
+        },
+        {
+          "label": "Image — Wikimedia Commons: Samadhi of Ranjit Singh 1.jpg",
+          "url": "https://commons.wikimedia.org/wiki/File:Samadhi_of_Ranjit_Singh_1.jpg"
+        }
+      ],
+      "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9a/Samadhi_of_Ranjit_Singh_1.jpg/1280px-Samadhi_of_Ranjit_Singh_1.jpg",
+      "image_credit": "Muhammad Haider Sajjad, CC BY-SA 4.0, via Wikimedia Commons"
+    }
+  ]
+}

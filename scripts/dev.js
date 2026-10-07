@@ -1,20 +1,25 @@
 /* ==========================================================================
-   Runs the API server and Vite together (no extra dependency needed).
-     npm run dev       → API (watch mode) + Vite dev server
-     npm run preview   → API + `vite preview` of the production build
+   Runs the backend API and the frontend Vite server together (no extra
+   dependency needed).
+     npm run dev       → backend (watch mode) + Vite dev server
+     npm run preview   → backend + `vite preview` of the production build
    Ctrl+C stops both.
    ========================================================================== */
 import { spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const frontend = path.join(root, 'frontend');
+const backend = path.join(root, 'backend');
 const preview = process.argv.includes('--preview');
-const vite = path.join(root, 'node_modules', 'vite', 'bin', 'vite.js');
+// Resolved from frontend/ so it works whether npm hoisted Vite to the root or not.
+const vite = path.join(path.dirname(createRequire(path.join(frontend, 'package.json')).resolve('vite/package.json')), 'bin', 'vite.js');
 
 const procs = [
-  spawn(process.execPath, ['--watch', 'server/index.js'], { cwd: root, stdio: 'inherit' }),
-  spawn(process.execPath, [vite, ...(preview ? ['preview'] : [])], { cwd: root, stdio: 'inherit' }),
+  spawn(process.execPath, ['--watch', 'src/index.js'], { cwd: backend, stdio: 'inherit' }),
+  spawn(process.execPath, [vite, ...(preview ? ['preview'] : [])], { cwd: frontend, stdio: 'inherit' }),
 ];
 
 let stopping = false;
