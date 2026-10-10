@@ -18,7 +18,7 @@ export default function register(router, deps) {
       ...(a.location ? { location: a.location } : {}),
       description: a.description, keywords: parseJson(a.keywords, []),
       style: a.style, officialLinks: parseJson(a.official_links, []), references: parseJson(a.references_json, []),
-      videos: videos.map((v) => ({ id: v.id, title: v.title, channel: v.channel, ...(v.description ? { description: v.description } : {}), ...(admin ? { status: v.status, sort: v.sort } : {}) })),
+      videos: videos.map((v) => ({ id: v.id, title: v.title, channel: v.channel, ...(v.description ? { description: v.description } : {}), ...(v.duration_seconds ? { durationSeconds: v.duration_seconds } : {}), ...(admin ? { status: v.status, sort: v.sort } : {}) })),
       ...(admin ? { status: a.status, updatedAt: a.updated_at } : {}),
     };
   }

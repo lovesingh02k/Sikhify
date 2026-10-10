@@ -4,7 +4,7 @@
    status, facilities, services, sort and page live in the query string.
    All searching, filtering, sorting and paging happen on the server.
    ========================================================================== */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Icon from '../../components/ui/Icon.jsx';
 import Dialog from '../../components/ui/Dialog.jsx';
@@ -21,6 +21,22 @@ import { useGeolocation } from '../../hooks/useGeolocation.js';
 import { gurdwaraService, openInMapsUrl } from '../../services/gurdwaras/gurdwaraService.js';
 import { DEFAULT_STATUS_FILTER, PAGE_SIZES, STATUSES } from '../../../../shared/gurdwaras.js';
 import { plural } from '../../utils/format.js';
+import { prefersReducedMotion } from '../../motion/gsap.js';
+
+/**
+ * Brings the results heading into view below the sticky header — only when it is off screen.
+ * Called after React has applied the new layout (see the pending-scroll effect), never before:
+ * a search from the directory's front page removes the Panj Takht / featured sections above the
+ * results, and a scroll aimed at the old position would land past the end of the shorter page.
+ */
+function revealResults(el) {
+  if (!el) return;
+  const header = document.querySelector('.site-header');
+  const offset = (header ? header.getBoundingClientRect().height : 0) + 12;
+  const top = el.getBoundingClientRect().top;
+  if (top >= offset && top < window.innerHeight * 0.6) return; // already comfortably in view
+  window.scrollTo({ top: Math.max(0, window.scrollY + top - offset), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
 
 const list = (v) => (v ? v.split(',').filter(Boolean) : []);
 const pathFor = ({ country, state, city }) => ['/directory/gurdwaras', country, country && state, country && state && city].filter(Boolean).join('/');
@@ -97,6 +113,8 @@ export default function GurdwaraSearch() {
   const [mapOpen, setMapOpen] = useState(false);
   const [qError, setQError] = useState('');
   const resultsRef = useRef(null);
+  // Set by a search / near-me / page change; consumed once the new layout is in place.
+  const pendingScroll = useRef(false);
   useEffect(() => { setQInput(filters.q); }, [filters.q]);
   useEffect(() => { setHeroCountry(country); }, [country]);
 
@@ -143,19 +161,27 @@ export default function GurdwaraSearch() {
       next.delete('page');
       navigate(pathFor({ country: heroCountry }) + (next.toString() ? '?' + next : ''));
     } else setQuery({ q });
-    resultsRef.current && resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Close the on-screen keyboard first (it resizes the viewport on phones), then scroll after re-render.
+    if (document.activeElement && document.activeElement.blur && window.matchMedia('(max-width: 1023px)').matches) document.activeElement.blur();
+    pendingScroll.current = true;
   }
   async function nearMe() {
     const coords = await geo.request();
     if (coords) {
       setQuery({ sort: 'distance' });
-      resultsRef.current && resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      pendingScroll.current = true;
     }
   }
   // Sorting by "Closest" without a location falls back to name (and the option is hidden).
   useEffect(() => { if (!geo.coords && params.get('sort') === 'distance') setQuery({ sort: '' }, { keepPage: true }); }, [geo.coords]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const data = results.data;
+  // Runs after the DOM reflects the new search (front-page sections removed, results area in place).
+  useLayoutEffect(() => {
+    if (!pendingScroll.current) return;
+    pendingScroll.current = false;
+    revealResults(resultsRef.current);
+  }, [queryKey, isFrontKey(country, filters, statusParam, geo.coords)]); // eslint-disable-line react-hooks/exhaustive-deps
   const items = data ? data.items : [];
   const points = items.filter((g) => g.latitude !== null).map((g) => ({
     id: g.id, lat: g.latitude, lng: g.longitude, title: g.name, subtitle: g.city.name, status: (STATUSES[g.status] || {}).label, href: g.url,
@@ -304,7 +330,7 @@ export default function GurdwaraSearch() {
                   <div className={`flex flex-col gap-4${results.loading ? ' sk-gloading' : ''}`}>
                     {items.map((g) => <GurdwaraCard key={g.id} g={g} selected={g.id === selectedId} onFocusCard={setSelectedId} />)}
                   </div>
-                  <Pagination page={data.page} pages={data.pages} onPage={(pg) => { setQuery({ page: pg > 1 ? pg : '' }, { keepPage: true }); resultsRef.current && resultsRef.current.scrollIntoView({ block: 'start' }); }} />
+                  <Pagination page={data.page} pages={data.pages} onPage={(pg) => { pendingScroll.current = true; setQuery({ page: pg > 1 ? pg : '' }, { keepPage: true }); }} />
                 </>
               ) : (
                 <div className="sk-gempty">
@@ -317,7 +343,7 @@ export default function GurdwaraSearch() {
                       ) : null}
                       {data.alsoMatching.otherStatuses ? <p>{plural(data.alsoMatching.otherStatuses, 'verified listing')} {data.alsoMatching.otherStatuses === 1 ? 'is' : 'are'} temporarily or permanently closed.</p> : null}
                       <div className="sk-suggest">
-                        {data.alsoMatching.needsVerification ? <button type="button" className="sk-btn sk-btn-sm" onClick={() => onChange({ status: [...new Set([...filters.status, 'needs_verification'])] })}>Show listings awaiting verification</button> : null}
+                        {data.alsoMatching.needsVerification ? <button type="button" className="sk-btn sk-btn-sm" onClick={() => onChange({ status: filters.status.filter((x) => x !== 'verified') })}>Show listings awaiting verification</button> : null}
                         {data.alsoMatching.otherStatuses ? <button type="button" className="sk-btn sk-btn-sm" onClick={() => onChange({ status: [...new Set([...filters.status, 'temporarily_closed', 'permanently_closed'])] })}>Show closed Gurdwaras</button> : null}
                       </div>
                     </>
@@ -329,8 +355,8 @@ export default function GurdwaraSearch() {
                     </>
                   ) : (
                     <>
-                      <p className="sk-empty-title">No verified Gurdwaras found {placeName ? `in ${placeName} yet` : 'in this location yet'}.</p>
-                      <p>Listings appear here once they have been checked against a reliable source.</p>
+                      <p className="sk-empty-title">No Gurdwaras listed {placeName ? `in ${placeName} yet` : 'in this location yet'}.</p>
+                      <p>Know one? Suggest it and the Sikhify team will check it against a reliable source.</p>
                     </>
                   )}
                   <div className="sk-suggest"><Link className="sk-btn sk-btn-gold sk-btn-sm" to="/directory/gurdwaras/suggest">Suggest a Gurdwara</Link></div>
@@ -356,6 +382,11 @@ export default function GurdwaraSearch() {
       </Dialog>
     </main>
   );
+}
+
+/** A key that changes when the directory switches between its front page and a results view. */
+function isFrontKey(country, filters, statusParam, coords) {
+  return !country && !filters.q && !filters.facilities.length && !filters.services.length && statusParam === null && !coords && filters.page === 1 ? 'front' : 'results';
 }
 
 /** All countries that have listings (from the database), for the hero's country selector. */

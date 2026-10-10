@@ -8,7 +8,7 @@ import { useReactPage } from '../../hooks/useReactPage.js';
 import { notificationService } from '../../services/community/index.js';
 import { relativeTime, toast } from '../../utils/format.js';
 
-const ICON = { reaction: 'heart', comment: 'message', reply: 'message', group_join_request: 'users', group_join_approved: 'users', group_role: 'shield', moderation: 'shield', report_resolved: 'flag', submission_reviewed: 'upload', system: 'bell' };
+const ICON = { reaction: 'heart', comment: 'message', reply: 'message', group_join_request: 'users', group_join_approved: 'users', group_role: 'shield', moderation: 'shield', report_resolved: 'flag', submission_reviewed: 'upload', submission_received: 'inbox', system: 'bell' };
 
 const announce = (unread) => document.dispatchEvent(new CustomEvent('sikhify:notifications', { detail: { unread } }));
 

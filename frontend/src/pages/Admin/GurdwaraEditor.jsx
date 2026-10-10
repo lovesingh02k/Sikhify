@@ -28,11 +28,12 @@ const describe = (changes) => Object.entries(changes || {}).map(([k, v]) => {
 function Sources({ g, onChange }) {
   const [src, setSrc] = useState({ name: '', url: '', type: 'official_website', notes: '' });
   const [st, setSt] = useState({ busy: false, error: null, fields: {} });
+  const [adding, setAdding] = useState(false);
   const add = (e) => {
     e.preventDefault();
     setSt({ busy: true, error: null, fields: {} });
     gurdwaraService.admin.addSource(g.id, src)
-      .then((next) => { onChange(next); setSrc({ name: '', url: '', type: 'official_website', notes: '' }); setSt({ busy: false, error: null, fields: {} }); toast('Source added'); })
+      .then((next) => { onChange(next); setSrc({ name: '', url: '', type: 'official_website', notes: '' }); setSt({ busy: false, error: null, fields: {} }); setAdding(false); toast('Source added'); })
       .catch((err) => setSt({ busy: false, error: err, fields: err.fields || {} }));
   };
   const remove = (id) => gurdwaraService.admin.removeSource(id).then(onChange).catch((err) => setSt({ busy: false, error: err, fields: {} }));
@@ -53,11 +54,16 @@ function Sources({ g, onChange }) {
           ))}
         </ul>
       ) : <p className="sk-card-text mt-2">No sources yet.</p>}
-      <form className="sk-form mt-4" onSubmit={add} noValidate>
-        <FormError error={st.error} />
-        <SourceFields value={src} onChange={setSrc} errors={st.fields} />
-        <div><button type="submit" className="sk-btn sk-btn-sm" disabled={st.busy || !src.name}>Add source</button></div>
-      </form>
+      {adding ? (
+        <form className="sk-form sk-side-form mt-4" onSubmit={add} noValidate>
+          <FormError error={st.error} />
+          <SourceFields value={src} onChange={setSrc} errors={st.fields} />
+          <div className="flex flex-wrap gap-2">
+            <button type="submit" className="sk-btn sk-btn-sm sk-btn-gold" disabled={st.busy || !src.name}>Add source</button>
+            <button type="button" className="sk-btn sk-btn-sm" onClick={() => { setAdding(false); setSt({ busy: false, error: null, fields: {} }); }}>Cancel</button>
+          </div>
+        </form>
+      ) : <button type="button" className="sk-btn sk-btn-sm mt-3" onClick={() => setAdding(true)}><Icon name="plus" size={14} />Add a source</button>}
     </section>
   );
 }
@@ -107,14 +113,20 @@ function Photos({ g, onChange }) {
           <Icon name="image" size={14} />{file ? file.name : 'Choose photo…'}
           <input type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={(e) => setFile(e.target.files[0] || null)} />
         </label>
+        {file ? (<>
+        <p className="sk-card-meta" style={{ marginTop: 0 }}>A few details about this photo:</p>
         <div className="sk-form-grid">
-          <TextInput className="sk-span-2" label="Alt text" required value={meta.alt} onChange={(e) => setMeta({ ...meta, alt: e.target.value })} error={st.fields.alt} help="What the photo shows, e.g. “White main building of the Gurdwara with the Nishan Sahib”." />
-          <TextInput label="Credit" required value={meta.credit} onChange={(e) => setMeta({ ...meta, credit: e.target.value })} error={st.fields.credit} />
-          <TextInput label="Licence / permission" required value={meta.license} onChange={(e) => setMeta({ ...meta, license: e.target.value })} error={st.fields.license} />
+          <TextInput className="sk-span-2" label="What the photo shows" required value={meta.alt} onChange={(e) => setMeta({ ...meta, alt: e.target.value })} error={st.fields.alt} help="What the photo shows, e.g. “White main building of the Gurdwara with the Nishan Sahib”." />
+          <TextInput label="Photo by" required placeholder="e.g. your name, or the committee" value={meta.credit} onChange={(e) => setMeta({ ...meta, credit: e.target.value })} error={st.fields.credit} />
+          <TextInput label="Permission" required placeholder="e.g. Own photo · Used with the committee's permission" value={meta.license} onChange={(e) => setMeta({ ...meta, license: e.target.value })} error={st.fields.license} />
           <TextInput className="sk-span-2" label="Source link" type="url" value={meta.sourceUrl} onChange={(e) => setMeta({ ...meta, sourceUrl: e.target.value })} error={st.fields.sourceUrl} />
         </div>
         <Checkbox label="Use as the main photo" checked={meta.isPrimary} onChange={(v) => setMeta({ ...meta, isPrimary: v })} />
-        <div><button type="submit" className="sk-btn sk-btn-sm" disabled={!file || st.busy}>{st.busy ? 'Uploading…' : 'Upload photo'}</button></div>
+        <div className="flex flex-wrap gap-2">
+          <button type="submit" className="sk-btn sk-btn-sm sk-btn-gold" disabled={!file || st.busy}>{st.busy ? 'Uploading…' : 'Upload photo'}</button>
+          <button type="button" className="sk-btn sk-btn-sm" disabled={st.busy} onClick={() => { setFile(null); setSt({ busy: false, error: null, fields: {} }); }}>Cancel</button>
+        </div>
+        </>) : null}
       </form>
     </section>
   );
@@ -140,6 +152,36 @@ function Verification({ g, onChange }) {
       {g.verificationLog && g.verificationLog.length ? (
         <ul className="sk-glog mt-3">{g.verificationLog.map((v, i) => <li key={i}><strong>{v.action}</strong> — {v.actor || 'system'}, {formatDateTime(v.at)}{v.note ? `: ${v.note}` : ''}</li>)}</ul>
       ) : null}
+    </section>
+  );
+}
+
+/** Reject after review: unpublishes the record and keeps the reason in its verification log ("Restore" undoes it). */
+function Reject({ g, onChange }) {
+  const [open, setOpen] = useState(false);
+  const [note, setNote] = useState('');
+  const [st, setSt] = useState({ busy: false, error: null, fields: {} });
+  const run = () => {
+    setSt({ busy: true, error: null, fields: {} });
+    gurdwaraService.admin.reject(g.id, note)
+      .then((next) => { onChange(next); setOpen(false); toast('Rejected — removed from the public directory'); })
+      .catch((err) => setSt({ busy: false, error: err, fields: err.fields || {} }));
+  };
+  return (
+    <section className="sk-card" aria-labelledby="rej-h">
+      <h3 className="sk-card-title" id="rej-h">Reject</h3>
+      <p className="sk-card-meta">For a record that turned out to be wrong — it doesn&apos;t exist, isn&apos;t a Gurdwara, or can&apos;t be located. It is removed from the public directory and your reason is kept.</p>
+      {open ? (
+        <div className="sk-form mt-3">
+          <FormError error={st.error} />
+          <TextArea label="Why is it rejected?" required rows={2} maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} error={st.fields.note} />
+          <div className="sk-admin-actions">
+            <button type="button" className="sk-btn sk-btn-sm" onClick={() => setOpen(false)}>Cancel</button>
+            <span className="sk-admin-actions-gap" />
+            <button type="button" className="sk-btn sk-btn-danger sk-btn-sm" disabled={st.busy} onClick={run}>{st.busy ? 'Rejecting…' : 'Reject this record'}</button>
+          </div>
+        </div>
+      ) : <button type="button" className="sk-btn sk-btn-sm mt-3" onClick={() => setOpen(true)}>Reject…</button>}
     </section>
   );
 }
@@ -214,18 +256,25 @@ export default function GurdwaraEditor() {
             <Verification g={g} onChange={apply} />
             <Sources g={g} onChange={apply} />
             <Photos g={g} onChange={apply} />
-            <section className="sk-card" aria-labelledby="arc-h">
-              <h3 className="sk-card-title" id="arc-h">{g.archivedAt ? 'Archived' : 'Archive'}</h3>
-              <p className="sk-card-meta">{g.archivedAt ? 'Hidden from the directory. Restore it to make it visible again.' : 'Hides the record everywhere (e.g. a duplicate or an entry added in error). Use “Permanently Closed” for a Gurdwara that has closed.'}</p>
-              {g.archivedAt ? <button type="button" className="sk-btn sk-btn-sm mt-3" onClick={() => archive(false)}>Restore</button>
-                : <button type="button" className="sk-btn sk-btn-danger sk-btn-sm mt-3" onClick={() => setConfirmArchive(true)}>Archive</button>}
-            </section>
-            <section className="sk-card" aria-labelledby="hist-h">
-              <h3 className="sk-card-title" id="hist-h">History</h3>
-              {g.history && g.history.length ? (
-                <ul className="sk-glog mt-2">{g.history.map((h, i) => <li key={i}><strong>{h.action}</strong> — {h.actor || 'system'}, {formatDateTime(h.at)}{Object.keys(h.changes || {}).length ? <span className="block sk-card-meta">{describe(h.changes)}</span> : null}</li>)}</ul>
-              ) : <p className="sk-card-meta">No changes recorded.</p>}
-            </section>
+            {/* Rarely needed: folded away so the page stays simple. */}
+            <details className="sk-card sk-more-actions">
+              <summary><Icon name="settings" size={16} /><span className="flex-1">More actions</span><span className="sk-card-meta" style={{ marginTop: 0 }}>{g.archivedAt ? 'restore, history' : 'reject, archive, history'}</span></summary>
+              <div className="sk-stack mt-3">
+                {!g.archivedAt ? <Reject g={g} onChange={apply} /> : null}
+                <section className="sk-card" aria-labelledby="arc-h">
+                  <h3 className="sk-card-title" id="arc-h">{g.archivedAt ? 'Archived' : 'Archive'}</h3>
+                  <p className="sk-card-meta">{g.archivedAt ? 'Hidden from the directory. Restore it to make it visible again.' : 'Hides the record everywhere (e.g. a duplicate or an entry added in error). Use “Permanently Closed” for a Gurdwara that has closed.'}</p>
+                  {g.archivedAt ? <button type="button" className="sk-btn sk-btn-sm mt-3" onClick={() => archive(false)}>Restore</button>
+                    : <button type="button" className="sk-btn sk-btn-danger sk-btn-sm mt-3" onClick={() => setConfirmArchive(true)}>Archive</button>}
+                </section>
+                <section className="sk-card" aria-labelledby="hist-h">
+                  <h3 className="sk-card-title" id="hist-h">History</h3>
+                  {g.history && g.history.length ? (
+                    <ul className="sk-glog mt-2">{g.history.map((h, i) => <li key={i}><strong>{h.action}</strong> — {h.actor || 'system'}, {formatDateTime(h.at)}{Object.keys(h.changes || {}).length ? <span className="block sk-card-meta">{describe(h.changes)}</span> : null}</li>)}</ul>
+                  ) : <p className="sk-card-meta">No changes recorded.</p>}
+                </section>
+              </div>
+            </details>
           </div>
         ) : null}
       </div>

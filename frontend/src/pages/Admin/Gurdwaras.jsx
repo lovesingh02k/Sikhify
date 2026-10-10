@@ -26,70 +26,135 @@ const SUB_LABEL = { pending: 'Pending', changes_requested: 'Changes requested', 
 const SUB_PILL = { pending: 'pending', changes_requested: 'needs_review', approved: 'approved', rejected: 'rejected' };
 
 /* ------------------------------------------------------------------ records */
-/** Verify the selected records at once — only after checking each against its sources. */
-function BulkVerify({ ids, onDone, onClear }) {
+/**
+ * Review & verify: the evidence for each selected record is checked first (read-only), using the same rules
+ * as the bulk audit script — Wikidata item, name, location, and a Wikipedia article or responding official
+ * website. Only records that meet the rules are pre-ticked; the reviewer can untick any, must say what they
+ * checked and confirm. Nothing is verified without this preview.
+ */
+function ReviewVerify({ ids, onDone, onClose }) {
+  const preview = useAsync(() => gurdwaraService.admin.evidencePreview(ids), [ids.join(',')]);
+  const [chosen, setChosen] = useState(null);
   const [note, setNote] = useState('');
+  const [sure, setSure] = useState(false);
   const [st, setSt] = useState({ busy: false, error: null, fields: {} });
-  if (!ids.length) return null;
+  const items = preview.data || [];
+  const picked = chosen || items.filter((x) => x.meets).map((x) => x.id);
+  const toggle = (id) => setChosen(picked.includes(id) ? picked.filter((x) => x !== id) : [...picked, id]);
   const run = () => {
+    if (!sure) { setSt({ busy: false, error: null, fields: { sure: 'Confirm that you checked the evidence' } }); return; }
     setSt({ busy: true, error: null, fields: {} });
-    gurdwaraService.admin.verifyBulk(ids, note)
+    gurdwaraService.admin.verifyBulk(picked, note)
       .then((res) => {
         toast(`${res.verified} verified${res.skipped.length ? `, ${res.skipped.length} skipped (${[...new Set(res.skipped.map((x) => x.reason))].join(', ')})` : ''}`);
-        setNote(''); setSt({ busy: false, error: null, fields: {} }); onDone();
+        onDone();
       })
       .catch((err) => setSt({ busy: false, error: err, fields: err.fields || {} }));
   };
   return (
-    <div className="sk-card sk-form mt-3" role="region" aria-label="Verify selected records">
-      <p className="sk-card-title" style={{ fontSize: '0.95rem' }}>{ids.length} selected</p>
-      <p className="sk-card-meta" style={{ marginTop: 0 }}>Verify only records you have checked against their sources. Each record keeps your note in its verification log.</p>
+    <div className="sk-form">
+      <p className="sk-card-meta" style={{ marginTop: 0 }}>Checking the evidence for {ids.length} record{ids.length === 1 ? '' : 's'}. Records that meet every rule are ticked; the rest stay “needs verification”.</p>
+      <AsyncView state={preview} loading={<p className="sk-card-meta">Checking sources (Wikidata, Wikipedia, websites)…</p>} errorTitle="The evidence couldn’t be checked">
+        {() => (
+          <ul className="sk-evidence-list">
+            {items.map((x) => (
+              <li key={x.id} className={x.meets ? 'is-ok' : ''}>
+                <label className="sk-gcheck">
+                  <input type="checkbox" checked={picked.includes(x.id)} disabled={x.verification === 'verified'} onChange={() => toggle(x.id)} />
+                  <span className="font-semibold">{x.name}</span>
+                </label>
+                {x.meets ? <p className="sk-evidence-ok">Meets the rules{x.evidence.distanceKm !== undefined ? ` · location matches (${x.evidence.distanceKm} km)` : ''}</p>
+                  : <p className="sk-evidence-why">{x.reasons.join(' · ')}</p>}
+                <p className="sk-card-meta" style={{ marginTop: 2 }}>
+                  {[['Wikidata', x.evidence.wikidata], ['Wikipedia', x.evidence.wikipedia], ['Website', x.evidence.websiteDead ? '' : x.evidence.website], ['OpenStreetMap', x.evidence.osm]].filter(([, u]) => u)
+                    .map(([label, u]) => <a key={label} className="panel-view-all" href={u} target="_blank" rel="noopener noreferrer" style={{ marginRight: '0.75rem' }}>{label} ↗</a>)}
+                  {x.manual ? x.sources.filter((src) => src.url).map((src) => <a key={src.url} className="panel-view-all" href={src.url} target="_blank" rel="noopener noreferrer" style={{ marginRight: '0.75rem' }}>{src.name} ↗</a>) : null}
+                  <a className="panel-view-all" href={x.url} target="_blank" rel="noopener noreferrer">Listing ↗</a>
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </AsyncView>
       <FormError error={st.error} />
       <TextInput label="What did you check?" required value={note} onChange={(e) => setNote(e.target.value)} error={st.fields.note} maxLength={1000}
-        placeholder="e.g. Names and locations confirmed against the linked Wikidata / Wikipedia sources" />
-      <div className="flex flex-wrap gap-2">
-        <button type="button" className="sk-btn sk-btn-gold sk-btn-sm" disabled={st.busy} onClick={run}>{st.busy ? 'Verifying…' : `Verify ${ids.length} selected`}</button>
-        <button type="button" className="sk-btn sk-btn-sm" onClick={onClear}>Clear selection</button>
+        help="Kept in each record’s verification log." placeholder="e.g. Checked the Wikidata item and Wikipedia article for each record" />
+      <Checkbox label={`I checked the evidence for the ${picked.length} ticked record${picked.length === 1 ? '' : 's'}`} checked={sure} onChange={setSure} />
+      {st.fields.sure ? <p className="sk-form-error" role="alert">{st.fields.sure}</p> : null}
+      <div className="sk-admin-actions">
+        <button type="button" className="sk-btn" onClick={onClose}>Cancel</button>
+        <span className="sk-admin-actions-gap" />
+        <button type="button" className="sk-btn sk-btn-gold" disabled={st.busy || !picked.length || preview.loading} onClick={run}>{st.busy ? 'Verifying…' : `Verify ${picked.length} record${picked.length === 1 ? '' : 's'}`}</button>
       </div>
     </div>
   );
 }
 
+const MISSING_LABEL = { coordinates: 'No coordinates', address: 'No address', contact: 'No phone or website', source: 'No cited source', photo: 'No photo' };
+const ORIGIN_LABEL = { wikidata: 'Wikidata import', osm: 'OpenStreetMap import', manual: 'Added by people' };
+
 function Records({ onChanged }) {
-  const [f, setF] = useState({ q: '', status: '', verification: '', archived: '', page: 1 });
+  const initial = new URLSearchParams(window.location.search);
+  const [f, setF] = useState(() => ({ q: '', status: '', verification: ['verified', 'needs_verification'].includes(initial.get('verification')) ? initial.get('verification') : '', archived: '', state: initial.get('state') || '', district: '', origin: '', missing: '', page: 1 }));
   const [q, setQ] = useState('');
+  const [district, setDistrict] = useState('');
   const [selected, setSelected] = useState([]);
+  const [reviewing, setReviewing] = useState(false);
   const state = useAsync(() => gurdwaraService.admin.list(f), [JSON.stringify(f)]);
+  const india = useAsync(() => gurdwaraService.locations('india'), []);
   const toggle = (id) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
+  const set = (patch) => setF({ ...f, ...patch, page: 1 });
   return (
     <>
       <FilterBar>
-        <form className="flex flex-wrap items-end gap-3" onSubmit={(e) => { e.preventDefault(); setF({ ...f, q, page: 1 }); }}>
+        <form className="flex flex-wrap items-end gap-3" onSubmit={(e) => { e.preventDefault(); set({ q, district }); }}>
           <TextInput label="Search" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name, city, postal code, phone…" />
-          <Select label="Status" value={f.status} placeholder="Any status" options={Object.entries(STATUSES).map(([k, s]) => ({ value: k, label: s.label }))} onChange={(e) => setF({ ...f, status: e.target.value, page: 1 })} />
-          <Select label="Verification" value={f.verification} placeholder="Any" options={[{ value: 'verified', label: 'Verified' }, { value: 'needs_verification', label: 'Needs verification' }]} onChange={(e) => setF({ ...f, verification: e.target.value, page: 1 })} />
-          <Select label="Show" value={f.archived} options={[{ value: '', label: 'Current records' }, { value: '1', label: 'Archived' }]} onChange={(e) => setF({ ...f, archived: e.target.value, page: 1 })} />
+          <Select label="Verification" value={f.verification} placeholder="Any" options={[{ value: 'verified', label: 'Verified' }, { value: 'needs_verification', label: 'Needs verification' }]} onChange={(e) => set({ verification: e.target.value })} />
+          <Select label="Indian state" value={f.state} placeholder="Any state" options={((india.data && india.data.states) || []).map((x) => ({ value: x.slug, label: `${x.name} (${x.total})` }))} onChange={(e) => set({ state: e.target.value, country: e.target.value ? 'india' : '' })} />
+          <TextInput label="District or city" value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="e.g. Bilaspur" />
+          <Select label="Came from" value={f.origin} placeholder="Anywhere" options={Object.entries(ORIGIN_LABEL).map(([value, label]) => ({ value, label }))} onChange={(e) => set({ origin: e.target.value })} />
+          <Select label="Missing" value={f.missing} placeholder="Anything" options={Object.entries(MISSING_LABEL).map(([value, label]) => ({ value, label }))} onChange={(e) => set({ missing: e.target.value })} />
+          <Select label="Status" value={f.status} placeholder="Any status" options={Object.entries(STATUSES).map(([k, x]) => ({ value: k, label: x.label }))} onChange={(e) => set({ status: e.target.value })} />
+          <Select label="Show" value={f.archived} options={[{ value: '', label: 'Published (listed)' }, { value: '1', label: 'Archived (unpublished)' }]} onChange={(e) => set({ archived: e.target.value })} />
           <button type="submit" className="sk-btn sk-btn-sm">Search</button>
         </form>
       </FilterBar>
       <AsyncView state={state}>
-        {(d) => (d.items.length ? (
+        {(d) => (d.items.length ? (() => {
+          // Only records still awaiting verification can be ticked (the bulk action is "Review & verify").
+          const selectable = d.items.filter((g) => g.verification !== 'verified' && !g.archived).map((g) => g.id);
+          const allTicked = selectable.length > 0 && selectable.every((id) => selected.includes(id));
+          return (
           <>
-            <p className="sk-card-meta">{d.total.toLocaleString('en-IN')} records</p>
-            <BulkVerify ids={selected} onClear={() => setSelected([])} onDone={() => { setSelected([]); state.reload(); onChanged(); }} />
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="sk-card-meta" style={{ marginTop: 0 }}>{d.total.toLocaleString('en-IN')} records</p>
+              {selected.length ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="sk-card-meta" style={{ marginTop: 0 }}>{selected.length} selected</span>
+                  <button type="button" className="sk-btn sk-btn-sm" onClick={() => setSelected([])}>Clear</button>
+                  <button type="button" className="sk-btn sk-btn-gold sk-btn-sm" disabled={selected.length > 50} onClick={() => setReviewing(true)}>Review &amp; verify…</button>
+                </div>
+              ) : selectable.length
+                ? <p className="sk-card-meta" style={{ marginTop: 0 }}>Tick records awaiting verification to review their evidence (up to 50 at a time).</p>
+                : <p className="sk-card-meta" style={{ marginTop: 0 }}>Every record on this page is already verified — there is nothing to select.</p>}
+            </div>
             <div className="sk-table-wrap mt-2">
               <table className="sk-table">
-                <thead><tr><th scope="col"><input type="checkbox" aria-label="Select all unverified records on this page" className="sk-gcheck-box"
-                  checked={d.items.some((g) => g.verification !== 'verified' && !g.archived) && d.items.filter((g) => g.verification !== 'verified' && !g.archived).every((g) => selected.includes(g.id))}
-                  onChange={(e) => { const ids = d.items.filter((g) => g.verification !== 'verified' && !g.archived).map((g) => g.id); setSelected((s) => (e.target.checked ? [...new Set([...s, ...ids])] : s.filter((x) => !ids.includes(x)))); }} /></th><th scope="col">Gurdwara</th><th scope="col">Place</th><th scope="col">Status</th><th scope="col">Sources</th><th scope="col">Updated</th><th scope="col"><span className="sr-only">Actions</span></th></tr></thead>
+                <thead><tr><th scope="col">{selectable.length ? (
+                  <input type="checkbox" className="sk-gcheck-box" checked={allTicked}
+                    aria-label={allTicked ? 'Untick all unverified records on this page' : `Select all ${selectable.length} unverified records on this page`}
+                    title={allTicked ? 'Untick all' : `Select all ${selectable.length} unverified records`}
+                    onChange={(e) => setSelected((x) => (e.target.checked ? [...new Set([...x, ...selectable])] : x.filter((y) => !selectable.includes(y))))} />
+                ) : <span className="sr-only">Select</span>}</th><th scope="col">Gurdwara</th><th scope="col">Place</th><th scope="col">Status</th><th scope="col">Sources</th><th scope="col">Updated</th><th scope="col"><span className="sr-only">Actions</span></th></tr></thead>
                 <tbody>
                   {d.items.map((g) => (
                     <tr key={g.id}>
                       <td>{g.verification !== 'verified' && !g.archived ? <input type="checkbox" className="sk-gcheck-box" aria-label={`Select ${g.name}`} checked={selected.includes(g.id)} onChange={() => toggle(g.id)} /> : null}</td>
-                      <td><Link className="font-semibold" to={`/admin/gurdwaras/${g.id}`}>{g.name}</Link>{!g.hasCoordinates ? <span className="sk-card-meta block">No coordinates</span> : null}</td>
-                      <td>{[g.city, g.state, g.country].join(', ')}</td>
+                      <td><Link className="font-semibold" to={`/admin/gurdwaras/${g.id}`}>{g.name}</Link>
+                        <span className="sk-warn-row">{!g.hasCoordinates ? <span className="sk-warn-chip">No coordinates</span> : null}{!g.hasAddress ? <span className="sk-warn-chip">No address</span> : null}{!g.sourceCount ? <span className="sk-warn-chip">No source</span> : null}</span></td>
+                      <td>{[g.city, g.district && g.district !== g.city ? g.district : '', g.state, g.country].filter(Boolean).join(', ')}</td>
                       <td><StatusBadge status={g.status} verification={g.verification} />{g.archived ? <span className="sk-card-meta block">Archived</span> : null}</td>
-                      <td>{g.sourceCount}</td>
+                      <td>{g.sourceCount}<span className="sk-card-meta block">{ORIGIN_LABEL[g.origin]}</span></td>
                       <td>{relativeTime(g.updatedAt)}</td>
                       <td className="whitespace-nowrap">
                         <Link className="sk-btn sk-btn-sm" to={`/admin/gurdwaras/${g.id}`}>Edit</Link>{' '}
@@ -102,13 +167,17 @@ function Records({ onChanged }) {
             </div>
             <Pagination page={d.page} pages={d.pages} onPage={(page) => setF({ ...f, page })} />
           </>
-        ) : (
-          <Empty icon="pin" title={f.q || f.status || f.verification || f.archived ? 'No records match' : 'No Gurdwaras in the directory yet'}
-            text={f.q || f.status || f.verification || f.archived ? 'Try different filters.' : 'Add the first record, import a CSV/JSON file from a reliable source, or review community suggestions.'}>
+          );
+        })() : (
+          <Empty icon="pin" title={f.q || f.status || f.verification || f.archived || f.state || f.district || f.origin || f.missing ? 'No records match' : 'No Gurdwaras in the directory yet'}
+            text={f.q || f.status || f.verification || f.archived || f.state || f.district || f.origin || f.missing ? 'Try different filters.' : 'Add the first record, import a CSV/JSON file from a reliable source, or review community suggestions.'}>
             <Link className="sk-btn sk-btn-gold sk-btn-sm" to="/admin/gurdwaras/new">Add a Gurdwara</Link>
           </Empty>
         ))}
       </AsyncView>
+      <Dialog open={reviewing} onClose={() => setReviewing(false)} title="Review & verify" wide>
+        {reviewing ? <ReviewVerify ids={selected} onClose={() => setReviewing(false)} onDone={() => { setReviewing(false); setSelected([]); state.reload(); onChanged(); }} /> : null}
+      </Dialog>
     </>
   );
 }
@@ -142,7 +211,7 @@ function Review({ s, countries, onDone }) {
 
   return (
     <div className="sk-form">
-      <p><strong>{isNew ? 'New Gurdwara' : 'Update'}</strong> from {s.submitter ? <Link to={`/community/profile/${s.submitter.username}`}>{s.submitter.name}</Link> : 'a former member'}, {relativeTime(s.createdAt)}.
+      <p><strong>{isNew ? 'New Gurdwara' : 'Update'}</strong> from <SubmitterLabel s={s} />, {relativeTime(s.createdAt)}{s.reference ? <> · reference <code>{s.reference}</code></> : null}.
         {!isNew && s.targetUrl ? <> About <Link className="panel-view-all" to={s.targetUrl} target="_blank">{s.name} ↗</Link> · <Link className="panel-view-all" to={`/admin/gurdwaras/${s.gurdwaraId}`} target="_blank">open in editor ↗</Link></> : null}</p>
       <div className="sk-note">
         <div>
@@ -166,7 +235,7 @@ function Review({ s, countries, onDone }) {
         <legend className="sk-form-label" style={{ padding: '0 0.4rem' }}>Source you checked</legend>
         <SourceFields value={source} onChange={setSource} errors={st.fields} />
         <div className="mt-3"><Checkbox label="Verified — I confirmed these details with the source above" checked={verify} onChange={setVerify}
-          help="Leave unticked to add the listing as “needs verification” (not shown publicly by default)." /></div>
+          help="Leave unticked to add the listing as “needs verification” (it is listed publicly with that label)." /></div>
       </fieldset>
       <TextArea label="Note to the submitter" rows={2} maxLength={1000} value={note} onChange={(e) => setNote(e.target.value)} error={st.fields.note} help="Required when rejecting or requesting changes. The submitter sees this note." />
       <div className="flex flex-wrap justify-end gap-2">
@@ -178,16 +247,37 @@ function Review({ s, countries, onDone }) {
   );
 }
 
-function Submissions({ countries, onChanged }) {
-  const [f, setF] = useState({ status: 'pending', page: 1 });
+/** Who sent a suggestion. Guests' optional contact details are shown to reviewers for follow-up only. */
+export function SubmitterLabel({ s }) {
+  if (s.submitter) return <Link to={`/community/profile/${s.submitter.username}`}>{s.submitter.name}</Link>;
+  if (s.guest) {
+    return (
+      <span><span className="sk-pill sk-pill-guest">Guest</span> {s.guestName || 'visitor without an account'}
+        {s.guestEmail ? <> · <a className="panel-view-all" href={`mailto:${s.guestEmail}`}>{s.guestEmail}</a></> : null}</span>
+    );
+  }
+  return <span>a former member</span>;
+}
+
+/** The "Suggest a Gurdwara" review queue (also shown in Admin → Submissions). */
+export function GurdwaraSubmissionsQueue({ countries, onChanged = () => {} }) {
+  const [f, setF] = useState({ status: 'pending', from: '', q: '', page: 1 });
+  const [q, setQ] = useState('');
   const state = useAsync(() => gurdwaraService.admin.submissions(f), [JSON.stringify(f)]);
   const [open, setOpen] = useState(null);
   return (
     <>
-      <div className="sk-chip-row" role="group" aria-label="Status">
-        {['pending', 'changes_requested', 'approved', 'rejected', ''].map((s) => (
-          <button key={s || 'all'} type="button" className="sk-chip" aria-pressed={f.status === s} onClick={() => setF({ status: s, page: 1 })}>{s ? SUB_LABEL[s] : 'All'}</button>
-        ))}
+      <div className="sk-filters">
+        <div className="sk-chip-row" role="group" aria-label="Status">
+          {['pending', 'changes_requested', 'approved', 'rejected', ''].map((s) => (
+            <button key={s || 'all'} type="button" className="sk-chip" aria-pressed={f.status === s} onClick={() => setF({ ...f, status: s, page: 1 })}>{s ? SUB_LABEL[s] : 'All'}</button>
+          ))}
+        </div>
+        <Select label="From" value={f.from} placeholder="Everyone" options={[{ value: 'member', label: 'Members' }, { value: 'guest', label: 'Guests (no account)' }]} onChange={(e) => setF({ ...f, from: e.target.value, page: 1 })} />
+        <form className="flex items-end gap-2" role="search" onSubmit={(e) => { e.preventDefault(); setF({ ...f, q: q.trim(), page: 1 }); }}>
+          <TextInput label="Search" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Name, place, reference…" />
+          <button type="submit" className="sk-btn sk-btn-sm">Search</button>
+        </form>
       </div>
       <AsyncView state={state}>
         {(d) => (d.items.length ? (
@@ -200,8 +290,8 @@ function Submissions({ countries, onChanged }) {
                     <tr key={s.id}>
                       <td><span className="sk-clip font-semibold">{s.name}</span><span className="sk-card-meta block">{s.kind === 'update' ? 'Update' : 'New'}{s.possibleDuplicates && s.possibleDuplicates.length ? ' · possible duplicate' : ''}</span></td>
                       <td>{[s.city, s.state, s.country].filter(Boolean).join(', ') || '—'}</td>
-                      <td>{s.submitter ? s.submitter.name : '—'}</td>
-                      <td>{relativeTime(s.createdAt)}</td>
+                      <td>{s.submitter ? s.submitter.name : s.guest ? <><span className="sk-pill sk-pill-guest">Guest</span>{s.guestName ? <span className="sk-card-meta block">{s.guestName}</span> : null}</> : 'Former member'}</td>
+                      <td>{relativeTime(s.createdAt)}{s.reference ? <span className="sk-card-meta block"><code>{s.reference}</code></span> : null}</td>
                       <td><span className={`sk-pill sk-pill-${SUB_PILL[s.status]}`}>{SUB_LABEL[s.status]}</span>{s.reviewer ? <span className="sk-card-meta block">by {s.reviewer}</span> : null}</td>
                       <td>
                         {s.status === 'pending' ? <button type="button" className="sk-btn sk-btn-sm sk-btn-gold" onClick={() => setOpen(s)}>Review</button>
@@ -214,7 +304,7 @@ function Submissions({ countries, onChanged }) {
             </div>
             <Pagination page={d.page} pages={d.pages} onPage={(page) => setF({ ...f, page })} />
           </>
-        ) : <Empty icon="inbox" title={f.status === 'pending' ? 'No suggestions waiting' : 'No suggestions'} text="Community suggestions from the “Suggest a Gurdwara” form appear here." />)}
+        ) : <Empty icon="inbox" title={f.q ? 'No suggestions match your search' : f.status === 'pending' ? 'No suggestions waiting' : 'No suggestions'} text="Suggestions from the “Suggest a Gurdwara” form — from members and from visitors without an account — appear here." />)}
       </AsyncView>
       <Dialog open={!!open} onClose={() => setOpen(null)} title={open ? `Review: ${open.name}` : ''} wide>
         {open ? <Review s={open} countries={countries} onDone={() => { setOpen(null); state.reload(); onChanged(); }} /> : null}
@@ -226,7 +316,17 @@ function Submissions({ countries, onChanged }) {
 /* ------------------------------------------------------------------ duplicates */
 function Duplicates() {
   const state = useAsync(() => gurdwaraService.admin.duplicatePairs(), []);
+  const [merging, setMerging] = useState(null); // { keep, dup }
+  const [note, setNote] = useState('');
+  const [st, setSt] = useState({ busy: false, error: null });
+  const merge = () => {
+    setSt({ busy: true, error: null });
+    gurdwaraService.admin.merge(merging.dup.id, merging.keep.id, note)
+      .then((r) => { toast(`Merged — moved ${r.moved.sources} source(s), ${r.moved.images} photo(s); the duplicate is archived`); setMerging(null); setNote(''); setSt({ busy: false, error: null }); state.reload(); })
+      .catch((err) => setSt({ busy: false, error: err }));
+  };
   return (
+    <>
     <AsyncView state={state}>
       {(items) => (items.length ? (
         <ul className="flex flex-col gap-3">
@@ -242,12 +342,31 @@ function Duplicates() {
                   </div>
                 ))}
               </div>
-              <p className="sk-card-meta">If they are the same Gurdwara, move anything missing into one record and archive the other.</p>
+              <p className="sk-card-meta">If they are the same Gurdwara, keep one: the other&apos;s sources, photos and facilities move into it and it is archived (nothing is deleted).</p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                <button type="button" className="sk-btn sk-btn-sm" onClick={() => setMerging({ keep: p.a, dup: p.b })}>Keep “{p.a.name}”, merge the other</button>
+                <button type="button" className="sk-btn sk-btn-sm" onClick={() => setMerging({ keep: p.b, dup: p.a })}>Keep “{p.b.name}”, merge the other</button>
+              </div>
             </li>
           ))}
         </ul>
       ) : <Empty icon="check" title="No possible duplicates" text="Records with the same name in the same city, the same phone number or the same website appear here." />)}
     </AsyncView>
+    <Dialog open={!!merging} onClose={() => setMerging(null)} title="Merge duplicate records?">
+      {merging ? (
+        <div className="sk-form">
+          <p>Keep <strong>{merging.keep.name}</strong> (#{merging.keep.id}). <strong>{merging.dup.name}</strong> (#{merging.dup.id}) will be archived after its sources, photos and facilities are moved over.</p>
+          <FormError error={st.error} />
+          <TextInput label="Note (optional)" value={note} onChange={(e) => setNote(e.target.value)} placeholder="e.g. Same Gurdwara, two spellings" />
+          <div className="sk-admin-actions">
+            <button type="button" className="sk-btn" onClick={() => setMerging(null)}>Cancel</button>
+            <span className="sk-admin-actions-gap" />
+            <button type="button" className="sk-btn sk-btn-gold" disabled={st.busy} onClick={merge}>{st.busy ? 'Merging…' : 'Merge'}</button>
+          </div>
+        </div>
+      ) : null}
+    </Dialog>
+    </>
   );
 }
 
@@ -351,7 +470,7 @@ export default function AdminGurdwaras() {
       </div>
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} className="sk-stack">
         {tab === 'records' ? <Records onChanged={stats.reload} /> : null}
-        {tab === 'submissions' ? <Submissions countries={countries.data || []} onChanged={stats.reload} /> : null}
+        {tab === 'submissions' ? <GurdwaraSubmissionsQueue countries={countries.data || []} onChanged={stats.reload} /> : null}
         {tab === 'duplicates' ? <Duplicates /> : null}
         {tab === 'import' ? <Import onChanged={stats.reload} /> : null}
       </div>

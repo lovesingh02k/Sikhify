@@ -314,6 +314,134 @@ export const MIGRATIONS = [
   /* 8 — Gurdwara Directory: designation (Panj Takht / historic Gurdwara), set only from a cited source */
   `ALTER TABLE gurdwaras ADD COLUMN designation TEXT NOT NULL DEFAULT '';
   CREATE INDEX gurdwaras_designation ON gurdwaras(designation) WHERE designation != '';`,
+
+  /* 9 — Sikh Festivals & Important Days (date rules in shared/festivals.js).
+     Dates verified per year live in observance_dates; nothing is shown publicly
+     as confirmed unless its date (or fixed-date rule) is marked verified with a source. */
+  `
+  CREATE TABLE observances (
+    id INTEGER PRIMARY KEY,
+    slug TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    summary TEXT NOT NULL DEFAULT '',
+    description TEXT NOT NULL DEFAULT '',
+    significance TEXT NOT NULL DEFAULT '',
+    schedule_type TEXT NOT NULL DEFAULT 'annual_verified' CHECK (schedule_type IN ('one_time','annual_verified','annual_fixed')),
+    calendar_type TEXT NOT NULL DEFAULT 'nanakshahi' CHECK (calendar_type IN ('nanakshahi','bikrami','gregorian','other')),
+    fixed_month INTEGER,
+    fixed_day INTEGER,
+    duration_days INTEGER NOT NULL DEFAULT 1,
+    rule_verified INTEGER NOT NULL DEFAULT 0,
+    rule_source_name TEXT NOT NULL DEFAULT '',
+    rule_source_url TEXT NOT NULL DEFAULT '',
+    rule_notes TEXT NOT NULL DEFAULT '',
+    image_url TEXT NOT NULL DEFAULT '',
+    related_guru TEXT NOT NULL DEFAULT '',
+    related_topic TEXT NOT NULL DEFAULT '',
+    destination_type TEXT NOT NULL DEFAULT 'detail' CHECK (destination_type IN ('detail','internal','external')),
+    destination_path TEXT NOT NULL DEFAULT '',
+    destination_url TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published')),
+    show_on_home INTEGER NOT NULL DEFAULT 1,
+    featured INTEGER NOT NULL DEFAULT 0,
+    priority INTEGER NOT NULL DEFAULT 0,
+    advance_days INTEGER NOT NULL DEFAULT 30,
+    created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    updated_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at TEXT NOT NULL DEFAULT ${NOW},
+    updated_at TEXT NOT NULL DEFAULT ${NOW},
+    published_at TEXT
+  );
+  CREATE INDEX observances_public ON observances(status, show_on_home);
+  CREATE TABLE observance_dates (
+    id INTEGER PRIMARY KEY,
+    observance_id INTEGER NOT NULL REFERENCES observances(id) ON DELETE CASCADE,
+    start_date TEXT NOT NULL,
+    end_date TEXT NOT NULL,
+    verification TEXT NOT NULL DEFAULT 'unverified' CHECK (verification IN ('unverified','verified')),
+    source_name TEXT NOT NULL DEFAULT '',
+    source_url TEXT NOT NULL DEFAULT '',
+    notes TEXT NOT NULL DEFAULT '',
+    verified_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    verified_at TEXT,
+    created_at TEXT NOT NULL DEFAULT ${NOW},
+    updated_at TEXT NOT NULL DEFAULT ${NOW},
+    UNIQUE (observance_id, start_date)
+  );
+  CREATE INDEX observance_dates_range ON observance_dates(end_date, start_date);
+  `,
+
+  /* 10 — Observances: a category (Gurpurab, Shaheedi Purab, festival, historical day) and, for records
+     created by scripts/import-observances.js, the fingerprint of the imported content — a re-import
+     updates a record only while that still matches (i.e. no admin has edited it). */
+  `ALTER TABLE observances ADD COLUMN category TEXT NOT NULL DEFAULT 'other';
+  ALTER TABLE observances ADD COLUMN seed_hash TEXT NOT NULL DEFAULT '';`,
+
+  /* 11 — Rate limits shared by every server instance (lib/rateLimit.js); uploads: who owns how much
+     (per-user quotas) and which rows were optimised by scripts/optimize-uploads.js. */
+  `CREATE TABLE rate_limits (
+    key TEXT PRIMARY KEY,
+    count INTEGER NOT NULL,
+    reset_at INTEGER NOT NULL
+  );
+  CREATE INDEX rate_limits_reset ON rate_limits(reset_at);
+  CREATE INDEX IF NOT EXISTS uploads_owner ON uploads(owner_id, created_at);
+  ALTER TABLE uploads ADD COLUMN optimized_at TEXT;
+  CREATE TABLE upload_originals (
+    upload_id INTEGER PRIMARY KEY REFERENCES uploads(id) ON DELETE CASCADE,
+    mime TEXT NOT NULL,
+    bytes INTEGER NOT NULL,
+    data BLOB NOT NULL,
+    saved_at TEXT NOT NULL DEFAULT ${NOW}
+  );`,
+
+  /* 12 — Submissions without an account (guest name/email are optional and only for follow-up),
+     a reference the submitter can quote, and a fingerprint that stops the same submission being
+     sent twice; homepage banners managed in the admin panel; each video's length as checked on YouTube
+     (scripts/curate-media.js). Additive only: no existing row changes. */
+  `ALTER TABLE submissions ADD COLUMN is_guest INTEGER NOT NULL DEFAULT 0;
+  ALTER TABLE submissions ADD COLUMN guest_name TEXT NOT NULL DEFAULT '';
+  ALTER TABLE submissions ADD COLUMN guest_email TEXT NOT NULL DEFAULT '';
+  ALTER TABLE submissions ADD COLUMN reference TEXT NOT NULL DEFAULT '';
+  ALTER TABLE submissions ADD COLUMN fingerprint TEXT NOT NULL DEFAULT '';
+  CREATE INDEX submissions_fingerprint ON submissions(fingerprint, created_at) WHERE fingerprint != '';
+  ALTER TABLE gurdwara_submissions ADD COLUMN is_guest INTEGER NOT NULL DEFAULT 0;
+  ALTER TABLE gurdwara_submissions ADD COLUMN guest_name TEXT NOT NULL DEFAULT '';
+  ALTER TABLE gurdwara_submissions ADD COLUMN guest_email TEXT NOT NULL DEFAULT '';
+  ALTER TABLE gurdwara_submissions ADD COLUMN reference TEXT NOT NULL DEFAULT '';
+  ALTER TABLE gurdwara_submissions ADD COLUMN fingerprint TEXT NOT NULL DEFAULT '';
+  CREATE INDEX gurdwara_submissions_fingerprint ON gurdwara_submissions(fingerprint, created_at) WHERE fingerprint != '';
+  CREATE TABLE home_banners (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    image_url TEXT NOT NULL DEFAULT '',
+    image_alt TEXT NOT NULL DEFAULT '',
+    youtube_id TEXT NOT NULL DEFAULT '',
+    cta_label TEXT NOT NULL DEFAULT '',
+    cta_url TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published')),
+    sort INTEGER NOT NULL DEFAULT 0,
+    starts_at TEXT,
+    ends_at TEXT,
+    created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    updated_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at TEXT NOT NULL DEFAULT ${NOW},
+    updated_at TEXT NOT NULL DEFAULT ${NOW},
+    published_at TEXT
+  );
+  CREATE INDEX home_banners_public ON home_banners(status, sort);
+  ALTER TABLE media_videos ADD COLUMN duration_seconds INTEGER;
+  ALTER TABLE media_videos ADD COLUMN checked_at TEXT;`,
+
+  /* 13 — A homepage banner can feature a festival / important day: it then shows that
+     observance (its verified date, Nanakshahi date, the Guru Sahib's artwork) and is
+     published, scheduled or removed like any other banner. Additive only. */
+  `ALTER TABLE home_banners ADD COLUMN observance_id INTEGER REFERENCES observances(id) ON DELETE SET NULL;`,
+
+  /* 14 — A festival banner's own wording, each optional (empty = the festival's own text): the top
+     label, the small line above the name, the subtitle and the Gurmukhi line. JSON. Additive only. */
+  `ALTER TABLE home_banners ADD COLUMN options TEXT NOT NULL DEFAULT '{}';`,
 ];
 
 export function openDatabase(file) {
@@ -344,7 +472,7 @@ export async function openDatabaseForConfig(config) {
   const db = new LibsqlDatabase(url, { authToken: config.databaseAuthToken || undefined });
   remoteDatabases.add(db);
   try { db.exec('PRAGMA foreign_keys = ON;'); } catch { /* remote libSQL may restrict connection pragmas */ }
-  migrate(db);
+  if (!config.skipMigrations) migrate(db);
   return db;
 }
 

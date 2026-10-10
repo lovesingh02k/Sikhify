@@ -7,6 +7,8 @@
 
    When a section is built: give it a real route in app/App.jsx, remove it here,
    and drop its "Soon" tag from the header/footer/home markup.
+   `retired: true` — removed from the navigation, footer and sitemap; the old URL
+   still answers with this page so bookmarks don't break.
    (Community, Events, Books, Kids and Sign In have been built and removed.)
    ========================================================================== */
 
@@ -22,39 +24,29 @@ export const COMING_SOON = [
     related: ['/learn-sikhism', '/sikh-history', '/sikh-media'],
   },
   {
-    path: '/volunteer', title: 'Volunteers', eyebrow: 'Community',
+    path: '/volunteer', title: 'Volunteers', eyebrow: 'Community', retired: true,
     description: 'Ways to offer Seva and help spread the Guru’s teachings with Sikhify.',
     related: ['/learn-sikhism', '/rehat-maryada', '/faq'],
   },
   {
-    path: '/seva', title: 'Seva Opportunities', eyebrow: 'Community',
+    path: '/seva', title: 'Seva Opportunities', eyebrow: 'Community', retired: true,
     description: 'Opportunities for selfless service with the Sangat.',
     related: ['/learn-sikhism', '/rehat-maryada', '/faq'],
   },
   {
-    path: '/downloads', title: 'Downloads', eyebrow: 'Resources',
+    path: '/downloads', title: 'Downloads', eyebrow: 'Resources', retired: true,
     description: 'Free resources — wallpapers, books, calendars and materials for children.',
     related: ['/gurbani', '/nitnem', '/learn-sikhism'],
   },
   {
-    path: '/wallpapers', title: 'Wallpapers', eyebrow: 'Resources',
+    path: '/wallpapers', title: 'Wallpapers', eyebrow: 'Resources', retired: true,
     description: 'Gurbani and Sikh heritage wallpapers for your devices.',
     related: ['/gurbani', '/hukamnama', '/sikh-history'],
-  },
-  {
-    path: '/sikh-calendar', title: 'Sikh Calendar', eyebrow: 'Resources',
-    description: 'Gurpurabs and important dates through the year.',
-    related: ['/sikh-history', '/hukamnama', '/nitnem'],
   },
   {
     path: '/children-resources', title: 'Children Resources', eyebrow: 'Resources',
     description: 'Learning materials and activities for Sikh children.',
     related: ['/learn-sikhism', '/sikh-history', '/faq'],
-  },
-  {
-    path: '/about', title: 'About Us', eyebrow: 'About',
-    description: 'Our mission is to spread the Guru’s teachings, promote unity and serve humanity. The full story of Sikhify is on its way.',
-    related: ['/learn-sikhism', '/gurbani', '/faq'],
   },
   {
     path: '/contact', title: 'Contact Us', eyebrow: 'Support',
@@ -65,10 +57,5 @@ export const COMING_SOON = [
     path: '/donate', title: 'Donate', eyebrow: 'Support',
     description: 'A way to support Sikhify’s work.',
     related: ['/learn-sikhism', '/gurbani', '/faq'],
-  },
-  {
-    path: '/privacy-policy', title: 'Privacy Policy', eyebrow: 'Support',
-    description: 'Our privacy policy is being prepared.',
-    related: ['/faq', '/sitemap', '/learn-sikhism'],
   },
 ];

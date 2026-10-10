@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AuthShell from './AuthShell.jsx';
-import { TextInput, FormError } from '../../components/ui/Form.jsx';
+import { PasswordInput, FormError } from '../../components/ui/Form.jsx';
 import { authService } from '../../services/auth/authService.js';
 import { useReactPage } from '../../hooks/useReactPage.js';
 import { PASSWORD_MIN } from '../../../../shared/community.js';
@@ -29,8 +29,8 @@ export default function ResetPassword() {
   if (!token) {
     return (
       <AuthShell title="Reset link missing" crumb="Reset password">
-        <p className="sk-card-text">This page needs the link from your reset email. Request a new one below.</p>
-        <Link className="sk-btn sk-btn-gold mt-4" to="/forgot-password">Request a reset link</Link>
+        <p className="sk-card-text">This page needs the reset link a Sikhify admin gave you. If you can't sign in, ask an admin for a new link.</p>
+        <Link className="sk-btn sk-btn-gold mt-4" to="/login">Back to sign in</Link>
       </AuthShell>
     );
   }
@@ -44,9 +44,9 @@ export default function ResetPassword() {
       ) : (
         <form className="sk-form" onSubmit={submit} noValidate>
           <FormError error={state.error && !state.error.fields ? state.error : null} />
-          {state.error && /expired|invalid/i.test(state.error.message) ? <Link className="sk-link-btn" to="/forgot-password">Request a new reset link</Link> : null}
-          <TextInput label="New password" type="password" autoComplete="new-password" required value={pw.password} onChange={(e) => setPw({ ...pw, password: e.target.value })} error={state.fields.password} help={`At least ${PASSWORD_MIN} characters.`} />
-          <TextInput label="Confirm new password" type="password" autoComplete="new-password" required value={pw.confirm} onChange={(e) => setPw({ ...pw, confirm: e.target.value })} error={state.fields.confirm} />
+          {state.error && /expired|invalid/i.test(state.error.message) ? <p className="sk-card-meta">This link has expired — ask a Sikhify admin for a new one.</p> : null}
+          <PasswordInput label="New password" autoComplete="new-password" required value={pw.password} onChange={(e) => setPw({ ...pw, password: e.target.value })} error={state.fields.password} help={`At least ${PASSWORD_MIN} characters.`} />
+          <PasswordInput label="Confirm new password" autoComplete="new-password" required value={pw.confirm} onChange={(e) => setPw({ ...pw, confirm: e.target.value })} error={state.fields.confirm} />
           <button type="submit" className="sk-btn sk-btn-gold" disabled={state.busy}>{state.busy ? 'Saving…' : 'Save new password'}</button>
         </form>
       )}

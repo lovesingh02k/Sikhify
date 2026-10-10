@@ -17,6 +17,7 @@ import { postService } from '../../services/community/index.js';
 import { relativeTime, formatDateTime, toast, shareLink } from '../../utils/format.js';
 import { REACTIONS, LIMITS } from '../../../../shared/community.js';
 import { ROLE_LABELS } from '../../../../shared/roles.js';
+import { feedImage } from '../../utils/images.js';
 
 function Menu({ items }) {
   const [open, setOpen] = useState(false);
@@ -128,7 +129,10 @@ export default function PostCard({ post: initial, onRemoved, showComments = fals
           {long ? <button type="button" className="sk-link-btn mt-1" onClick={() => setExpanded(true)}>Read more</button> : null}
           {post.images.length ? (
             <div className={`sk-post-images${post.images.length === 1 ? ' is-single' : ''}`}>
-              {post.images.map((src, i) => <a key={src} href={src} target="_blank" rel="noopener noreferrer"><img src={src} alt={`Image ${i + 1} of ${post.images.length} in ${post.author.name}'s post`} loading="lazy" /></a>)}
+              {post.images.map((src, i) => {
+                const img = feedImage(src);
+                return <a key={src} href={src} target="_blank" rel="noopener noreferrer"><img src={img.src} srcSet={img.srcSet} sizes={post.images.length === 1 ? '(min-width: 768px) 640px, 100vw' : '(min-width: 768px) 320px, 50vw'} alt={`Image ${i + 1} of ${post.images.length} in ${post.author.name}'s post`} loading="lazy" decoding="async" /><span className="sr-only"> (opens the full-size image)</span></a>;
+              })}
             </div>
           ) : null}
         </div>

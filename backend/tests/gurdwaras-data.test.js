@@ -45,7 +45,10 @@ test('the empty state reports matching records that are hidden', () => {
   const r = empty.search({ country: 'india' });
   assert.equal(r.total, 0);
   assert.deepEqual(r.alsoMatching, { needsVerification: 0, otherStatuses: 0 }, 'truly empty');
-  const onlyUnverified = store.search({ country: 'india', state: 'chhattisgarh', q: 'Unverified' });
+  // Published but unverified records are listed by default (cards mark them); "Verified only" leaves them out
+  // and the empty state says one exists.
+  assert.equal(store.search({ country: 'india', state: 'chhattisgarh', q: 'Unverified' }).total, 1, 'listed by default');
+  const onlyUnverified = store.search({ country: 'india', state: 'chhattisgarh', q: 'Unverified', statuses: ['verified'] });
   assert.equal(onlyUnverified.total, 0);
   assert.equal(onlyUnverified.alsoMatching.needsVerification, 1, 'tells the UI an unverified listing exists');
 });
@@ -65,22 +68,26 @@ test('distance sorting orders results but never removes records without coordina
 test('country + state + city + status combine; clearing filters restores everything', () => {
   const all = store.search({});
   const raipur = store.search({ country: 'india', state: 'chhattisgarh', city: 'raipur', statuses: ['active'] });
-  assert.equal(raipur.total, 3);
+  assert.equal(raipur.total, 4, 'three verified + one awaiting verification');
+  assert.equal(store.search({ country: 'india', state: 'chhattisgarh', city: 'raipur', statuses: ['active', 'verified'] }).total, 3, 'verified only');
   assert.ok(names(raipur).every((n) => n !== 'Audit Punjab Gurdwara'));
   assert.equal(store.search({ country: 'india', state: 'punjab' }).total, 1);
   assert.equal(store.search({}).total, all.total);
-  assert.equal(store.search({ statuses: ['active', 'needs_verification'] }).total, all.total + 1);
+  assert.equal(store.search({ statuses: ['active', 'needs_verification'] }).total, all.total, 'older links asking for unverified records still work');
+  assert.equal(store.search({ statuses: ['verified'] }).total, all.total - 1, '"Verified only" leaves out the one unverified record');
 });
 
 test('search: case-insensitive, partial, spelling variants, district and postal code', () => {
-  assert.equal(store.search({ q: 'RAIPUR' }).total, 3);
-  assert.equal(store.search({ q: 'raip' }).total, 3);
-  assert.equal(store.search({ q: 'chhattisgarh' }).total, 3);
-  assert.equal(store.search({ q: 'india' }).total, 4);
+  assert.equal(store.search({ q: 'RAIPUR' }).total, 4);
+  assert.equal(store.search({ q: 'raip' }).total, 4);
+  assert.equal(store.search({ q: 'chhattisgarh' }).total, 4);
+  assert.equal(store.search({ q: 'india' }).total, 5);
+  assert.equal(store.search({ q: 'raipur', statuses: ['verified'] }).total, 3);
   assert.equal(store.search({ q: 'punjab' }).total, 1);
   assert.equal(store.search({ q: '492001' }).total, 1);
   // "Gurudwara" finds "Gurdwara …" and vice versa.
-  assert.equal(store.search({ q: 'gurudwara' }).total, 4);
+  assert.equal(store.search({ q: 'gurudwara' }).total, 5, 'includes the imported record awaiting verification');
+  assert.equal(store.search({ q: 'gurudwara', statuses: ['verified'] }).total, 4);
   assert.equal(store.search({ q: 'gurdwara spelling' }).total, 1);
   assert.equal(store.search({ q: 'Gurdwara Punjab' }).total, 1);
 });

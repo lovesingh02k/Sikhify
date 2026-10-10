@@ -127,7 +127,7 @@ export default function Media() {
       <AsyncView state={state}>
         {(cat) => (
           <>
-            <div className="flex flex-wrap items-end gap-3">
+            <div className="sk-filters">
               <TextInput label="Find an artist" value={q} onChange={(e) => setQ(e.target.value)} />
               <form className="flex items-end gap-2" onSubmit={(e) => { e.preventDefault(); adminService.addCategory(newCat).then(() => { setNewCat(''); toast('Category added'); state.reload(); }).catch((err) => toast(err.message, 'error')); }}>
                 <TextInput label="Add a category" value={newCat} onChange={(e) => setNewCat(e.target.value)} help={`Current: ${cat.categories.join(', ')}`} />

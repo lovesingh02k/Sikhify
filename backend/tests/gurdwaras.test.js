@@ -65,7 +65,7 @@ test('0 records: empty directory, real country list, meta', async () => {
 });
 
 let raipurId;
-test('admin creates a record; it is not public until verified (needs a source)', async () => {
+test('admin creates a record; it is listed as "needs verification" until verified (needs a source)', async () => {
   assert.equal((await member.post('/api/admin/gurdwaras', { name: 'x' })).status, 403);
   const bad = await admin.post('/api/admin/gurdwaras', { name: 'G', website: 'nope' });
   assert.equal(bad.status, 422);
@@ -78,8 +78,10 @@ test('admin creates a record; it is not public until verified (needs a source)',
   raipurId = ok.data.gurdwara.id;
   assert.equal(ok.data.gurdwara.verification, 'needs_verification');
   assert.equal(ok.data.gurdwara.url, '/directory/gurdwaras/india/testland-pradesh/testpur/test-fixture-gurdwara-singh-sabha');
-  assert.equal((await guest.get('/api/gurdwaras')).data.total, 0, 'unverified records are hidden by default');
-  assert.equal((await guest.get('/api/gurdwaras?status=active,needs_verification')).data.total, 1, 'shown only when the visitor asks');
+  const listed = await guest.get('/api/gurdwaras');
+  assert.equal(listed.data.total, 1, 'a published record is listed before verification…');
+  assert.equal(listed.data.items[0].verification, 'needs_verification', '…and says it still needs verification');
+  assert.equal((await guest.get('/api/gurdwaras?status=verified')).data.total, 0, '"Verified only" leaves it out');
   const noSource = await admin.post(`/api/admin/gurdwaras/${raipurId}/verify`, { verified: true });
   assert.equal(noSource.status, 422);
   await admin.post(`/api/admin/gurdwaras/${raipurId}/sources`, { name: 'Official website', url: 'https://example.org/gss', type: 'official_website' });
@@ -88,6 +90,7 @@ test('admin creates a record; it is not public until verified (needs a source)',
   assert.ok(ver.data.gurdwara.verifiedAt);
   assert.equal(ver.data.gurdwara.verificationLog[0].action, 'verified');
   assert.equal((await guest.get('/api/gurdwaras')).data.total, 1);
+  assert.equal((await guest.get('/api/gurdwaras?status=verified')).data.total, 1, 'verified now');
 });
 
 test('1 record: search (name, partial, city, state, country, postal code, address), detail by path', async () => {
@@ -130,7 +133,10 @@ test('duplicate detection: same name in the same city, same phone, same website,
 });
 
 test('community submission: pending → changes requested → resubmit → approved (merge or create) → notified', async () => {
-  assert.equal((await guest.post('/api/gurdwaras/submissions', { name: 'X' })).status, 401);
+  // Visitors may suggest a Gurdwara without an account — the form is validated the same way.
+  const guestBad = await guest.post('/api/gurdwaras/submissions', { name: 'X' });
+  assert.equal(guestBad.status, 422);
+  assert.ok(guestBad.data.error.fields.country);
   const bad = await member.post('/api/gurdwaras/submissions', { name: 'Gu' });
   assert.equal(bad.status, 422);
   assert.ok(bad.data.error.fields.country && bad.data.error.fields.source);
@@ -187,12 +193,19 @@ test('filters: status, facilities (all must match), services; sorting; distance;
   }
   const city = '/api/gurdwaras?country=united-kingdom&state=testshire&city=fixtureford';
   const def = await guest.get(city);
-  assert.equal(def.data.total, 48, 'default: active + verified only (60 verified − 12 temporarily closed)');
+  assert.equal(def.data.total, 108, 'default: every active listing, verified or not (120 − 12 temporarily closed)');
   assert.equal(def.data.items.length, 20);
-  assert.equal(def.data.pages, 3);
-  assert.equal((await guest.get(city + '&pageSize=50')).data.items.length, 48);
+  assert.equal(def.data.pages, 6);
+  assert.equal((await guest.get(city + '&pageSize=50')).data.items.length, 50);
+  assert.equal((await guest.get(city + '&pageSize=50&page=3')).data.items.length, 8, 'the last page holds the rest');
+  // Walking every page reaches every record exactly once.
+  const seen = new Set();
+  for (let page = 1; page <= 6; page++) (await guest.get(city + '&page=' + page)).data.items.forEach((x) => seen.add(x.id));
+  assert.equal(seen.size, 108);
+  assert.equal((await guest.get(city + '&status=verified')).data.total, 48, 'verified only: 60 verified − 12 temporarily closed');
   assert.equal((await guest.get(city + '&pageSize=1000')).data.items.length, 20, 'unsupported sizes fall back to 20');
-  assert.equal((await guest.get(city + '&status=active,temporarily_closed')).data.total, 60);
+  assert.equal((await guest.get(city + '&status=active,temporarily_closed')).data.total, 120);
+  assert.equal((await guest.get(city + '&status=active,temporarily_closed,verified')).data.total, 60);
   assert.equal((await guest.get(city + '&status=temporarily_closed,needs_verification')).data.total, 12);
   assert.equal((await guest.get(city + '&status=active,temporarily_closed,needs_verification&facilities=langar,wheelchair_access')).data.total, 60, 'facilities: every selected one must match');
   assert.equal((await guest.get(city + '&status=active,temporarily_closed,needs_verification&services=katha')).data.total, 40);
@@ -224,7 +237,8 @@ test('bulk import: dry run report, then import (never auto-verified)', async () 
   const real = await admin.post('/api/admin/gurdwaras/import', { format: 'csv', content: csv, dryRun: false });
   assert.equal(real.data.report.imported, 2);
   assert.equal(real.data.report.needsVerification, 2);
-  assert.equal((await guest.get('/api/gurdwaras?q=Import')).data.total, 0, 'imported records are not verified');
+  assert.equal((await guest.get('/api/gurdwaras?q=Import&status=verified')).data.total, 0, 'imported records are not verified');
+  assert.ok((await guest.get('/api/gurdwaras?q=Import')).data.items.every((x) => x.verification === 'needs_verification'), 'listed, marked as needing verification');
   const two = await guest.get('/api/gurdwaras?q=Two&status=active,needs_verification');
   assert.equal(two.data.items[0].name, 'Test Fixture Import Gurdwara, Two');
   assert.equal(two.data.items[0].address, '2 "Quoted" Rd');

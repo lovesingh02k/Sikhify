@@ -16,12 +16,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Devanagari is only downloaded when Hindi text is on screen (unicode-range subsets). -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://images.pexels.com" />
     <script>
       try {
         if (JSON.parse(localStorage.getItem('sikhify:theme')) === 'dark') document.documentElement.classList.add('theme-dark');
       } catch (e) {}
+      // Admin pages: the admin top bar from the first paint (Header keeps it in sync on navigation).
+      if (/^\/admin(\/|$)/.test(location.pathname)) document.documentElement.classList.add('sk-admin-mode');
     </script>
     <title>Sikhify — Discover. Learn. Live Sikhism.</title>
   </head>

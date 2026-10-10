@@ -1,13 +1,25 @@
 /* Building blocks for the admin panel: stat tiles, charts, status pills, filters, page headers. */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { adminSection } from '../../pages/Admin/adminNav.js';
+import Icon from '../ui/Icon.jsx';
 import { formatDate } from '../../utils/format.js';
 
-export function AdminHeader({ title, sub, actions }) {
+export function AdminHeader({ title, sub, actions, decor = false }) {
+  // The section's icon and a small "Admin › Section" trail, from the sidebar menu.
+  const sec = adminSection(useLocation().pathname);
+  const isHome = sec && sec.to === '/admin';
   return (
-    <div className="flex flex-wrap items-end justify-between gap-3">
-      <div className="min-w-0">
-        <h2 className="sk-section-title">{title}</h2>
+    <div className={`sk-admin-head flex flex-wrap items-end justify-between gap-3${decor ? ' has-decor' : ''}`}>
+      {decor ? <div className="sk-admin-head-decor" aria-hidden="true"><span lang="pa">ੴ ਸਤਿਨਾਮੁ ਵਾਹਿਗੁਰੂ</span></div> : null}
+      <div className="min-w-0 sk-admin-head-text">
+        {sec && !isHome ? (
+          <p className="sk-admin-trail"><Link to="/admin">Admin</Link><span aria-hidden="true">›</span><span>{sec.group}</span></p>
+        ) : null}
+        <div className="sk-admin-title-row">
+          {sec && !isHome ? <span className={`sk-admin-title-icon tone-${sec.tone}`} aria-hidden="true"><Icon name={sec.icon} size={20} /></span> : null}
+          <h2 className="sk-section-title">{title}</h2>
+        </div>
         {sub ? <p className="sk-section-sub">{sub}</p> : null}
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
@@ -16,15 +28,20 @@ export function AdminHeader({ title, sub, actions }) {
 }
 
 /** A single real number. `to` makes the tile a link to where it can be acted on. */
-export function StatTile({ label, value, note, to }) {
+export function StatTile({ label, value, note, to, icon, tone, mark }) {
   const body = (
     <>
-      <p className="sk-stat-label">{label}</p>
-      <p className="sk-stat-value">{value === null || value === undefined ? '—' : Number(value).toLocaleString('en-IN')}</p>
-      {note ? <p className="sk-stat-note">{note}</p> : null}
+      {icon ? <span className="sk-stat-icon" aria-hidden="true"><Icon name={icon} size={22} /></span> : null}
+      <span className="sk-stat-main">
+        <p className="sk-stat-label">{label}</p>
+        <p className="sk-stat-value">{value === null || value === undefined ? '—' : Number(value).toLocaleString('en-IN')}</p>
+        {note ? <p className="sk-stat-note">{note}</p> : null}
+      </span>
+      {to ? <span className="sk-stat-go" aria-hidden="true"><Icon name="arrow" size={14} /></span> : mark ? <span className="sk-stat-mark" aria-hidden="true"><Icon name={mark} size={18} /></span> : null}
     </>
   );
-  return to ? <Link className="sk-stat" to={to}>{body}</Link> : <div className="sk-stat">{body}</div>;
+  const cls = `sk-stat${icon ? ' has-icon' : ''}${tone ? ' tone-' + tone : ''}`;
+  return to ? <Link className={cls} to={to}>{body}</Link> : <div className={cls}>{body}</div>;
 }
 
 export function Pill({ value, label }) {

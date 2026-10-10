@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import AccountMenu, { MobileAccount } from './AccountMenu.jsx';
@@ -72,8 +72,7 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-expanded="false" aria-haspopup="true" class="nav-link nav-dropdown-trigger" type="button">More <svg aria-hidden="true" fill="none" height="6" viewbox="0 0 10 6" width="10"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="nav-dropdown-panel">
 <a href="/sikh-store">Sikh Store <span class="soon-pill" aria-label="coming soon">Soon</span></a>
-<a href="/downloads">Downloads <span class="soon-pill" aria-label="coming soon">Soon</span></a>
-<a href="/about">About Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/about">About Us</a>
 <a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
 </div>
 </div>
@@ -82,17 +81,13 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <div class="flex items-center gap-4">
 <button aria-haspopup="dialog" aria-label="Search Sikhify" class="header-icon-btn" data-site-search="">
 <svg aria-hidden="true" fill="none" height="18" viewbox="0 0 18 18" width="18"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"></circle><path d="M13 13L17 17" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path></svg>
+<span class="search-pill-text" aria-hidden="true">Search anything…</span>
 </button>
 <button aria-label="Switch to dark mode" aria-pressed="false" class="header-icon-btn" id="theme-toggle">
 <svg aria-hidden="true" fill="none" height="18" viewbox="0 0 18 18" width="18"><path d="M9 1.5a7.5 7.5 0 1 0 7.5 9.4A6 6 0 0 1 9 1.5Z" stroke="currentColor" stroke-width="1.3"></path></svg>
 </button>
-<!-- EL:WIDGET:Button — account area: React renders the signed-in menu here (AccountMenu) -->
-<div class="sk-account" data-account-slot="">
-<a class="btn-gold-fill hidden sm:inline-flex" href="/login">
-<svg aria-hidden="true" fill="none" height="14" viewbox="0 0 14 14" width="14"><circle cx="7" cy="4.5" r="2.5" stroke="#142238" stroke-width="1.3"></circle><path d="M2 12.5c0-2.5 2.2-4 5-4s5 1.5 5 4" stroke="#142238" stroke-width="1.3"></path></svg>
-          Sign In
-        </a>
-</div>
+<!-- EL:WIDGET:Button — account area: React renders Sign In or the account menu here (AccountMenu), once the session is known -->
+<div class="sk-account" data-account-slot=""></div>
 <button aria-controls="mobile-menu" aria-expanded="false" aria-label="Open menu" class="mobile-menu-toggle lg:hidden" id="mobile-menu-toggle">
 <span></span><span></span><span></span>
 </button>
@@ -156,12 +151,11 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-controls="m-more" aria-expanded="false" class="mobile-nav-link mobile-nav-toggle" type="button">More <svg aria-hidden="true" fill="none" height="8" viewbox="0 0 10 6" width="12"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="mobile-subnav" hidden="" id="m-more">
 <a href="/sikh-store">Sikh Store <span class="soon-pill" aria-label="coming soon">Soon</span></a>
-<a href="/downloads">Downloads <span class="soon-pill" aria-label="coming soon">Soon</span></a>
-<a href="/about">About Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/about">About Us</a>
 <a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
 </div>
 </div>
-<div data-mobile-account-slot=""><a class="btn-gold-fill justify-center mt-2" href="/login">Sign In</a></div>
+<div data-mobile-account-slot=""></div>
 </nav>
 </div>
 </header>`;
@@ -170,15 +164,60 @@ export default function Header() {
   const location = useLocation();
   const [slots, setSlots] = useState(null);
 
-  useEffect(() => {
+  // Admin mode follows the address, set before paint on every navigation (see index.html for the first load).
+  useLayoutEffect(() => {
+    document.documentElement.classList.toggle('sk-admin-mode', /^\/admin(\/|$)/.test(location.pathname));
+  }, [location.pathname]);
+
+  // Before paint, so the account area is React's from the first frame (no static Sign In flashing up).
+  useLayoutEffect(() => {
     const root = document.querySelector('.site-header');
     if (!root) return;
-    // Hand the account areas to React (AccountMenu); their static Sign In links are the no-JS fallback.
-    const desktop = root.querySelector('[data-account-slot]');
-    const mobile = root.querySelector('[data-mobile-account-slot]');
-    desktop.replaceChildren();
-    mobile.replaceChildren();
-    setSlots({ desktop, mobile });
+    setSlots({ desktop: root.querySelector('[data-account-slot]'), mobile: root.querySelector('[data-mobile-account-slot]') });
+  }, []);
+
+  /*
+   * Hide on scroll down, show on scroll up: past the first 120 px, scrolling down slides the
+   * header away; any scroll up (or getting back near the top) brings it back. It never hides
+   * while the mobile menu is open, a menu inside it is open or keyboard focus is inside it.
+   * <html> gets "header-tucked" so sticky things below it (e.g. the admin sidebar) move up too.
+   */
+  useEffect(() => {
+    const root = document.querySelector('.site-header');
+    if (!root) return undefined;
+    const html = document.documentElement;
+    let lastY = window.scrollY;
+    let tucked = false;
+    let raf = 0;
+    const set = (v) => {
+      if (v === tucked) return;
+      tucked = v;
+      root.classList.toggle('is-tucked', v);
+      html.classList.toggle('header-tucked', v);
+    };
+    const busy = () => root.contains(document.activeElement) && document.activeElement !== document.body
+      || !!root.querySelector('[aria-expanded="true"]') || !!document.querySelector('#mobile-menu.is-open, .mobile-nav-panel.is-open');
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const y = Math.max(0, window.scrollY);
+        const dy = y - lastY;
+        if (y < 120) set(false);
+        else if (dy > 6 && !busy()) set(true);
+        else if (dy < -6) set(false);
+        if (Math.abs(dy) > 6 || y < 120) lastY = y;
+      });
+    };
+    const show = () => set(false);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    root.addEventListener('focusin', show);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      root.removeEventListener('focusin', show);
+      root.classList.remove('is-tucked');
+      html.classList.remove('header-tucked');
+    };
   }, []);
 
   useEffect(() => {
@@ -202,7 +241,8 @@ export default function Header() {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: HEADER_HTML }} />
+      {/* display: contents — the wrapper must not box the sticky header in (it would have no room to stick). */}
+      <div className="site-header-slot" dangerouslySetInnerHTML={{ __html: HEADER_HTML }} />
       {slots ? createPortal(<AccountMenu />, slots.desktop) : null}
       {slots ? createPortal(<MobileAccount />, slots.mobile) : null}
     </>

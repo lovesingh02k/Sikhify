@@ -1,57 +1,79 @@
-/* The Sikhify Admin Panel frame: navigation filtered by the signed-in role. The API enforces the same rules. */
-import { NavLink, Outlet } from 'react-router-dom';
-import PageHero from '../../components/common/PageHero.jsx';
+/* ==========================================================================
+   The Sikhify Admin Panel frame: navigation grouped by task and filtered by
+   the signed-in role (the API enforces the same rules). Waiting work (pending
+   submissions and reports) is counted live and shown beside its section.
+   Phones and tablets get a "Menu" button that opens the same grouped list,
+   instead of a long sideways-scrolling strip.
+   ========================================================================== */
+import { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import Icon from '../../components/ui/Icon.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useReactPage } from '../../hooks/useReactPage.js';
-import { ROLE_LABELS } from '../../../../shared/roles.js';
+import { adminService } from '../../services/admin/adminService.js';
+import { NAV } from './adminNav.js';
 
-const NAV = [
-  ['Overview', [
-    ['/admin', 'Dashboard', 'dashboard', 'admin.access', true],
-    ['/admin/analytics', 'Analytics', 'chart', 'analytics.view'],
-  ]],
-  ['Community', [
-    ['/admin/users', 'Users', 'users', 'admin.access'],
-    ['/admin/reports', 'Reports', 'flag', 'community.moderate'],
-    ['/admin/posts', 'Posts', 'message', 'community.moderate'],
-    ['/admin/comments', 'Comments', 'message', 'community.moderate'],
-    ['/admin/groups', 'Groups', 'users', 'community.moderate'],
-  ]],
-  ['Content', [
-    ['/admin/hukamnama', 'Hukamnama', 'book', 'content.manage'],
-    ['/admin/media', 'Media', 'youtube', 'content.manage'],
-    ['/admin/submissions', 'Submissions', 'inbox', 'submission.review'],
-    ['/admin/content', 'All content', 'globe', 'content.manage', true],
-    ['/admin/gurdwaras', 'Gurdwaras', 'pin', 'content.manage'],
-    ['/admin/events', 'Events', 'calendar', 'content.manage'],
-    ['/admin/personalities', 'Personalities', 'user', 'content.manage'],
-    ['/admin/news', 'News', 'external', 'content.manage'],
-  ]],
-  ['System', [
-    ['/admin/settings', 'Settings', 'sliders', 'admin.access'],
-  ]],
-];
+
+const COUNTS_KEY = 'sikhify:admin-counts';
+function readCounts() { try { return JSON.parse(sessionStorage.getItem(COUNTS_KEY)) || {}; } catch { return {}; } }
+function writeCounts(c) { try { sessionStorage.setItem(COUNTS_KEY, JSON.stringify(c)); } catch { /* storage unavailable */ } }
 
 export default function AdminLayout() {
   useReactPage('Admin — Sikhify', 'Sikhify administration.', { noindex: true, motion: false });
-  const { user, can } = useAuth();
+  const { can } = useAuth();
+  const { pathname } = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  // Waiting work, refreshed whenever the section changes (one small request). The last known
+  // counts stay on screen while it refreshes — and are remembered for this tab, so a badge
+  // never blinks out when switching pages or reloading; only a real change updates it.
+  const [counts, setCounts] = useState(readCounts);
+  const section = pathname.split('/')[2] || '';
+  useEffect(() => {
+    let live = true;
+    adminService.dashboard().then((d) => {
+      if (!live) return;
+      const next = {
+        submissions: (d.counts.pendingSubmissions || 0) + (d.counts.pendingGurdwaraSubmissions || 0),
+        reports: d.counts.pendingReports || 0,
+      };
+      setCounts((prev) => (prev.submissions === next.submissions && prev.reports === next.reports ? prev : next));
+      writeCounts(next);
+    }).catch(() => { /* keep the last known counts */ });
+    return () => { live = false; };
+  }, [section]);
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  // Admin mode (admin top bar, no footer) is set from the address in Header.jsx — not here, so it
+  // never switches off for a moment while the next admin section's code is loading.
+
+  const groups = NAV.map(([group, items]) => [group, items.filter(([, , , cap]) => can(cap))]).filter(([, items]) => items.length);
+  const current = groups.flatMap(([, items]) => items).filter(([to, , , , end]) => (end ? pathname === to : pathname === to || pathname.startsWith(to + '/')))
+    .sort((a, b) => b[0].length - a[0].length)[0];
+
   return (
-    <main id="main-content">
-      <PageHero crumbs={[{ label: 'Admin' }]} eyebrow={`Admin · ${ROLE_LABELS[user.role]}`} title={<>Sikhify <span className="gold">Admin</span></>}
-        sub="Manage the daily Hukamnama, media, the directory, submissions and the community." />
-      <div className="sk-container sk-section" data-motion="off">
+    <main id="main-content" className="sk-admin">
+      <div className="sk-container sk-admin-body" data-motion="off">
         <div className="sk-app">
-          <nav className="sk-sidenav" aria-label="Admin">
-            {NAV.map(([group, items]) => {
-              const visible = items.filter(([, , , cap]) => can(cap));
-              if (!visible.length) return null;
-              return [
-                <p key={group} className="sk-sidenav-label">{group}</p>,
-                ...visible.map(([to, label, icon, , end]) => <NavLink key={to} to={to} end={!!end}><Icon name={icon} size={18} />{label}</NavLink>),
-              ];
-            })}
-          </nav>
+          <div className="sk-sidenav-wrap">
+            <button type="button" className="sk-sidenav-toggle" aria-expanded={menuOpen} aria-controls="admin-nav" onClick={() => setMenuOpen((v) => !v)}>
+              <Icon name={current ? current[2] : 'dashboard'} size={18} />
+              <span className="min-w-0 truncate"><span className="sr-only">Admin section: </span>{current ? current[1] : 'Admin'}</span>
+              <span className="sk-sidenav-toggle-label">{menuOpen ? 'Close' : 'Menu'}</span>
+            </button>
+            <nav id="admin-nav" className={`sk-sidenav${menuOpen ? ' is-open' : ''}`} aria-label="Admin">
+              {groups.map(([group, items]) => (
+                <div key={group} className="sk-sidenav-group">
+                  <p className="sk-sidenav-label">{group}</p>
+                  {items.map(([to, label, icon, , end, countKey]) => (
+                    <NavLink key={to} to={to} end={!!end}>
+                      <Icon name={icon} size={18} /><span className="min-w-0 flex-1">{label}</span>
+                      {countKey && counts[countKey] ? <span className="sk-nav-count" aria-label={`${counts[countKey]} waiting`}>{counts[countKey]}</span> : null}
+                    </NavLink>
+                  ))}
+                </div>
+              ))}
+              <p className="sk-sidenav-foot" aria-hidden="true"><span className="khanda-mark" />Serve · Share · Spread</p>
+            </nav>
+          </div>
           <div className="min-w-0 sk-stack"><Outlet /></div>
         </div>
       </div>

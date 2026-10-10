@@ -67,9 +67,13 @@ test('health reports the database provider and schema version, nothing secret', 
   assert.equal(schemaVersion(srv.db), MIGRATIONS.length);
 });
 
-test('GET /api/gurdwaras?page=1&pageSize=10 lists the verified seed records', async () => {
-  const res = await getJson('/api/gurdwaras?page=1&pageSize=10');
-  assert.equal(res.total, 48, 'the 5 Takhts + 43 historic Gurdwaras are verified and public');
+test('GET /api/gurdwaras lists every published seed record; "verified only" lists the 48 verified', async () => {
+  const listed = srv.db.prepare("SELECT COUNT(*) AS n FROM gurdwaras WHERE archived_at IS NULL AND status = 'active'").get().n;
+  const all = await getJson('/api/gurdwaras?page=1&pageSize=50');
+  assert.equal(all.total, listed, 'every published (non-archived) active record is reachable');
+  assert.equal(all.pages, Math.ceil(listed / 50));
+  const res = await getJson('/api/gurdwaras?page=1&pageSize=10&status=verified');
+  assert.equal(res.total, 48, 'the 5 Takhts + 43 historic Gurdwaras are verified');
   assert.equal(res.items.length, 10);
   assert.equal(res.pageSize, 10);
   assert.equal(res.pages, 5);
@@ -78,7 +82,7 @@ test('GET /api/gurdwaras?page=1&pageSize=10 lists the verified seed records', as
     assert.equal(g.status, 'active');
     assert.match(g.url, /^\/directory\/gurdwaras\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+\/[a-z0-9-]+$/);
   }
-  const page5 = await getJson('/api/gurdwaras?page=5&pageSize=10');
+  const page5 = await getJson('/api/gurdwaras?page=5&pageSize=10&status=verified');
   assert.equal(page5.items.length, 8);
   assert.ok(!page5.items.some((g) => res.items.some((x) => x.id === g.id)), 'pages do not overlap');
   // Unsupported sizes fall back to the default instead of failing.

@@ -7,7 +7,12 @@ import { USERNAME_RE, PASSWORD_MIN, LIMITS } from '../../../shared/community.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function register(router, { db, config, mailer, settings, rate, log }) {
+/** "Forgot password" always takes at least this long, so its timing can't reveal whether an account exists. */
+export const FORGOT_MIN_MS = 1500;
+const sleep = (ms) => new Promise((r) => setTimeout(r, Math.max(0, ms)));
+const tooMany = (retryAfter) => new HttpError(429, `Too many attempts — please wait ${Math.ceil(retryAfter / 60)} minute(s) and try again`);
+
+export default function register(router, { db, config, mailer, settings, rate, limits, log }) {
   function startSession(c, user) {
     const { token, hash } = newToken();
     const expires = new Date(Date.now() + config.sessionDays * 864e5).toISOString();
@@ -55,13 +60,25 @@ export default function register(router, { db, config, mailer, settings, rate, l
   router.post('/api/auth/login', async (c) => {
     const identifier = str(c.body.identifier, { max: 200 }).toLowerCase();
     const password = typeof c.body.password === 'string' ? c.body.password : '';
-    rate('auth', 'login:' + c.ip);
-    rate('auth', 'login-id:' + identifier);
+    // Every attempt counts against the address. Only failures count against the account — per account
+    // and address (tight), and account-wide (loose) — so nobody can lock a member out from one address.
+    const ipHit = limits.loginIp.hit(c.ip);
+    if (!ipHit.ok) throw tooMany(ipHit.retryAfter);
     if (!identifier || !password) throw badRequest('Enter your email (or username) and password');
+    const pairKey = identifier + '|' + c.ip;
+    for (const [lim, key] of [[limits.loginFailIdIp, pairKey], [limits.loginFailId, identifier]]) {
+      const p = lim.peek(key);
+      if (!p.ok) throw tooMany(p.retryAfter);
+    }
     const user = db.prepare('SELECT * FROM users WHERE email = ? OR username = ?').get(identifier, identifier);
     // Same work and message whether or not the account exists.
     const ok = user ? await verifyPassword(password, user.password_hash) : await verifyPassword(password, 'scrypt$16384$8$1$AAAAAAAAAAAAAAAAAAAAAA==$' + 'A'.repeat(86) + '==');
-    if (!user || !ok) throw new HttpError(401, 'Incorrect email/username or password');
+    if (!user || !ok) {
+      limits.loginFailIdIp.hit(pairKey);
+      limits.loginFailId.hit(identifier);
+      throw new HttpError(401, 'Incorrect email/username or password');
+    }
+    limits.loginFailIdIp.reset(pairKey);
     if (user.status === 'banned') throw new HttpError(403, 'This account has been banned. Contact the Sikhify team if you believe this is a mistake.');
     startSession(c, user);
     return { user: selfUser(getUser(user.id)) };
@@ -81,19 +98,24 @@ export default function register(router, { db, config, mailer, settings, rate, l
   });
 
   router.post('/api/auth/forgot-password', async (c) => {
+    const started = Date.now();
     const email = str(c.body.email, { max: 200 }).toLowerCase();
     rate('reset', 'forgot:' + c.ip);
     if (!EMAIL_RE.test(email)) throw badRequest('Please fix the highlighted fields', { email: 'Enter a valid email address' });
+    // Per address and per email (counted for unknown emails too, so it reveals nothing).
+    rate('resetEmail', email);
     const user = db.prepare("SELECT * FROM users WHERE email = ? AND status != 'banned'").get(email);
+    let sending = Promise.resolve();
     if (user) {
       const link = createResetLink(user.id);
-      await mailer.send({
+      sending = mailer.send({
         to: user.email,
         subject: 'Reset your Sikhify password',
         text: `Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh ${user.name},\n\nSomeone (hopefully you) asked to reset the password for your Sikhify account.\nOpen this link within 1 hour to choose a new password:\n\n${link}\n\nIf you didn't ask for this, you can ignore this email.`,
       }).catch((err) => log.error('[mail] failed', err));
     }
-    // Same response either way, so the form can't be used to discover accounts.
+    // Same response, and the same minimum time, either way — the form can't be used to discover accounts.
+    await Promise.all([sending, sleep(FORGOT_MIN_MS - (Date.now() - started))]);
     return { ok: true, message: 'If an account exists for that email, a reset link has been sent.' };
   });
 
@@ -118,6 +140,9 @@ export default function register(router, { db, config, mailer, settings, rate, l
     db.prepare('UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?').run(hash, new Date().toISOString(), row.user_id);
     db.prepare('UPDATE password_resets SET used_at = ? WHERE token_hash = ?').run(new Date().toISOString(), row.token_hash);
     db.prepare('DELETE FROM sessions WHERE user_id = ?').run(row.user_id);
+    // Proving ownership by email also lifts an account-wide login block caused by someone else's guesses.
+    const owner = getUser(row.user_id);
+    if (owner) for (const id of [owner.email, owner.username]) limits.loginFailId.reset(String(id).toLowerCase());
     return { ok: true };
   });
 

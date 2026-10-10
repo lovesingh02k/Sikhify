@@ -12,11 +12,16 @@
     "gurdwaras:import": "node scripts/import-gurdwaras.js",
     "gurdwaras:import-historic": "node scripts/import-gurdwaras.js seed/gurdwaras/india-historic-gurdwaras.json",
     "gurdwaras:dev-fixtures": "node scripts/seed-dev-gurdwaras.js",
+    "gurdwaras:audit-verification": "node scripts/audit-gurdwara-verification.js",
     "directory:import": "node scripts/import-directory.js",
-    "directory:diagnose": "node scripts/diagnose-directory.js"
+    "directory:diagnose": "node scripts/diagnose-directory.js",
+    "observances:import": "node scripts/import-observances.js",
+    "uploads:optimize": "node scripts/optimize-uploads.js",
+    "uploads:cleanup": "node scripts/cleanup-uploads.js"
   },
   "dependencies": {
-    "libsql": "^0.5.17"
+    "libsql": "^0.5.17",
+    "sharp": "^0.35.5"
   },
   "engines": {
     "node": ">=22.13"

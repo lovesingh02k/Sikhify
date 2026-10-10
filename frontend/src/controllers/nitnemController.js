@@ -157,7 +157,7 @@ export function initNitnem() {
       '<div class="gb-actions"><button type="button" class="sk-btn sk-btn-sm" data-complete aria-pressed="false"></button>' +
       '<button type="button" class="sk-btn sk-btn-sm" data-bookmark-id="nitnem:' + b.id + '" data-bm aria-pressed="false">' + S.icon("bookmark", 15) + '<span class="sk-btn-label">Bookmark</span></button>' +
       '<button type="button" class="sk-btn sk-btn-sm" data-share>' + S.icon("share", 15) + "Share</button></div></div>" +
-      '<div class="mt-4">' + S.audio.playerHtml(b.track, yt) + "</div>" +
+      '<div class="mt-4">' + S.audio.playerHtml(b.track, yt, b.youtube ? { id: b.youtube, title: b.name } : null) + "</div>" +
       '<div class="sk-sticky-tools mt-4">' + S.prefsToolbar({ readingMode: true }) + "</div>" +
       '<div class="sk-read-progress" aria-hidden="true"><span data-read-bar></span></div>' +
       '<div class="flex flex-wrap gap-2 items-center mt-4">' +

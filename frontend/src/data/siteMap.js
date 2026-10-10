@@ -16,6 +16,7 @@ export const SITE_SECTIONS = [
     links: [
       { href: '/learn-sikhism', title: 'Learn Sikhism', text: 'Core beliefs, the Ten Gurus, concepts, practices and the Five Ks.' },
       { href: '/sikh-history', title: 'Sikh History', text: 'An interactive timeline from 1469 to the present day.' },
+      { href: '/festivals', title: 'Festivals & Important Days', text: 'Gurpurabs and other observances, with verified dates.' },
       { href: '/rehat-maryada', title: 'Rehat Maryada', text: 'A plain-language guide to the Sikh code of conduct.' },
       { href: '/faq', title: 'FAQ', text: 'Clear answers to the questions people ask most often.' },
       { href: '/gurus', title: 'The Ten Gurus', text: 'Profiles of the Ten Gurus: biography, timeline, teachings and Bani.' },
@@ -57,6 +58,13 @@ export const SITE_SECTIONS = [
       { href: '/events', title: 'Events', text: 'Gurpurabs, Nagar Kirtans, Samagams and more.' },
       { href: '/news', title: 'News', text: 'Sourced community and institutional news.' },
       { href: '/submit', title: 'Submit / Update Information', text: 'Add or correct information — every submission is reviewed.' },
+    ],
+  },
+  {
+    title: 'About',
+    links: [
+      { href: '/about', title: 'About Sikhify', text: 'What Sikhify is, what it offers, and who builds it.' },
+      { href: '/image-credits', title: 'Image credits', text: 'Sources and licences for every image.' },
     ],
   },
 ];

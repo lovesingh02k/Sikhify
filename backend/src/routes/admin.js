@@ -8,6 +8,26 @@ import { adminUser, AUTHOR_COLUMNS, authorFrom } from '../lib/serialize.js';
 import { SITE_ROLES, USER_STATUSES, can } from '../../../shared/roles.js';
 import { parseJson } from '../db/database.js';
 import { todayInIndia } from '../lib/util.js';
+import { isRemoteDatabase, schemaVersion } from '../db/database.js';
+
+/**
+ * Server configuration as the running server sees it — for Master Admins only, and never a secret value:
+ * only whether each setting is present, plus facts that are public anyway (the site's own URL).
+ * Every item says where it is changed (the host's environment variables), because none of it is editable here.
+ */
+export function systemStatus({ db, config, mailer }) {
+  const remote = isRemoteDatabase(db);
+  return {
+    items: [
+      { key: 'database', label: 'Database', ok: true, value: remote ? 'Turso / libSQL (remote)' : 'Local SQLite file', note: `Schema version ${schemaVersion(db)}`, vars: remote ? ['SIKHIFY_DATABASE_URL', 'SIKHIFY_DATABASE_AUTH_TOKEN'] : ['SIKHIFY_DB_PATH'] },
+      { key: 'publicUrl', label: 'Public site address', ok: !!config.publicUrl, value: config.publicUrl || 'Not set', note: config.publicUrl ? 'Used in password-reset links.' : 'Password-reset links cannot be built until this is set.', vars: ['SIKHIFY_PUBLIC_URL'] },
+      { key: 'email', label: 'Email delivery (password resets)', ok: !!(mailer && mailer.configured), value: mailer && mailer.configured ? 'Configured (Resend)' : 'Not configured', note: mailer && mailer.configured ? '' : 'Reset emails are not sent; admins can still create a reset link in Users.', vars: ['RESEND_API_KEY', 'MAIL_FROM'] },
+      { key: 'cookies', label: 'Secure sign-in cookies (HTTPS only)', ok: !!config.cookieSecure || !config.production, value: config.cookieSecure ? 'On' : 'Off', note: config.production && !config.cookieSecure ? 'Should be on in production.' : '', vars: ['SIKHIFY_COOKIE_SECURE'] },
+      { key: 'proxy', label: 'Visitor address from proxy (rate limits)', ok: true, value: config.trustProxy ? 'Trusted proxy (X-Forwarded-For)' : 'Direct connection', note: config.trustProxy ? '' : 'Behind a proxy other than Vercel, turn this on so limits apply per visitor.', vars: ['SIKHIFY_TRUST_PROXY'] },
+      { key: 'mode', label: 'Server mode', ok: true, value: config.production ? 'Production' : 'Development', note: '', vars: ['NODE_ENV'] },
+    ],
+  };
+}
 
 export default function register(router, deps) {
   const { db, settings, notify, logModeration } = deps;
@@ -35,7 +55,22 @@ export default function register(router, deps) {
         entriesNeedingReview: count("SELECT COUNT(*) AS n FROM entries WHERE verification_status IN ('pending','needs_review')"),
         upcomingEvents: count("SELECT COUNT(*) AS n FROM entries WHERE type = 'event' AND publish_status = 'published' AND sort_date >= ?", today),
         hukamnamasPublished: count("SELECT COUNT(*) AS n FROM hukamnamas WHERE status = 'published'"),
+        // Gurdwara Directory: "listed" = published (not archived); verification is a separate question.
+        gurdwarasTotal: count('SELECT COUNT(*) AS n FROM gurdwaras'),
+        gurdwarasListed: count('SELECT COUNT(*) AS n FROM gurdwaras WHERE archived_at IS NULL'),
+        gurdwarasVerified: count("SELECT COUNT(*) AS n FROM gurdwaras WHERE archived_at IS NULL AND verification_status = 'verified'"),
+        gurdwarasNeedVerification: count("SELECT COUNT(*) AS n FROM gurdwaras WHERE archived_at IS NULL AND verification_status = 'needs_verification'"),
+        gurdwarasArchived: count('SELECT COUNT(*) AS n FROM gurdwaras WHERE archived_at IS NOT NULL'),
+        pendingGurdwaraSubmissions: count("SELECT COUNT(*) AS n FROM gurdwara_submissions WHERE status = 'pending'"),
+        bannersLive: count("SELECT COUNT(*) AS n FROM home_banners WHERE status = 'published' AND (starts_at IS NULL OR starts_at <= ?) AND (ends_at IS NULL OR ends_at > ?)", new Date().toISOString(), new Date().toISOString()),
       },
+      // The newest submissions of both kinds (pending first), for the "Needs your attention" list.
+      recentSubmissions: db.prepare(`SELECT * FROM (
+          SELECT 'info' AS queue, s.id, s.title AS title, s.kind AS kind, s.status, s.created_at, s.is_guest, s.reference, u.name AS submitter FROM submissions s LEFT JOIN users u ON u.id = s.submitter_id
+          UNION ALL
+          SELECT 'gurdwara' AS queue, g.id, g.name AS title, g.kind AS kind, g.status, g.created_at, g.is_guest, g.reference, u.name AS submitter FROM gurdwara_submissions g LEFT JOIN users u ON u.id = g.submitter_id
+        ) ORDER BY CASE status WHEN 'pending' THEN 0 ELSE 1 END, created_at DESC LIMIT 8`).all()
+        .map((r) => ({ queue: r.queue, id: r.id, title: r.title, kind: r.kind, status: r.status, createdAt: r.created_at, guest: !!r.is_guest, reference: r.reference, submitter: r.submitter || null })),
       today,
       todaysHukamnama: todays ? { id: todays.id, status: todays.status, updatedAt: todays.updated_at } : null,
       recentActivity: db.prepare(`SELECT m.action, m.target_type, m.target_id, m.note, m.created_at, u.name AS actor FROM moderation_log m
@@ -294,6 +329,12 @@ export default function register(router, deps) {
       entriesByType: db.prepare("SELECT type AS label, COUNT(*) AS value FROM entries WHERE publish_status = 'published' GROUP BY type ORDER BY value DESC").all(),
       activeUsers30d: count('SELECT COUNT(*) AS n FROM users WHERE last_login_at >= ?', start.toISOString()),
     };
+  });
+
+  /* ---------- server configuration (read-only status; Master Admins) */
+  router.get('/api/admin/system', (c) => {
+    c.require('settings.manage');
+    return systemStatus(deps);
   });
 
   /* ---------- settings (each one is enforced by the API) */

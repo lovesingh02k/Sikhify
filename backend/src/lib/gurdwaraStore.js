@@ -30,7 +30,8 @@ export const gurdwaraUrl = (r) => `/directory/gurdwaras/${r.country_slug}/${r.st
  * Spelling variants match each other: "gurudwara" also finds "Gurdwara …".
  */
 export function ftsQuery(q) {
-  const terms = String(q || '').toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
+  // \p{M}: vowel signs and other combining marks belong to the word (Gurmukhi and Devanagari would otherwise split mid-word).
+  const terms = String(q || '').toLowerCase().match(/[\p{L}\p{M}\p{N}]+/gu) || [];
   return terms.slice(0, 8).map((t) => {
     const group = SEARCH_VARIANTS.find((g) => g.includes(t));
     return group ? `(${group.map((x) => `"${x}"*`).join(' OR ')})` : `"${t.replace(/"/g, '')}"*`;
@@ -89,10 +90,13 @@ export function createGurdwaraStore(db, { hideFixtures = false, remote = false }
     // so an empty result can report what else matches (e.g. listings awaiting verification).
     const where = ['g.archived_at IS NULL', NOT_FIXTURE];
     const params = [];
-    // Default listing: ACTIVE + VERIFIED only. Other statuses only when the visitor asks for them.
+    // Default listing: every published (not archived) ACTIVE record, verified or not — cards say which
+    // are verified. "verified" in the status filter narrows to verified records only. Closed statuses
+    // only when the visitor asks. ("needs_verification" is still accepted from older links; it is the default now.)
     const statuses = (p.statuses || []).filter((s) => STATUS_KEYS.includes(s));
-    const includeUnverified = (p.statuses || []).includes('needs_verification');
-    const ops = statuses.length ? statuses : (includeUnverified ? STATUS_KEYS : DEFAULT_STATUS_FILTER);
+    const verifiedOnly = (p.statuses || []).includes('verified');
+    const includeUnverified = !verifiedOnly;
+    const ops = statuses.length ? statuses : DEFAULT_STATUS_FILTER;
     for (const [col, v] of [['co.slug', p.country], ['st.slug', p.state], ['ci.slug', p.city]]) {
       if (v) { where.push(`${col} = ?`); params.push(v); }
     }
@@ -128,7 +132,7 @@ export function createGurdwaraStore(db, { hideFixtures = false, remote = false }
     const filterParams = [...params];
     where.push(`g.status IN (${ops.map(() => '?').join(',')})`);
     params.push(...ops);
-    if (!includeUnverified) where.push("g.verification_status = 'verified'");
+    if (verifiedOnly) where.push("g.verification_status = 'verified'");
     // Distance sorting only orders results; records without coordinates stay in the list (last).
     let order = 'g.name COLLATE NOCASE, g.id';
     const orderParams = [];
@@ -170,10 +174,11 @@ export function createGurdwaraStore(db, { hideFixtures = false, remote = false }
     return out;
   }
 
-  /** Countries / states / cities that have records, with counts of verified, open listings. */
+  /** Countries / states / cities that have records, with counts of open listings. */
   function locations({ country, state } = {}) {
     const vis = `g.archived_at IS NULL AND ${NOT_FIXTURE}`;
-    const verifiedCount = "SUM(CASE WHEN g.verification_status = 'verified' AND g.status = 'active' THEN 1 ELSE 0 END)";
+    // count: open listings shown by default (verified or awaiting verification); total: every published record.
+    const verifiedCount = "SUM(CASE WHEN g.status = 'active' THEN 1 ELSE 0 END)";
     const out = {
       countries: db.prepare(`SELECT co.code, co.name, co.slug, ${verifiedCount} AS count, COUNT(*) AS total FROM gurdwaras g JOIN countries co ON co.id = g.country_id
         WHERE ${vis} GROUP BY co.id ORDER BY co.name`).all(),
@@ -464,7 +469,8 @@ export function createGurdwaraStore(db, { hideFixtures = false, remote = false }
         if (!r) { skipped.push({ id, reason: 'not found' }); continue; }
         if (r.archived_at) { skipped.push({ id, reason: 'archived' }); continue; }
         if (r.verification_status === 'verified') { skipped.push({ id, reason: 'already verified' }); continue; }
-        if (!db.prepare('SELECT 1 FROM gurdwara_sources WHERE gurdwara_id = ?').get(id)) { skipped.push({ id, reason: 'no source' }); continue; }
+        // A community note alone is not evidence: verification needs a cited source with a link.
+        if (!db.prepare("SELECT 1 FROM gurdwara_sources WHERE gurdwara_id = ? AND source_url != '' AND source_type != 'community'").get(id)) { skipped.push({ id, reason: 'no cited source with a link' }); continue; }
         db.prepare("UPDATE gurdwaras SET verification_status = 'verified', verified_by = ?, verified_at = ?, updated_by = ?, updated_at = ? WHERE id = ?").run(user.id, now, user.id, now, id);
         db.prepare('INSERT INTO gurdwara_verification (gurdwara_id, action, note, actor_id) VALUES (?, ?, ?, ?)').run(id, 'verified', note, user.id);
         db.prepare('UPDATE gurdwara_sources SET verified_at = COALESCE(verified_at, ?) WHERE gurdwara_id = ?').run(now, id);

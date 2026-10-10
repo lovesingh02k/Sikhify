@@ -26,8 +26,12 @@
     "gurdwaras:import": "node backend/scripts/import-gurdwaras.js",
     "gurdwaras:import-historic": "node backend/scripts/import-gurdwaras.js backend/seed/gurdwaras/india-historic-gurdwaras.json",
     "gurdwaras:dev-fixtures": "node backend/scripts/seed-dev-gurdwaras.js",
+    "gurdwaras:audit-verification": "node backend/scripts/audit-gurdwara-verification.js",
     "directory:import": "node backend/scripts/import-directory.js",
-    "directory:diagnose": "node backend/scripts/diagnose-directory.js"
+    "directory:diagnose": "node backend/scripts/diagnose-directory.js",
+    "observances:import": "node backend/scripts/import-observances.js",
+    "uploads:optimize": "node backend/scripts/optimize-uploads.js",
+    "uploads:cleanup": "node backend/scripts/cleanup-uploads.js"
   },
   "engines": {
     "node": ">=22.13"

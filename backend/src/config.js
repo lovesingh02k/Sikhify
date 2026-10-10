@@ -47,11 +47,16 @@ export function loadConfig(overrides = {}) {
       ? (env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${env.VERCEL_PROJECT_PRODUCTION_URL}` : env.VERCEL_URL ? `https://${env.VERCEL_URL}` : '')
       : 'http://localhost:5173')).replace(/\/$/, ''),
     cookieSecure: bool(env.SIKHIFY_COOKIE_SECURE, production),
-    trustProxy: bool(env.SIKHIFY_TRUST_PROXY, false),
+    // Behind Vercel the client IP is in X-Forwarded-For (Vercel overwrites it, so it can't be spoofed);
+    // anywhere else it must be switched on explicitly for a trusted proxy.
+    trustProxy: bool(env.SIKHIFY_TRUST_PROXY, !!env.VERCEL),
     sessionDays: Number(env.SIKHIFY_SESSION_DAYS || 30),
     resendApiKey: env.RESEND_API_KEY || '',
     mailFrom: env.MAIL_FROM || '',
     serveStatic: bool(env.SIKHIFY_SERVE_STATIC, production),
+    // Maintenance scripts only: work on the database without applying pending schema migrations
+    // (so a data job never changes a production schema ahead of the code deploy). Never set it on the server.
+    skipMigrations: bool(env.SIKHIFY_SKIP_MIGRATIONS, false),
     // Logs each Gurdwara Directory query (filters + result counts; never credentials). On in development.
     debugQueries: bool(env.SIKHIFY_DEBUG_QUERIES, !production && !env.NODE_TEST_CONTEXT),
     ...overrides,

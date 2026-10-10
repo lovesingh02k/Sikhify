@@ -121,32 +121,41 @@ export default function HukamnamaEditor() {
 
       <form className="sk-form" onSubmit={(e) => { e.preventDefault(); save(); }} noValidate>
         <FormError error={state.error} />
-        <section className="sk-card sk-form">
+        <section className="sk-card sk-form sk-step">
+          <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">1</span><div><h3 className="sk-step-title" id="date-h">Date</h3><p className="sk-step-hint">Pick the day, then press “Fill from BaniDB” — the text, Ang, Raag and meanings are filled in for you.</p></div></header>
           <div className="sk-form-grid">
             <TextInput label="Date" type="date" required value={form.date} onChange={set('date')} error={state.fields.date} help="The day this Hukamnama is for (India time)." />
+            <div className="flex items-end"><button type="button" className="sk-btn sk-btn-gold" disabled={state.busy || !form.date} onClick={fillFromBaniDb}><Icon name="upload" size={14} />Fill from BaniDB for this date</button></div>
+          </div>
+          <details className="sk-step-more" open={!!(state.fields.ang) || undefined}>
+          <summary>Ang, Raag and Bani (filled automatically)</summary>
+          <div className="sk-form-grid mt-3">
             <TextInput label="Ang" type="number" min="1" max="1430" value={form.ang} onChange={set('ang')} error={state.fields.ang} help="Page of the Sri Guru Granth Sahib Ji (1–1430)." />
             <TextInput label="Raag" value={form.raag} onChange={set('raag')} />
             <TextInput label="Bani of" value={form.writer} onChange={set('writer')} help="e.g. Guru Arjan Dev Ji" />
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <button type="button" className="sk-btn sk-btn-sm" disabled={state.busy} onClick={fillFromBaniDb}><Icon name="upload" size={14} />Fill from BaniDB for this date</button>
-            <span className="sk-card-meta" style={{ marginTop: 0 }}>Replaces the text fields below with BaniDB&apos;s Hukamnama for the chosen date.</span>
-          </div>
+          </details>
+          <p className="sk-card-meta" style={{ marginTop: 0 }}>“Fill from BaniDB” replaces the text fields below with BaniDB&apos;s Hukamnama for the chosen date.</p>
         </section>
 
-        <section className="sk-card sk-form" aria-labelledby="text-h">
-          <h3 className="sk-card-title" id="text-h">Text</h3>
+        <section className="sk-card sk-form sk-step" aria-labelledby="text-h">
+          <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">2</span><div><h3 className="sk-step-title" id="text-h">Text</h3><p className="sk-step-hint">Gurmukhi is required; add the English meaning so visitors can understand it.</p></div></header>
           <p className="sk-card-meta" style={{ marginTop: 0 }}>Put one line of Gurbani per line. When a translation has the same number of lines, each line&apos;s meaning appears under it; otherwise it is shown as a paragraph.</p>
           <TextArea label="Gurmukhi" required rows={8} value={form.gurmukhi} onChange={set('gurmukhi')} error={state.fields.gurmukhi} lang="pa" className="font-gurmukhi" help={`${g} line${g === 1 ? '' : 's'}`} />
+          <TextArea label="English meaning" rows={6} value={form.english} onChange={set('english')} error={state.fields.english} help={`${lineCount(form.english)} lines`} />
+          <details className="sk-step-more" open={!!(form.transliteration || form.punjabi || form.hindi) || undefined}>
+          <summary>Other languages: transliteration, Punjabi and Hindi meaning</summary>
+          <div className="sk-stack mt-3" style={{ gap: '0.9rem' }}>
           <TextArea label="Transliteration" rows={6} value={form.transliteration} onChange={set('transliteration')} help={`${lineCount(form.transliteration)} lines`} />
           <TextArea label="Punjabi meaning" rows={6} value={form.punjabi} onChange={set('punjabi')} lang="pa" help={`${lineCount(form.punjabi)} lines`} />
           <TextArea label="Hindi meaning" rows={6} value={form.hindi} onChange={set('hindi')} lang="hi" help={`${lineCount(form.hindi)} lines`} />
-          <TextArea label="English meaning" rows={6} value={form.english} onChange={set('english')} error={state.fields.english} help={`${lineCount(form.english)} lines`} />
+          </div>
+          </details>
           {misaligned.length ? <p className="sk-note" role="note"><Icon name="alert" size={16} /><span>{misaligned.join(', ')} {misaligned.length === 1 ? 'has' : 'have'} a different number of lines from the Gurmukhi, so {misaligned.length === 1 ? 'it' : 'they'} will be shown as a paragraph.</span></p> : null}
         </section>
 
-        <section className="sk-card sk-form" aria-labelledby="audio-h">
-          <h3 className="sk-card-title" id="audio-h">Audio &amp; source</h3>
+        <section className="sk-card sk-form sk-step" aria-labelledby="audio-h">
+          <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">3</span><div><h3 className="sk-step-title" id="audio-h">Audio &amp; source</h3><p className="sk-step-hint">One click adds the official SGPC recordings for this date.</p></div></header>
           <div className="sk-form-grid">
             <TextInput label="Hukamnama audio URL" type="url" value={form.audioUrl} onChange={set('audioUrl')} error={state.fields.audioUrl} />
             <TextInput label="Katha audio URL" type="url" value={form.kathaUrl} onChange={set('kathaUrl')} error={state.fields.kathaUrl} />

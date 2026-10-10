@@ -9,6 +9,41 @@ import { usePageMeta } from '../../hooks/usePageMeta.js';
 import { adminService } from '../../services/admin/adminService.js';
 import { toast } from '../../utils/format.js';
 
+/**
+ * Read-only view of how the server is configured. Secrets (database token, email key) are never sent to the
+ * browser — only whether each setting is present. Changing them happens in the host's environment variables.
+ */
+function ServerConfiguration({ canView }) {
+  const status = useAsync(() => (canView ? adminService.system() : Promise.resolve(null)), [canView]);
+  return (
+    <section className="sk-card" aria-labelledby="server-h">
+      <h3 className="sk-card-title" id="server-h">Server configuration</h3>
+      <p className="sk-card-text mt-1">
+        These are set by whoever hosts the site — in the hosting provider&apos;s environment variables (on Vercel: Project → Settings → Environment
+        Variables) — not here, so passwords and keys are never exposed in the browser. After changing one, redeploy the site.
+      </p>
+      {!canView ? <p className="sk-card-meta">Only Master Admins can see the configuration status.</p> : (
+        <AsyncView state={status} errorTitle="The configuration status couldn’t be loaded">
+          {(d) => (
+            <ul className="sk-config-list mt-3">
+              {d.items.map((it) => (
+                <li key={it.key} className={it.ok ? '' : 'is-warn'}>
+                  <span className={`sk-pill sk-pill-${it.ok ? 'active' : 'pending'}`}>{it.ok ? 'OK' : 'Needs attention'}</span>
+                  <div className="min-w-0">
+                    <p className="sk-config-label">{it.label}: <strong>{it.value}</strong></p>
+                    {it.note ? <p className="sk-card-meta" style={{ marginTop: 2 }}>{it.note}</p> : null}
+                    <p className="sk-card-meta" style={{ marginTop: 2 }}>Set with {it.vars.map((v, i) => <span key={v}>{i ? ', ' : ''}<code>{v}</code></span>)}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </AsyncView>
+      )}
+    </section>
+  );
+}
+
 export default function Settings() {
   usePageMeta('Settings — Sikhify Admin', undefined, { noindex: true });
   const { can } = useAuth();
@@ -45,10 +80,7 @@ export default function Settings() {
           </form>
         ) : null)}
       </AsyncView>
-      <section className="sk-card">
-        <h3 className="sk-card-title">Server configuration</h3>
-        <p className="sk-card-text">Email delivery, database location, cookie security and the public URL are set with environment variables on the server — see <code>.env.example</code> and the README. They are never editable from the browser.</p>
-      </section>
+      {/* Server configuration (hosting environment status) is hidden from the panel on request; the component stays in this file for later use. */}
     </>
   );
 }

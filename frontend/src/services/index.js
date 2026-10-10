@@ -5,6 +5,7 @@ export { mediaService, youtubeService } from './media/mediaService.js';
 export { hukamnamaService } from './hukamnama/hukamnamaService.js';
 export { entryService, eventService, personalityService, newsService, submissionService } from './content/contentService.js';
 export { gurdwaraService } from './gurdwaras/gurdwaraService.js';
+export { bannerService } from './banners/bannerService.js';
 export { adminService } from './admin/adminService.js';
 export { searchService } from './search/searchService.js';
 export { ApiError, isApiUnavailable } from './api/client.js';

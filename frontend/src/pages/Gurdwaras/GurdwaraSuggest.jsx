@@ -1,15 +1,17 @@
 /* ==========================================================================
    /directory/gurdwaras/suggest — suggest a missing Gurdwara, or an update to
-   an existing one (?update=country/state/city/slug). Every suggestion goes to
-   the review queue as PENDING; nothing is published until the Sikhify team
-   has checked it. Members can follow their suggestions here (#mine) and
-   resubmit when the team asks for changes.
+   an existing one (?update=country/state/city/slug). Anyone can send one —
+   an account is not needed (visitors may leave a name/email for follow-up).
+   Every suggestion goes to the review queue as PENDING; nothing is published
+   until the Sikhify team has checked it. Signed-in members can follow their
+   suggestions here (#mine) and resubmit when the team asks for changes.
    ========================================================================== */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Icon from '../../components/ui/Icon.jsx';
 import { TextInput, TextArea, Select, FormError } from '../../components/ui/Form.jsx';
-import { Loading, Empty, ErrorState, ServiceUnavailable } from '../../components/ui/States.jsx';
+import { Loading, ErrorState, ServiceUnavailable } from '../../components/ui/States.jsx';
+import { GuestContact, SubmissionReceived } from '../../components/common/GuestContact.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useAsync } from '../../hooks/useAsync.js';
 import { useReactPage } from '../../hooks/useReactPage.js';
@@ -27,6 +29,8 @@ const EMPTY = { name: '', country: '', state: '', city: '', address: '', website
 function SuggestionFields({ form, setForm, fields, countries, kind }) {
   const on = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   const isNew = kind === 'new';
+  // Open when the visitor already typed something there, or when one of them has an error.
+  const hasMore = !!(form.website || form.phone || fields.website || fields.phone);
   return (
     <div className="sk-form-grid">
       {isNew ? (
@@ -39,19 +43,33 @@ function SuggestionFields({ form, setForm, fields, countries, kind }) {
           <TextInput label="City / Town" required value={form.city} onChange={on('city')} error={fields.city} maxLength={100} />
         </>
       ) : null}
-      <TextInput className={isNew ? '' : 'sk-span-2'} label={isNew ? 'Address' : 'Correct address (if it changed)'} value={form.address} onChange={on('address')} error={fields.address} maxLength={500} />
-      <TextInput label="Website" type="url" inputMode="url" placeholder="https://" value={form.website} onChange={on('website')} error={fields.website} maxLength={300} />
-      <TextInput label="Phone" type="tel" value={form.phone} onChange={on('phone')} error={fields.phone} maxLength={60} help="The Gurdwara’s public number only." />
-      <TextArea className="sk-span-2" label={isNew ? 'Additional information' : 'What should be updated?'} required={!isNew} rows={5} value={form.details} onChange={on('details')} error={fields.details} maxLength={5000}
-        help={isNew ? 'Langar timings, facilities, programs, landmarks — anything that helps us check the listing.' : 'For example new timings, a changed phone number, or that the Gurdwara has moved or closed.'} />
-      <TextInput className="sk-span-2" label="Source / Reference" required value={form.source} onChange={on('source')} error={fields.source} maxLength={500}
-        help="Where does this come from? The Gurdwara’s website or social page, a committee notice, a Sikh organisation’s listing… Please don’t guess addresses or phone numbers." />
+      {!isNew ? <TextArea className="sk-span-2" label="What should be updated?" required rows={4} value={form.details} onChange={on('details')} error={fields.details} maxLength={5000}
+        help="For example new timings, a changed phone number, or that the Gurdwara has moved or closed." /> : null}
+      <TextInput className="sk-span-2" label={isNew ? 'Address (optional)' : 'Correct address (optional, if it changed)'} autoComplete="off" value={form.address} onChange={on('address')} error={fields.address} maxLength={500} />
+      <TextInput className="sk-span-2" label="Where did you get this information?" required value={form.source} onChange={on('source')} error={fields.source} maxLength={500}
+        help="A link to the Gurdwara’s website or social page, a committee notice, or “I visited in 2026”. Please don’t guess addresses or phone numbers." />
+      <details className="sk-span-2 sk-more" open={hasMore || undefined}>
+        <summary>More details (optional): website, phone{isNew ? ', notes' : ''}</summary>
+        <div className="sk-form-grid mt-3">
+          <TextInput label="Website (optional)" type="url" inputMode="url" placeholder="https://" value={form.website} onChange={on('website')} error={fields.website} maxLength={300} />
+          <TextInput label="Phone (optional)" type="tel" value={form.phone} onChange={on('phone')} error={fields.phone} maxLength={60} help="The Gurdwara’s public number only." />
+          {isNew ? <TextArea className="sk-span-2" label="Anything else (optional)" rows={4} value={form.details} onChange={on('details')} error={fields.details} maxLength={5000}
+            help="Langar timings, facilities, programs, landmarks — anything that helps us check the listing." /> : null}
+        </div>
+      </details>
     </div>
   );
 }
 
 function MySuggestions({ refreshKey, countries }) {
   const state = useAsync(() => gurdwaraService.mySuggestions(), [refreshKey]);
+  // A #mine link lands here once the list has loaded (so the layout above it is final), not on a timer.
+  const scrolled = useRef(false);
+  useEffect(() => {
+    if (!state.data || scrolled.current || window.location.hash !== '#mine') return;
+    scrolled.current = true;
+    document.getElementById('mine')?.scrollIntoView({ block: 'start' });
+  }, [state.data]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(EMPTY);
   const [fields, setFields] = useState({});
@@ -115,22 +133,24 @@ export default function GurdwaraSuggest() {
   const target = useAsync(() => (updatePath ? gurdwaraService.detail(...updatePath.split('/').slice(0, 4)) : null), [updatePath]);
   const countries = useAsync(() => gurdwaraService.countries(), []);
   const [form, setForm] = useState(EMPTY);
+  const [guest, setGuest] = useState({ guestName: '', guestEmail: '' });
   const [fields, setFields] = useState({});
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
-  useEffect(() => { if (window.location.hash === '#mine') setTimeout(() => document.getElementById('mine')?.scrollIntoView(), 300); }, [user]);
+  const sentRef = useRef(null);
+  useEffect(() => { if (sent && sentRef.current) { sentRef.current.scrollIntoView({ block: 'center' }); sentRef.current.querySelector('[role="status"]')?.focus({ preventScroll: true }); } }, [sent]);
 
   const g = target.data && target.data.gurdwara;
   async function submit(e) {
     e.preventDefault();
+    if (busy) return; // a double tap sends once
     setBusy(true); setError(null); setFields({});
     try {
-      const res = await gurdwaraService.suggest({ ...form, kind, gurdwaraId: g ? g.id : undefined });
+      const res = await gurdwaraService.suggest({ ...form, ...(user ? {} : guest), kind, gurdwaraId: g ? g.id : undefined });
       setSent(res);
       setRefreshKey((k) => k + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
       setError(err); setFields(err.fields || {});
       const first = err.fields && Object.keys(err.fields)[0];
@@ -142,14 +162,7 @@ export default function GurdwaraSuggest() {
   let body;
   if (status === 'loading') body = <Loading rows={2} />;
   else if (status === 'unavailable') body = <ServiceUnavailable />;
-  else if (!user) {
-    body = (
-      <Empty icon="lock" title="Sign in to suggest a Gurdwara" text="Suggestions are linked to your account so our team can follow up, and you can see what happened to each one.">
-        <Link className="sk-btn sk-btn-gold sk-btn-sm" to={`/login?next=${next}`}>Sign in</Link>
-        <Link className="sk-btn sk-btn-sm" to={`/signup?next=${next}`}>Create an account</Link>
-      </Empty>
-    );
-  } else if (updatePath && target.error) {
+  else if (updatePath && target.error) {
     body = <ErrorState error={target.error} title="That Gurdwara couldn’t be found"><Link className="sk-btn sk-btn-sm" to="/directory/gurdwaras/suggest">Suggest a new Gurdwara instead</Link></ErrorState>;
   } else if (updatePath && !g) body = <Loading rows={2} />;
   else {
@@ -157,8 +170,8 @@ export default function GurdwaraSuggest() {
       <div className="sk-gsuggest-layout">
         <div className="sk-stack">
           {sent ? (
-            <div className="sk-card">
-              <p className="sk-form-success" role="status"><strong>Thank you — your suggestion was received.</strong> It&apos;s now <strong>pending review</strong> and won&apos;t appear in the directory until our team has checked it. You&apos;ll get a notification when it has been reviewed.</p>
+            <div className="sk-card" ref={sentRef}>
+              <SubmissionReceived reference={sent.reference} signedIn={!!user} what="suggestion" />
               {sent.possibleExisting && sent.possibleExisting.length ? (
                 <div className="sk-notice mt-4" role="note">
                   <p><strong>Is it one of these?</strong> These verified listings look similar — if yours is already here, there&apos;s nothing more to do.</p>
@@ -167,7 +180,7 @@ export default function GurdwaraSuggest() {
               ) : null}
               <div className="sk-form-actions mt-4">
                 <button type="button" className="sk-btn sk-btn-sm" onClick={() => { setSent(null); setForm(EMPTY); }}>Suggest another</button>
-                <a className="sk-btn sk-btn-sm" href="#mine">See my suggestions</a>
+                {user ? <a className="sk-btn sk-btn-sm" href="#mine">See my suggestions</a> : null}
                 <Link className="sk-btn sk-btn-sm" to="/directory/gurdwaras">Back to the directory</Link>
               </div>
             </div>
@@ -176,18 +189,22 @@ export default function GurdwaraSuggest() {
               <h2 className="sk-card-title" id="form-h">{g ? <>Suggest an update for <Link to={g.url}>{g.name}</Link></> : 'Gurdwara details'}</h2>
               {g ? <p className="sk-card-meta">{[g.city.name, g.state.name, g.country.name].join(', ')}</p> : null}
               <FormError error={error} />
+              <p className="sk-form-help" style={{ marginTop: 0 }}>Fields marked <span className="sk-form-req">*</span> are needed. Everything else is optional.</p>
               <SuggestionFields form={form} setForm={setForm} fields={fields} countries={countries.data} kind={kind} />
               {countries.error ? <p className="sk-form-error">The country list couldn&apos;t be loaded — please reload the page.</p> : null}
+              {!user ? <GuestContact value={guest} onChange={setGuest} errors={fields} next={next} /> : null}
               <div className="sk-form-actions">
                 <button type="submit" className="sk-btn sk-btn-gold" disabled={busy}>{busy ? 'Sending…' : 'Send for review'}</button>
                 <span className="sk-card-meta" style={{ marginTop: 0 }}>Checked by the Sikhify team before anything is published.</span>
               </div>
             </form>
           )}
-          <section id="mine" className="sk-card" aria-labelledby="mine-title">
-            <h2 className="sk-card-title" id="mine-title">My suggestions</h2>
-            <div className="mt-3"><MySuggestions refreshKey={refreshKey} countries={countries.data} /></div>
-          </section>
+          {user ? (
+            <section id="mine" className="sk-card" aria-labelledby="mine-title">
+              <h2 className="sk-card-title" id="mine-title">My suggestions</h2>
+              <div className="mt-3"><MySuggestions refreshKey={refreshKey} countries={countries.data} /></div>
+            </section>
+          ) : null}
         </div>
         <aside className="sk-card" aria-labelledby="how">
           <h2 className="sk-card-title" id="how">How review works</h2>

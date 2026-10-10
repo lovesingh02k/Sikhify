@@ -53,9 +53,26 @@ const PAGE_HTML = `<main id="main-content">
 <li><a class="quicklink-item" href="/learn-sikhism"><span class="quicklink-icon"><svg aria-hidden="true" fill="none" height="24" viewbox="0 0 24 24" width="24"><path d="M3 8l9-4 9 4-9 4-9-4Z" stroke="#142238" stroke-linejoin="round" stroke-width="1.4"></path><path d="M7 10.5V16c0 1 2.2 2.5 5 2.5s5-1.5 5-2.5v-5.5" stroke="#142238" stroke-width="1.4"></path></svg></span><span class="quicklink-title">Learn</span><span class="quicklink-sub">Sikhism</span></a></li>
 <li><a class="quicklink-item" href="/sikh-store"><span class="quicklink-icon"><svg aria-hidden="true" fill="none" height="24" viewbox="0 0 24 24" width="24"><path d="M4 9l1.5-4.5h13L20 9" stroke="#142238" stroke-linejoin="round" stroke-width="1.4"></path><path d="M4 9h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V9Z" stroke="#142238" stroke-width="1.4"></path></svg></span><span class="quicklink-title">Sikh Store</span><span class="quicklink-sub"><span class="soon-pill" aria-label="coming soon">Soon</span></span></a></li>
 <li><a class="quicklink-item" href="/community"><span class="quicklink-icon"><svg aria-hidden="true" fill="none" height="24" viewbox="0 0 24 24" width="24"><circle cx="9" cy="8" r="3" stroke="#142238" stroke-width="1.4"></circle><circle cx="17" cy="9" r="2.3" stroke="#142238" stroke-width="1.4"></circle><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="#142238" stroke-width="1.4"></path><path d="M15.5 14.3c2.2.3 4 1.9 4 4.7" stroke="#142238" stroke-width="1.4"></path></svg></span><span class="quicklink-title">Community</span><span class="quicklink-sub">Sangat &amp; Groups</span></a></li>
-<li><a class="quicklink-item" href="/downloads"><span class="quicklink-icon"><svg aria-hidden="true" fill="none" height="24" viewbox="0 0 24 24" width="24"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="#142238" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"></path><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="#142238" stroke-width="1.4"></path></svg></span><span class="quicklink-title">Downloads</span><span class="quicklink-sub"><span class="soon-pill" aria-label="coming soon">Soon</span></span></a></li>
 </ul>
 </div>
+</div>
+</section>
+<!-- EL:SECTION home-banners — hidden (takes no space) until /api/banners/home returns a published banner (homeController) -->
+<section aria-label="Featured" class="home-banners-section" data-home-banners="" hidden="">
+<div class="max-w-[1280px] mx-auto px-5 md:px-8"><div class="home-banners" data-banners=""></div></div>
+</section>
+<!-- EL:SECTION festivals-section — hidden (takes no space) until /api/festivals/home returns cards (homeController) -->
+<section aria-labelledby="festivals-heading" class="festivals-section" data-festivals-section="" hidden="">
+<div class="max-w-[1280px] mx-auto px-5 md:px-8">
+<div class="festivals-head">
+<span class="section-icon" aria-hidden="true"><svg aria-hidden="true" width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></span>
+<div class="min-w-0 festivals-head-text">
+<h2 class="festivals-title font-heading" id="festivals-heading">Sikh Festivals &amp; Important Days</h2>
+<p class="festivals-sub">Celebrate the moments that connect us to Sikhi.</p>
+</div>
+<a class="pill-link" href="/festivals">View all days <span aria-hidden="true">→</span></a>
+</div>
+<div class="festivals-row" data-festivals="" data-motion="reveal"></div>
 </div>
 </section>
 <!-- EL:SECTION dashboard-section -->
@@ -65,60 +82,71 @@ const PAGE_HTML = `<main id="main-content">
 <!-- EL:COLUMN hukamnama-column -->
 <!-- EL:WIDGET:Testimonial (Hukamnama excerpt card) -->
 <article class="hukamnama-card">
+<span aria-hidden="true" class="khanda-mark hukamnama-watermark"></span>
 <div class="hukamnama-card-head">
-<span aria-hidden="true" class="khanda-mark hukamnama-khanda"></span>
+<span class="hukamnama-icon" aria-hidden="true"><svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5Z"></path><path d="M12 6.5v13"></path></svg></span>
 <h2 class="font-heading text-lg font-semibold text-white">Today's Hukamnama</h2>
 </div>
-<p class="hukamnama-date" data-hk-date="">Shabad for reflection</p>
+<p class="hukamnama-date"><svg aria-hidden="true" width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg><span data-hk-date="">Shabad for reflection</span></p>
 <p class="hukamnama-gurmukhi font-gurmukhi" data-hk-gurmukhi="" lang="pa">
             ਜੋ ਨਰੁ ਦੁਖ ਮੈ ਦੁਖੁ ਨਹੀ ਮਾਨੈ ॥<br/>
             ਸੁਖ ਸਨੇਹੁ ਅਰੁ ਭੈ ਨਹੀ ਜਾ ਕੈ ਕੰਚਨ ਮਾਟੀ ਮਾਨੈ ॥੧॥ ਰਹਾਉ ॥
           </p>
-<p class="hukamnama-translation" data-hk-translation="">That man, who in the midst of pain, does not feel pain, who is not affected by pleasure, affection or fear, and who looks alike upon gold and dust.</p>
+<div class="hukamnama-english">
+<p class="hukamnama-label">English translation</p>
+<p class="hukamnama-translation" data-hk-english="" lang="en">That man, who in the midst of pain, does not feel pain, who is not affected by pleasure, affection or fear, and who looks alike upon gold and dust.</p>
+</div>
+<p class="hukamnama-meaning" data-hk-translation="" hidden=""></p>
 <div class="hukamnama-footer">
 <cite class="hukamnama-source" data-hk-source="">— Sri Guru Granth Sahib Ji (Ang 633), Guru Tegh Bahadur Ji</cite>
-<!-- EL:WIDGET:Button -->
-<a class="btn-gold-fill btn-sm" href="/hukamnama">Read More</a>
+</div>
+<div class="hukamnama-bottom">
+<a class="hukamnama-more" href="/hukamnama">Read full Hukamnama <span aria-hidden="true">→</span></a>
+<svg class="hukamnama-ornament" aria-hidden="true" viewbox="0 0 140 28" fill="none"><path d="M0 14h48M92 14h48" stroke="currentColor" stroke-width="1.5"></path><path d="M70 3l10 11-10 11-10-11 10-11Z" stroke="currentColor" stroke-width="1.5"></path><circle cx="70" cy="14" r="3" fill="currentColor"></circle></svg>
 </div>
 </article>
 <!-- EL:COLUMN events-column -->
-<article class="panel-card">
+<article class="panel-card events-card">
 <div class="panel-card-head">
-<h2 class="font-heading text-lg font-semibold text-ink-900">Upcoming Events</h2>
-<a class="panel-view-all" href="/events">View all</a>
+<h2 class="panel-title font-heading"><span class="panel-title-icon" aria-hidden="true"><svg aria-hidden="true" width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></span>Upcoming Events</h2>
+<a class="panel-view-all" href="/events" data-home-events-all="">View all <span aria-hidden="true">→</span></a>
 </div>
+<p class="panel-kicker" data-home-events-kicker="" hidden="">More Gurpurabs &amp; important days ahead</p>
 <div class="panel-soon" data-home-events="">
 <span class="panel-soon-icon" aria-hidden="true"><svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewbox="0 0 24 24" width="22"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg></span>
 <p class="panel-soon-text">No upcoming events are listed yet. Gurpurabs, Nagar Kirtans and Kirtan Darbars appear here once they are verified — you can <a class="panel-view-all" href="/submit?kind=event">submit an event</a>.</p>
 <a class="panel-view-all" href="/sikh-history">Explore Sikh history →</a>
 </div>
+<p class="panel-foot">Know of a Nagar Kirtan or Kirtan Darbar? <a class="panel-view-all" href="/submit?kind=event">Submit an event <span aria-hidden="true">→</span></a></p>
 </article>
 <!-- EL:COLUMN store-column -->
-<article class="panel-card">
+<article class="panel-card store-card">
 <div class="panel-card-head">
-<h2 class="font-heading text-lg font-semibold text-ink-900">Sikh Store <span class="soon-pill" aria-label="coming soon">Soon</span></h2>
-<a class="panel-view-all" href="/sikh-store">Learn more</a>
+<h2 class="panel-title font-heading"><span class="panel-title-icon" aria-hidden="true"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9l1.5-4.5h13L20 9"></path><path d="M4 9h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V9Z"></path></svg></span>Sikh Store</h2>
+<span class="soon-pill" aria-label="coming soon">Soon</span>
 </div>
 <!-- EL:INNER-SECTION product-thumbs-row -->
-<p class="panel-soon-text mb-3">A preview of what's planned — the store isn't open yet.</p>
+<p class="panel-soon-text mb-3">Kara, Gutka Sahib, Khanda pendants and more — a preview of what's planned. The store isn't open yet.</p>
 <div class="product-thumb-row is-preview">
 <!-- EL:WIDGET:Image + Text -->
 <a class="product-thumb" href="/sikh-store">
 <!-- Photo: bracelet close-up — by monicore-style placeholder, Pexels -->
 <img alt="Polished steel Kara bracelet" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-title">Steel Kara</span>
+<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Steel Kara</span>
 </a>
 <a class="product-thumb" href="/sikh-store">
 <!-- Photo: leather-bound book — by Jess Bailey Designs, Pexels -->
 <img alt="Gutka Sahib prayer book" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-title">Gutka Sahib</span>
+<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Gutka Sahib</span>
 </a>
 <a class="product-thumb" href="/sikh-store">
 <!-- Photo: pendant necklace — by monicore, Pexels (pexels.com/photo/135486) -->
 <img alt="Khanda pendant necklace" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-title">Khanda Pendant</span>
+<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Khanda Pendant</span>
 </a>
 </div>
+<div class="store-note"><span class="khanda-mark store-note-mark" aria-hidden="true"></span><p><strong>Opening soon.</strong> We'll announce it here on the homepage when the store opens.</p></div>
+<div class="panel-foot store-foot"><a class="pill-link pill-link-soft" href="/sikh-store">Learn more <span aria-hidden="true">→</span></a></div>
 </article>
 </div>
 </div>

@@ -49,34 +49,45 @@ export default function Profile() {
       <AsyncView state={state} errorTitle={state.error && state.error.kind === 'notFound' ? 'Member not found' : undefined}>
         {(profile) => (
           <>
-            <section className="sk-card" aria-labelledby="profile-name">
-              <div className="sk-cover" style={{ height: 120 }} aria-hidden="true" />
-              <div className="sk-profile-head">
-                <Avatar user={profile} size={96} />
-                <div className="min-w-0 flex-1 pb-1">
-                  <h2 className="sk-section-title" id="profile-name" style={{ fontSize: '1.4rem' }}>{profile.name}</h2>
-                  <p className="sk-card-meta" style={{ marginTop: 0 }}>
-                    @{profile.username}
-                    {profile.role !== 'user' ? <> · <span className={`sk-pill sk-pill-${profile.role}`}>{ROLE_LABELS[profile.role]}</span></> : null}
-                    {profile.status !== 'active' ? <> · <span className="sk-pill sk-pill-suspended">{profile.status}</span></> : null}
-                  </p>
+            <section className="sk-card sk-profile" aria-labelledby="profile-name">
+              <div className="sk-profile-cover" aria-hidden="true"><span className="khanda-mark sk-profile-cover-mark" /></div>
+              <div className="sk-profile-top">
+                <span className="sk-profile-avatar"><Avatar user={profile} size={104} /></span>
+                <div className="min-w-0 flex-1 sk-profile-id">
+                  <h2 className="sk-profile-name" id="profile-name">
+                    {profile.name}
+                    {profile.role !== 'user' ? <span className={`sk-pill sk-pill-${profile.role}`}>{ROLE_LABELS[profile.role]}</span> : null}
+                    {profile.status !== 'active' ? <span className="sk-pill sk-pill-suspended">{profile.status}</span> : null}
+                  </h2>
+                  <p className="sk-profile-handle">@{profile.username}</p>
                 </div>
-                <div className="flex gap-2 pb-1">
-                  {profile.isSelf ? <Link className="sk-btn sk-btn-sm" to="/community/settings"><Icon name="edit" size={14} />Edit profile</Link> : null}
+                <div className="sk-profile-actions">
+                  {profile.isSelf ? <Link className="sk-btn sk-btn-sm sk-btn-gold" to="/community/settings"><Icon name="edit" size={14} />Edit profile</Link> : null}
+                  {profile.isSelf ? <Link className="sk-btn sk-btn-sm" to="/community/settings"><Icon name="settings" size={14} />Settings</Link> : null}
                   {user && !profile.isSelf ? <button type="button" className="sk-btn sk-btn-sm" onClick={() => setReporting(true)}><Icon name="flag" size={14} />Report</button> : null}
                 </div>
               </div>
-              {profile.bio ? <p className="sk-card-text mt-4" style={{ whiteSpace: 'pre-line' }}>{profile.bio}</p> : null}
-              <p className="sk-card-meta mt-3 flex flex-wrap gap-x-4">
-                {profile.location ? <span><Icon name="pin" size={12} /> {profile.location}</span> : null}
-                <span><Icon name="calendar" size={12} /> Joined {formatDate(profile.joinedAt, { day: undefined })}</span>
-                <span>{profile.counts.posts} public posts · {profile.counts.comments} comments</span>
-              </p>
-              {profile.interests.length ? <ul className="sk-suggest mt-3" aria-label="Interests">{profile.interests.map((i) => <li key={i} className="sk-chip" style={{ cursor: 'default' }}>{i}</li>)}</ul> : null}
+              {profile.bio ? <p className="sk-profile-bio">{profile.bio}</p> : profile.isSelf ? <p className="sk-profile-bio is-empty">Add a short bio in <Link className="panel-view-all" to="/community/settings">Settings</Link> so the Sangat knows a little about you.</p> : null}
+              {profile.location || profile.interests.length ? (
+                <ul className="sk-profile-chips" aria-label="Location and interests">
+                  {profile.location ? <li className="is-place"><Icon name="pin" size={13} />{profile.location}</li> : null}
+                  {profile.interests.map((i) => <li key={i}>{i}</li>)}
+                </ul>
+              ) : null}
+              <dl className="sk-profile-stats">
+                <div><dt>Posts</dt><dd>{profile.counts.posts}</dd></div>
+                <div><dt>Comments</dt><dd>{profile.counts.comments}</dd></div>
+                <div><dt>Groups</dt><dd>{profile.groups.length}</dd></div>
+                <div><dt>Joined</dt><dd className="is-date">{formatDate(profile.joinedAt, { day: undefined })}</dd></div>
+              </dl>
             </section>
 
-            <div className="sk-tabs" role="tablist" aria-label="Profile sections">
-              {tabs.map(([k, l]) => <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>{l}</button>)}
+            <div className="sk-tabs sk-profile-tabs" role="tablist" aria-label="Profile sections">
+              {tabs.map(([k, l]) => (
+                <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>
+                  {l}{k === 'posts' && profile.counts.posts ? <span className="sk-tab-count">{profile.counts.posts}</span> : k === 'groups' && profile.groups.length ? <span className="sk-tab-count">{profile.groups.length}</span> : null}
+                </button>
+              ))}
             </div>
 
             {tab === 'posts' ? <PostList scope={`user:${profile.username}`} empty={<Empty icon="message" title="No posts yet" text={profile.isSelf ? 'Share something with the Sangat from the community feed.' : `${profile.name} hasn't posted anything visible to you yet.`} />} /> : null}

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import CommunityLayout from '../../components/community/CommunityLayout.jsx';
 import ImagePicker from '../../components/community/ImagePicker.jsx';
 import Avatar from '../../components/ui/Avatar.jsx';
-import { TextInput, TextArea, Checkbox, FormError } from '../../components/ui/Form.jsx';
+import { TextInput, PasswordInput, TextArea, Checkbox, FormError } from '../../components/ui/Form.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useReactPage } from '../../hooks/useReactPage.js';
 import { userService } from '../../services/community/index.js';
@@ -76,8 +76,8 @@ function PasswordForm() {
       <h2 className="sk-card-title" id="pw-h">Password</h2>
       <FormError error={state.error} />
       <div className="sk-form-grid">
-        <TextInput label="Current password" type="password" autoComplete="current-password" required value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} error={state.fields.current} />
-        <TextInput label="New password" type="password" autoComplete="new-password" required value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} error={state.fields.next} help={`At least ${PASSWORD_MIN} characters.`} />
+        <PasswordInput label="Current password" autoComplete="current-password" required value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} error={state.fields.current} />
+        <PasswordInput label="New password" autoComplete="new-password" required value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} error={state.fields.next} help={`At least ${PASSWORD_MIN} characters.`} />
       </div>
       <div><button type="submit" className="sk-btn" disabled={state.busy || !pw.current || !pw.next}>{state.busy ? 'Saving…' : 'Change password'}</button></div>
     </form>

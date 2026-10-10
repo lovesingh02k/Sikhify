@@ -37,6 +37,7 @@ if (isMain) {
     console.info(`[sikhify] database: ${target.provider}`);
     console.info(`[sikhify] database ${target.remote ? 'host' : 'file'}: ${target.remote ? target.host : target.path}`);
     console.info(`[sikhify] schema version: ${schemaVersion(db)}`);
+    if (config.production && !config.publicUrl) console.warn('[sikhify] SIKHIFY_PUBLIC_URL is not set: password-reset links cannot be built. Set it in the server environment (e.g. https://sikhify.in).');
     if (target.remote && !config.production) console.info('[sikhify] note: SIKHIFY_DATABASE_URL is set (backend/.env), so this development server uses the remote database, not backend/data/sikhify.db');
     if (!config.production) console.info('[sikhify] Create the first Master Admin with: npm run admin:create -- --email you@example.com --name "Your Name" --username you');
   }).catch((err) => {

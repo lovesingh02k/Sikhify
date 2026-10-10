@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthShell, { safeNext } from './AuthShell.jsx';
-import { TextInput, FormError } from '../../components/ui/Form.jsx';
+import { TextInput, PasswordInput, FormError } from '../../components/ui/Form.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useReactPage } from '../../hooks/useReactPage.js';
 import { isReactRoute } from '../../app/navigation.js';
@@ -37,11 +37,10 @@ export default function Login() {
         <FormError error={error} />
         <TextInput label="Email or username" name="identifier" autoComplete="username" required value={form.identifier}
           onChange={(e) => setForm({ ...form, identifier: e.target.value })} />
-        <TextInput label="Password" name="password" type="password" autoComplete="current-password" required value={form.password}
+        <PasswordInput label="Password" name="password" autoComplete="current-password" required value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })} />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <button type="submit" className="sk-btn sk-btn-gold" disabled={busy || !form.identifier || !form.password}>{busy ? 'Signing in…' : 'Sign in'}</button>
-          <Link className="sk-link-btn" to="/forgot-password">Forgot your password?</Link>
         </div>
       </form>
       <p className="sk-card-text mt-6">New to Sikhify? <Link className="sk-link-btn" to={`/signup${search}`}>Create an account</Link></p>

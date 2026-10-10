@@ -91,8 +91,8 @@ export function initHukamnama() {
     var isLatest = h.date === latest;
     var sgpc = h.origin === "banidb";
     var credit = sgpc ? 'Official recording: <a href="' + H.officialUrl + '" target="_blank" rel="noopener noreferrer">SGPC</a>' : "";
-    var hkTrack = { id: "hk:" + h.date, title: "Hukamnama — " + label(h.date), subtitle: sgpc ? "Sri Harmandir Sahib · SGPC" : "Hukamnama recording", url: h.audioUrl, credit: credit };
-    var kathaTrack = { id: "katha:" + h.date, title: "Katha — " + label(h.date), subtitle: sgpc ? "Explanation of the Hukamnama · SGPC" : "Explanation of the Hukamnama", url: h.kathaUrl, credit: credit };
+    var hkTrack = { id: "hk:" + h.date, title: "Hukamnama — " + label(h.date), subtitle: sgpc ? "Sri Harmandir Sahib · SGPC" : "Hukamnama recording", url: h.audioUrl, credit: credit, missingHint: sgpc ? "SGPC usually publishes the day's recording later in the day" : "" };
+    var kathaTrack = { id: "katha:" + h.date, title: "Katha — " + label(h.date), subtitle: sgpc ? "Explanation of the Hukamnama · SGPC" : "Explanation of the Hukamnama", url: h.kathaUrl, credit: credit, missingHint: sgpc ? "SGPC usually publishes the day's Katha later in the day" : "" };
     S.audio.register([hkTrack, kathaTrack]);
     S.audio.queueFor = function () { return [hkTrack, kathaTrack]; };
     cardEl.innerHTML =

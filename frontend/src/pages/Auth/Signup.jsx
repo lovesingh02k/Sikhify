@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthShell, { safeNext } from './AuthShell.jsx';
-import { TextInput, FormError } from '../../components/ui/Form.jsx';
+import { TextInput, PasswordInput, FormError } from '../../components/ui/Form.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useReactPage } from '../../hooks/useReactPage.js';
 import { isReactRoute } from '../../app/navigation.js';
@@ -62,7 +62,7 @@ export default function Signup() {
           help="Shown on your profile, e.g. sikhify.in/community/profile/your.name" />
         <TextInput label="Email" type="email" autoComplete="email" required value={form.email} onChange={set('email')} error={fields.email}
           help="Never shown publicly. Used only to sign in and reset your password." />
-        <TextInput label="Password" type="password" autoComplete="new-password" required value={form.password} onChange={set('password')} error={fields.password}
+        <PasswordInput label="Password" autoComplete="new-password" required value={form.password} onChange={set('password')} error={fields.password}
           help={`At least ${PASSWORD_MIN} characters.`} />
         <button type="submit" className="sk-btn sk-btn-gold" disabled={busy}>{busy ? 'Creating your account…' : 'Create account'}</button>
         <p className="sk-card-meta">By joining you agree to keep the community respectful of the Gurus, Gurbani and one another. Posts can be reported and are reviewed by moderators.</p>

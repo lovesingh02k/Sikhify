@@ -13,3 +13,14 @@ server/uploads/
 
 # Vercel local state
 .vercel/
+
+# Build archives are generated (Vercel builds from source). dist.zip is still tracked from an
+# earlier commit: untrack it with `git rm --cached dist.zip` (keeps the local file).
+dist.zip
+# Local one-off script that prints production admin accounts — never commit it.
+check-admin.mjs
+# Copies of images removed by `npm run uploads:cleanup -- --apply`
+backend/upload-backups/
+# Backup/rollback files written by scripts/audit-gurdwara-verification.js --apply (may contain record data)
+backend/backups/
+banner-images/

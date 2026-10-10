@@ -5,7 +5,9 @@
        → rejected (with a note), or
        → approved: a draft record is created for a final check, or
        → published: the reviewer verified it and published it in one step.
-   Nothing a member submits is ever published automatically. Corrections and
+   Visitors can submit without an account (lib/submitters.js): their optional
+   name/email are kept for follow-up only, and a reference is returned.
+   Nothing anyone submits is ever published automatically. Corrections and
    "incorrect information" reports point at an existing page; the reviewer
    applies the fix in the editor and then marks the submission approved.
    ========================================================================== */
@@ -15,6 +17,7 @@ import { CONTENT_TYPES, validateContent, isHttpUrl } from '../../../shared/conte
 import { SUBMISSION_KINDS, SUBMISSION_STATUSES } from '../../../shared/community.js';
 import { getYouTubeVideoId } from '../../../shared/youtube.js';
 import { publicUser } from '../lib/serialize.js';
+import { resolveSubmitter, rejectDuplicate, fingerprint, newReference } from '../lib/submitters.js';
 
 export default function register(router, deps) {
   const { db, settings, rate, notify, logModeration } = deps;
@@ -24,18 +27,20 @@ export default function register(router, deps) {
       id: r.id, kind: r.kind, kindLabel: (SUBMISSION_KINDS[r.kind] || {}).label || r.kind, title: r.title,
       data: parseJson(r.data, {}), message: r.message, source: r.source, targetUrl: r.target_url, targetEntryId: r.target_entry_id,
       status: r.status, reviewNote: r.review_note, resultType: r.result_type, resultId: r.result_id,
-      createdAt: r.created_at, reviewedAt: r.reviewed_at,
+      createdAt: r.created_at, reviewedAt: r.reviewed_at, reference: r.reference || '',
       submitter: r.submitter_username ? publicUser({ id: r.submitter_id, username: r.submitter_username, name: r.submitter_name, avatar_url: r.submitter_avatar, role: r.submitter_role }) : null,
+      // A visitor who sent it without an account (staff views only — see adminShape).
+      guest: !!r.is_guest,
       reviewer: r.reviewer_name || null,
     };
   }
+  /** Reviewers also see a guest's optional contact details, for follow-up. */
+  const adminShape = (r) => ({ ...shape(r), guestName: r.guest_name || '', guestEmail: r.guest_email || '', former: !r.is_guest && !r.submitter_username });
   const SELECT = `SELECT s.*, su.username AS submitter_username, su.name AS submitter_name, su.avatar_url AS submitter_avatar, su.role AS submitter_role, ru.name AS reviewer_name
     FROM submissions s LEFT JOIN users su ON su.id = s.submitter_id LEFT JOIN users ru ON ru.id = s.reviewer_id`;
 
   router.post('/api/submissions', (c) => {
-    const user = c.require('submission.create');
-    if (!settings.get('submissions_open')) throw new HttpError(403, 'Submissions are paused right now. Please try again later.');
-    rate('submission', 'submission:' + user.id);
+    const who = resolveSubmitter(c, { rate, settings, limits: deps.limits });
     const kind = oneOf(c.body.kind, Object.keys(SUBMISSION_KINDS));
     if (!kind) throw badRequest('Choose what you are submitting');
     const def = SUBMISSION_KINDS[kind];
@@ -62,20 +67,42 @@ export default function register(router, deps) {
       const bad = data.videos.find((u) => !getYouTubeVideoId(u));
       if (bad) fields.videos = `Not a YouTube video link: “${bad.slice(0, 60)}”`;
       title = data.name;
+    } else if (def.privacy) {
+      if (message.length < 10) fields.message = 'Tell us what you would like us to do (for example: delete my account)';
+      if (!who.userId && !who.guestEmail) fields.guestEmail = 'Add your email address so we can reply and confirm the request is yours';
+      title = 'Privacy or data request';
     } else {
       targetUrl = str(c.body.targetUrl, { max: 500 });
       if (!targetUrl) fields.targetUrl = 'Which page or record is this about?';
       if (message.length < 10) fields.message = 'Describe what is wrong and what it should say';
       title = str(c.body.title, { max: 200 }) || targetUrl;
     }
-    if (!source) fields.source = 'Tell us where this information comes from (a link or a reference)';
+    if (def.privacy) { /* no source needed */ } else if (!source) fields.source = 'Tell us where this information comes from (a link or a reference)';
     else if (/^https?:/i.test(source) && !isHttpUrl(source)) fields.source = 'That link is not valid';
     if (Object.keys(fields).length) throw badRequest('Please fix the highlighted fields', fields);
 
+    // A bot filled the hidden field: answer like a success, store nothing (it still counts towards the limit).
+    if (who.spam) { who.commit(); return { submission: { id: 0, kind, status: 'pending', title, reference: newReference('S') } }; }
+    const fp = fingerprint(who.identity, [kind, JSON.stringify(data), targetUrl, message, source]);
+    rejectDuplicate(db, 'submissions', fp);
     const targetEntryId = int(c.body.targetEntryId, { fallback: null });
-    const info = db.prepare('INSERT INTO submissions (kind, submitter_id, target_entry_id, target_url, title, data, message, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-      .run(kind, user.id, targetEntryId && db.prepare('SELECT 1 FROM entries WHERE id = ?').get(targetEntryId) ? targetEntryId : null, targetUrl, title.slice(0, 200), JSON.stringify(data), message, source);
-    return { submission: shape(db.prepare(`${SELECT} WHERE s.id = ?`).get(Number(info.lastInsertRowid))) };
+    const reference = newReference('S');
+    const info = db.prepare(`INSERT INTO submissions (kind, submitter_id, target_entry_id, target_url, title, data, message, source, is_guest, guest_name, guest_email, reference, fingerprint)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(kind, who.userId, targetEntryId && db.prepare('SELECT 1 FROM entries WHERE id = ?').get(targetEntryId) ? targetEntryId : null, targetUrl, title.slice(0, 200), JSON.stringify(data), message, source,
+        who.userId ? 0 : 1, who.guestName, who.guestEmail, reference, fp);
+    who.commit(); // only a stored submission uses up the submitter's limit
+    // Everyone who reviews submissions is told straight away (bell + pop-up in the site).
+    const from = who.userId ? (db.prepare('SELECT username FROM users WHERE id = ?').get(who.userId) || {}).username : '';
+    const what = def.privacy ? 'New privacy / data request' : `New submission: ${def.label}`;
+    deps.notifyStaff('submission.review', {
+      type: 'submission_received', actorId: who.userId,
+      message: `${what}${title && !def.privacy ? ` — “${title.slice(0, 80)}”` : ''} from ${from ? '@' + from : who.guestName ? who.guestName + ' (visitor)' : 'a visitor'} · ${reference}`,
+      link: '/admin/submissions',
+    });
+    const row = db.prepare(`${SELECT} WHERE s.id = ?`).get(Number(info.lastInsertRowid));
+    // Guests get only what they need to quote the submission later (no internal fields).
+    return { submission: who.userId ? shape(row) : { id: row.id, kind: row.kind, kindLabel: (SUBMISSION_KINDS[row.kind] || {}).label || row.kind, title: row.title, status: row.status, reference, createdAt: row.created_at } };
   });
 
   router.get('/api/me/submissions', (c) => {
@@ -88,14 +115,22 @@ export default function register(router, deps) {
     c.require('submission.review');
     const status = oneOf(c.query.get('status'), SUBMISSION_STATUSES);
     const kind = oneOf(c.query.get('kind'), Object.keys(SUBMISSION_KINDS));
+    const from = oneOf(c.query.get('from'), ['guest', 'member']);
+    const q = str(c.query.get('q'), { max: 100 });
     const where = [];
     const params = [];
     if (status) { where.push('s.status = ?'); params.push(status); }
     if (kind) { where.push('s.kind = ?'); params.push(kind); }
+    if (from === 'guest') where.push('s.is_guest = 1');
+    if (from === 'member') where.push('s.is_guest = 0');
+    if (q) {
+      where.push('(s.title LIKE ? OR s.message LIKE ? OR s.source LIKE ? OR s.reference LIKE ? OR s.guest_name LIKE ? OR su.name LIKE ? OR su.username LIKE ?)');
+      params.push(...Array(7).fill(`%${q}%`));
+    }
     const page = int(c.query.get('page'), { min: 1, max: 1000, fallback: 1 });
     const w = where.length ? 'WHERE ' + where.join(' AND ') : '';
-    const total = db.prepare(`SELECT COUNT(*) AS n FROM submissions s ${w}`).get(...params).n;
-    const items = db.prepare(`${SELECT} ${w} ORDER BY CASE s.status WHEN 'pending' THEN 0 ELSE 1 END, s.created_at DESC LIMIT 25 OFFSET ?`).all(...params, (page - 1) * 25).map(shape);
+    const total = db.prepare(`SELECT COUNT(*) AS n FROM submissions s LEFT JOIN users su ON su.id = s.submitter_id ${w}`).get(...params).n;
+    const items = db.prepare(`${SELECT} ${w} ORDER BY CASE s.status WHEN 'pending' THEN 0 ELSE 1 END, s.created_at DESC LIMIT 25 OFFSET ?`).all(...params, (page - 1) * 25).map(adminShape);
     return { items, total, page, pages: Math.max(1, Math.ceil(total / 25)) };
   });
 
@@ -144,6 +179,6 @@ export default function register(router, deps) {
         : status === 'published' ? `Your submission “${s.title}” was verified and published. Thank you!`
           : `Your submission “${s.title}” was approved and is being prepared for publishing. Thank you!`,
     });
-    return { submission: shape(db.prepare(`${SELECT} WHERE s.id = ?`).get(s.id)) };
+    return { submission: adminShape(db.prepare(`${SELECT} WHERE s.id = ?`).get(s.id)) };
   });
 }

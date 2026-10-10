@@ -1,0 +1,504 @@
+{
+  "source": "Chhattisgarh Gurdwaras — OpenStreetMap (Overpass, data as of 2026-10-09T20:02:50Z), Mappls, the Gurdwara’s own page, Wikipedia",
+  "license": "OpenStreetMap data © OpenStreetMap contributors, ODbL 1.0 (attribution kept in each record’s sources)",
+  "retrieved": "2026-10-10",
+  "method": "All 33 districts (cgstate.gov.in) covered by one bounding-box search of OpenStreetMap: every place of worship, every religion=sikh object and Latin-name matches; names matched in English, Hindi and Punjabi; state and district from OSM boundaries (Nominatim). Web searches for named towns. Every record imports as \"needs verification\".",
+  "note": "Generic map names (\"Gurudwara\") are labelled with the locality OpenStreetMap gives — not invented names. Unknown values stay empty.",
+  "districts": [
+    "Balod",
+    "Baloda Bazar-Bhatapara",
+    "Balrampur-Ramanujganj",
+    "Bastar",
+    "Bemetara",
+    "Bijapur",
+    "Bilaspur",
+    "Dantewada",
+    "Dhamtari",
+    "Durg",
+    "Gariaband",
+    "Gaurela-Pendra-Marwahi",
+    "Janjgir-Champa",
+    "Jashpur",
+    "Kabirdham",
+    "Kanker",
+    "Khairagarh-Chhuikhadan-Gandai",
+    "Kondagaon",
+    "Korba",
+    "Koriya",
+    "Mahasamund",
+    "Manendragarh-Chirmiri-Bharatpur",
+    "Mohla-Manpur-Ambagarh Chowki",
+    "Mungeli",
+    "Narayanpur",
+    "Raigarh",
+    "Raipur",
+    "Rajnandgaon",
+    "Sakti",
+    "Sarangarh-Bilaigarh",
+    "Sukma",
+    "Surajpur",
+    "Surguja"
+  ],
+  "excluded": [
+    {
+      "ref": "node/2483558156",
+      "name": "Gurudwara Chowk",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "node/9740746804",
+      "name": "Gurudwara",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "node/10831955037",
+      "name": "Gurudwara",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "node/11647277520",
+      "name": "Gurudwara",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "node/12460666486",
+      "name": "Gurudwara Junction",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/90821606",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/430474190",
+      "name": "Gurudwara Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/628500674",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/1170458222",
+      "name": "Gurudwara road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/1263600531",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/1423491689",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/1485757730",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "way/1485757732",
+      "name": "Gurudwara Junction - Dwarakanagar Road",
+      "why": "not a place of worship (road / junction / bus stop / chowk)"
+    },
+    {
+      "ref": "node/3378151883",
+      "name": "Modipara Gurudwara",
+      "why": "outside Chhattisgarh (Odisha)"
+    },
+    {
+      "ref": "node/7429523026",
+      "name": "Gurudwara",
+      "why": "outside Chhattisgarh (Odisha)"
+    },
+    {
+      "ref": "way/1328991835",
+      "name": "Gurudwara",
+      "why": "outside Chhattisgarh (Andhra Pradesh)"
+    },
+    {
+      "ref": "osm:way/463789201",
+      "name": "(unnamed)",
+      "why": "same site as way/463789202, 116 m apart — kept as a second source of that record"
+    }
+  ],
+  "records": [
+    {
+      "external_ref": "osm:node/4711838417",
+      "name": "Gurudwara Shri Guru Ramdas Ji",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Durg",
+      "city": "Bhilai",
+      "latitude": 21.208167,
+      "longitude": 81.404588,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/4711838417)",
+          "url": "https://www.openstreetmap.org/node/4711838417",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/6022675961",
+      "name": "Gurudwara near Kabir Nagar Road",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raipur",
+      "city": "Raipur",
+      "latitude": 21.267073,
+      "longitude": 81.588663,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/6022675961)",
+          "url": "https://www.openstreetmap.org/node/6022675961",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/6134743585",
+      "name": "Gurudwara near Shyamlal Chaturvedi Smart Road",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Bilaspur",
+      "city": "Bilaspur",
+      "latitude": 22.082411,
+      "longitude": 82.1381,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/6134743585)",
+          "url": "https://www.openstreetmap.org/node/6134743585",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/6280306114",
+      "name": "Gurudwara, Shyam Nagar Road",
+      "also_known_as": "gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raipur",
+      "city": "Raipur",
+      "latitude": 21.234595,
+      "longitude": 81.652938,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/6280306114)",
+          "url": "https://www.openstreetmap.org/node/6280306114",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/7736595896",
+      "name": "Gurudwara, Green Orchid",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raipur",
+      "city": "Raipur",
+      "latitude": 21.274188,
+      "longitude": 81.666887,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/7736595896)",
+          "url": "https://www.openstreetmap.org/node/7736595896",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:way/446374980",
+      "name": "Gurudwara, Urjanagar",
+      "also_known_as": "GURUDWARA",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Korba",
+      "city": "Gevra",
+      "latitude": 22.350934,
+      "longitude": 82.549843,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (way/446374980)",
+          "url": "https://www.openstreetmap.org/way/446374980",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:way/463789202",
+      "name": "Gurudwara, Baldeo Bagh",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Rajnandgaon",
+      "city": "Rajnandgaon",
+      "latitude": 21.096643,
+      "longitude": 81.030183,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (way/463789202)",
+          "url": "https://www.openstreetmap.org/way/463789202",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        },
+        {
+          "name": "OpenStreetMap (way/463789201)",
+          "url": "https://www.openstreetmap.org/way/463789201",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:way/639632136",
+      "name": "Gurudwara near Mahaveer Nagar Road",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raipur",
+      "city": "Raipur",
+      "latitude": 21.227882,
+      "longitude": 81.664674,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (way/639632136)",
+          "url": "https://www.openstreetmap.org/way/639632136",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/2953670479",
+      "name": "Gurudwara near State Highway 7",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Durg",
+      "city": "Durg",
+      "postal_code": "491001",
+      "latitude": 21.195485,
+      "longitude": 81.287405,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/2953670479)",
+          "url": "https://www.openstreetmap.org/node/2953670479",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/7292581567",
+      "name": "Gurudwara, Samta Colony",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raipur",
+      "city": "Raipur",
+      "full_address": "Samta Colony",
+      "postal_code": "492001",
+      "latitude": 21.247213,
+      "longitude": 81.624365,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/7292581567)",
+          "url": "https://www.openstreetmap.org/node/7292581567",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/10271460709",
+      "name": "Gurudwara Gurunanak Darbar",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Durg",
+      "city": "Durg",
+      "full_address": "Gurudwara Road",
+      "latitude": 21.201434,
+      "longitude": 81.320728,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/10271460709)",
+          "url": "https://www.openstreetmap.org/node/10271460709",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:way/444510322",
+      "name": "Dayalband Gurudwara",
+      "also_known_as": "DAYALBAND GURUDWARA",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Bilaspur",
+      "city": "Bilaspur",
+      "latitude": 22.073397,
+      "longitude": 82.170752,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (way/444510322)",
+          "url": "https://www.openstreetmap.org/way/444510322",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:way/1195604294",
+      "name": "Saheed Baba Deep Singh Ji Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Durg",
+      "city": "Durg",
+      "latitude": 21.164703,
+      "longitude": 81.246795,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (way/1195604294)",
+          "url": "https://www.openstreetmap.org/way/1195604294",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "osm:node/6110801990",
+      "name": "Gurudwara, Jagdalpur",
+      "also_known_as": "Gurudwara",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Bastar",
+      "city": "Jagdalpur",
+      "latitude": 19.076809,
+      "longitude": 82.016152,
+      "description": "Mapped in OpenStreetMap as a Sikh place of worship. Its full name, address and timings still need to be confirmed — corrections are welcome.",
+      "status": "active",
+      "sources": [
+        {
+          "name": "OpenStreetMap (node/6110801990)",
+          "url": "https://www.openstreetmap.org/node/6110801990",
+          "type": "open_data",
+          "notes": "© OpenStreetMap contributors, ODbL 1.0"
+        }
+      ]
+    },
+    {
+      "external_ref": "mappls:2039s7",
+      "name": "Shri Guru Singh Sabha Gurudwara Sirgitti",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Bilaspur",
+      "city": "Bilaspur",
+      "full_address": "Madhuban Road, Sirgitti",
+      "postal_code": "495004",
+      "latitude": 22.057289,
+      "longitude": 82.157595,
+      "status": "active",
+      "description": "Listed in the Mappls (MapmyIndia) map directory. Details still need to be confirmed.",
+      "sources": [
+        {
+          "name": "Mappls (MapmyIndia) listing",
+          "url": "https://www.mappls.com/2039s7",
+          "type": "other",
+          "notes": "Name, address and location as listed (retrieved 2026-10-10)"
+        }
+      ]
+    },
+    {
+      "external_ref": "web:gurudwara-guru-singh-sabha-raigarh",
+      "name": "Gurudwara Guru Singh Sabha Raigarh",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "district": "Raigarh",
+      "city": "Raigarh",
+      "status": "active",
+      "description": "Known from the Gurdwara’s own public page. Address, location and timings still need to be confirmed.",
+      "sources": [
+        {
+          "name": "Gurudwara Guru Singh Sabha Raigarh (Facebook page)",
+          "url": "https://www.facebook.com/GurudwaraRaigarh/",
+          "type": "other",
+          "notes": "Page title only (retrieved 2026-10-10)"
+        }
+      ]
+    },
+    {
+      "external_ref": "web:dongargarh-gurudwara",
+      "name": "Gurudwara, Dongargarh",
+      "country_code": "IN",
+      "state": "Chhattisgarh",
+      "state_code": "IN-CG",
+      "city": "Dongargarh",
+      "status": "active",
+      "description": "Wikipedia’s article on Dongargarh notes that one of the biggest gurudwaras in the state is in the heart of the town, managed by the Sikh society that also runs Khalsa Public School. Its name, address and location still need to be confirmed.",
+      "sources": [
+        {
+          "name": "Wikipedia — Dongargarh",
+          "url": "https://en.wikipedia.org/wiki/Dongargarh",
+          "type": "open_data",
+          "notes": "Retrieved 2026-10-10"
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,6 @@
 import { Component } from 'react';
 import StatusView from './StatusView.jsx';
-
-/** A lazily-loaded page chunk could not be downloaded (offline, or a new deploy replaced it). */
-function isChunkLoadError(error) {
-  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module|ChunkLoadError/i
-    .test(String(error?.message || error?.name || ''));
-}
+import { isChunkLoadError, reloadOnceForNewVersion } from '../../app/chunkReload.js';
 
 /**
  * Catches render errors in a page so visitors see a friendly status screen
@@ -16,6 +11,8 @@ export default class ErrorBoundary extends Component {
   state = { error: null };
 
   static getDerivedStateFromError(error) {
+    // The page's code was replaced by a newer version (deploy / dev-server restart): load the new one once.
+    if (isChunkLoadError(error) && reloadOnceForNewVersion()) return { error, reloading: true };
     return { error };
   }
 
@@ -25,7 +22,8 @@ export default class ErrorBoundary extends Component {
   }
 
   render() {
-    const { error } = this.state;
+    const { error, reloading } = this.state;
+    if (reloading) return null; // the page is reloading to fetch the new version
     if (!error) return this.props.children;
     const offline = isChunkLoadError(error);
     return (

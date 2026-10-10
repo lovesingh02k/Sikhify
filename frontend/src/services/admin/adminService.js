@@ -19,6 +19,15 @@ export const adminService = {
   resolveReport: (id, input) => post(`/api/admin/reports/${id}/resolve`, input),
 
   submissions: (params) => get('/api/admin/submissions' + qs(params)),
+  gurdwaraSubmissions: (params) => get('/api/admin/gurdwara-submissions' + qs(params)),
+
+  banners: () => get('/api/admin/banners'),
+  banner: (id) => get(`/api/admin/banners/${id}`).then((d) => d.banner),
+  createBanner: (input) => post('/api/admin/banners', input).then((d) => d.banner),
+  updateBanner: (id, input) => patch(`/api/admin/banners/${id}`, input).then((d) => d.banner),
+  setBannerStatus: (id, status) => post(`/api/admin/banners/${id}/status`, { status }).then((d) => d.banner),
+  reorderBanners: (ids) => post('/api/admin/banners/reorder', { ids }).then((d) => d.items),
+  deleteBanner: (id) => del(`/api/admin/banners/${id}`),
   reviewSubmission: (id, input) => post(`/api/admin/submissions/${id}/review`, input).then((d) => d.submission),
 
   hukamnamas: (params) => get('/api/admin/hukamnamas' + qs(params)),
@@ -27,6 +36,13 @@ export const adminService = {
   updateHukamnama: (id, input) => patch(`/api/admin/hukamnamas/${id}`, input).then((d) => d.hukamnama),
   setHukamnamaStatus: (id, status, replace) => post(`/api/admin/hukamnamas/${id}/status`, { status, replace }).then((d) => d.hukamnama),
   deleteHukamnama: (id) => del(`/api/admin/hukamnamas/${id}`),
+
+  festivals: (params) => get('/api/admin/festivals' + qs(params)),
+  festival: (id) => get(`/api/admin/festivals/${id}`),
+  createFestival: (input) => post('/api/admin/festivals', input).then((d) => d.observance),
+  updateFestival: (id, input) => patch(`/api/admin/festivals/${id}`, input).then((d) => d.observance),
+  setFestivalStatus: (id, status) => post(`/api/admin/festivals/${id}/status`, { status }).then((d) => d.observance),
+  deleteFestival: (id) => del(`/api/admin/festivals/${id}`),
 
   media: () => get('/api/admin/media'),
   createArtist: (input) => post('/api/admin/media/artists', input).then((d) => d.artist),
@@ -46,5 +62,6 @@ export const adminService = {
   deleteEntry: (id) => del(`/api/admin/entries/${id}`),
 
   settings: () => get('/api/admin/settings').then((d) => d.settings),
+  system: () => get('/api/admin/system'),
   updateSettings: (input) => patch('/api/admin/settings', input).then((d) => d.settings),
 };

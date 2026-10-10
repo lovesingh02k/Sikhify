@@ -115,13 +115,20 @@ export function initMedia() {
       '<div class="sk-card-foot"><span class="sk-card-meta" style="margin-top:0">' + (m.partial ? plural(m.videos.length, "matching video", "matching videos") + " of " + a.videos.length : plural(a.videos.length, "video", "videos")) + "</span>" +
       '<a href="#artist=' + a.id + '" class="panel-view-all" tabindex="-1" aria-hidden="true">View artist →</a></div></article>';
   }
+  /** 1156 → "19:16", 6255 → "1:44:15" (as checked on YouTube by scripts/curate-media.js). */
+  function formatLength(sec) {
+    var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), x = String(sec % 60).padStart(2, "0");
+    return h ? h + ":" + String(m).padStart(2, "0") + ":" + x : m + ":" + x;
+  }
+
   function videoCard(v, a, opts) {
     opts = opts || {};
     var q = opts.q || "";
     var label = "Play " + v.title + " — " + a.name;
     return '<article class="sk-card sk-media-video' + (opts.target ? " is-target" : "") + '" id="video-' + S.esc(v.id) + '">' +
       '<a class="sk-media-thumb" href="' + videoUrl(v.id) + '" aria-label="' + S.esc(label) + '">' +
-      youTubeThumbHtml(v.id) + '<span class="sk-media-play" aria-hidden="true">' + S.icon("play", 22) + "</span></a>" +
+      youTubeThumbHtml(v.id) + '<span class="sk-media-play" aria-hidden="true">' + S.icon("play", 22) + "</span>" +
+      (v.durationSeconds ? '<span class="sk-media-duration"><span class="sr-only">Length </span>' + formatLength(v.durationSeconds) + "</span>" : "") + "</a>" +
       '<h3 class="sk-card-title sk-media-video-title mt-3"><a href="' + videoUrl(v.id) + '">' + S.highlight(v.title, q) + "</a></h3>" +
       (opts.showArtist ? '<p class="sk-card-meta"><a class="sk-media-artist-link" href="#artist=' + a.id + '">' + S.highlight(a.name, q) + "</a> · " + S.esc(a.category) + "</p>" : "") +
       '<p class="sk-card-meta">' + S.icon("youtube", 13) + S.esc(v.channel) + "</p></article>";
@@ -276,7 +283,7 @@ export function initMedia() {
     document.title = baseTitle;
     renderBrowse();
     // Plain section anchors (#media-artists, #media-videos) from the hero links.
-    var section = /^#[A-Za-z][w-]*$/.test(location.hash) && document.getElementById(location.hash.slice(1));
+    var section = /^#[A-Za-z][\w-]*$/.test(location.hash) && document.getElementById(location.hash.slice(1));
     if (section) section.scrollIntoView({ block: "start" });
   }
   window.addEventListener("hashchange", route);

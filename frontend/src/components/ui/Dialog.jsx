@@ -24,7 +24,7 @@ export default function Dialog({ open, onClose, title, children, wide = false, l
     const onCancel = (e) => { e.preventDefault(); onClose?.(); };
     const onCloseEvt = () => {
       const el = returnFocus.current;
-      if (el && document.contains(el)) el.focus();
+      if (el && document.contains(el)) el.focus({ preventScroll: true });
     };
     d.addEventListener('cancel', onCancel);
     d.addEventListener('close', onCloseEvt);

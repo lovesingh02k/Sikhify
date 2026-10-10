@@ -57,7 +57,9 @@ export default function GuruProfile() {
   const [baniRef, baniNear] = useNearViewport();
   const bani = useAsync(() => (raw && baniNear ? loadBani(raw.name) : null), [raw && raw.name, baniNear]);
   const g = raw ? i18n.localize('gurus', raw) : null;
-  useReactPage(raw ? `${raw.name} — The Ten Gurus — Sikhify.in` : 'The Ten Gurus — Sikhify.in', raw ? `${raw.name} (${raw.lifespan}): biography, timeline, teachings, contributions and Bani.` : undefined);
+  // An unknown id is a "not found" page: its own title, and kept out of search results (noindex).
+  const missing = !state.loading && !state.error && !raw;
+  useReactPage(raw ? `${raw.name} — The Ten Gurus — Sikhify.in` : missing ? 'Guru not found — Sikhify.in' : 'The Ten Gurus — Sikhify.in', raw ? `${raw.name} (${raw.lifespan}): biography, timeline, teachings, contributions and Bani.` : undefined, { noindex: missing });
   const la = i18n.langAttr;
 
   return (
@@ -66,7 +68,7 @@ export default function GuruProfile() {
         crumbs={[{ label: 'Learn', to: '/learn-sikhism' }, { label: 'The Ten Gurus', to: '/gurus' }, { label: raw ? raw.name : 'Guru' }]}
         glyph="ਗੁਰੂ"
         eyebrow={raw ? (raw.number === 1 ? 'The First Guru' : `Guru ${raw.number} of 10`) : 'The Ten Gurus'}
-        title={g ? <span lang={la}>{guruTitle(g.name, i18n.lang)}</span> : 'The Ten Gurus'}
+        title={g ? <span lang={la}>{guruTitle(g.name, i18n.lang)}</span> : missing ? 'Guru not found' : 'The Ten Gurus'}
         sub={raw ? <><span lang="pa" className="font-gurmukhi">ਸ੍ਰੀ {raw.gurmukhi}</span> · {raw.lifespan.replace('–', ' — ')}</> : undefined}
       />
       <div className="sk-container sk-section">

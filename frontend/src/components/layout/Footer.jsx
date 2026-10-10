@@ -33,11 +33,9 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 <nav aria-label="Resources" class="footer-nav-column">
 <h3 class="footer-heading">Resources</h3>
 <ul role="list">
-<li><a href="/downloads">Downloads <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
-<li><a href="/wallpapers">Wallpapers <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
 <li><a href="/books">Books &amp; Research</a></li>
 <li><a href="/directory">Sikh Directory</a></li>
-<li><a href="/sikh-calendar">Sikh Calendar <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
+<li><a href="/festivals">Festivals &amp; Important Days</a></li>
 <li><a href="/kids">Kids — Learn Sikhi</a></li>
 </ul>
 </nav>
@@ -48,19 +46,17 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 <li><a href="/faq">Common Questions</a></li>
 <li><a href="/events">Events</a></li>
 <li><a href="/submit">Submit / Update Information</a></li>
-<li><a href="/volunteer">Volunteers <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
-<li><a href="/seva">Seva Opportunities <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
 </ul>
 </nav>
 <nav aria-label="Support" class="footer-nav-column">
 <h3 class="footer-heading">Support</h3>
 <ul role="list">
-<li><a href="/about">About Us <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
+<li><a href="/about">About Us</a></li>
 <li><a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
 <li><a href="/donate">Donate <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
 <li><a href="/sitemap">Sitemap</a></li>
 <li><a href="/image-credits">Image credits</a></li>
-<li><a href="/privacy-policy">Privacy Policy <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
+<li><a href="/privacy-policy">Privacy Policy</a></li>
 </ul>
 </nav>
 <!-- EL:COLUMN footer-app-column -->
@@ -82,7 +78,7 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 </div>
 <div class="footer-bottom">
 <div class="max-w-[1280px] mx-auto px-5 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 py-5">
-<p class="text-white/60 text-xs">© 2024 Sikhify – All Rights Reserved</p>
+<p class="text-white/60 text-xs">© {{YEAR}} Sikhify – All Rights Reserved</p>
 <span aria-hidden="true" class="khanda-mark footer-khanda"></span>
 <p class="text-white/60 text-xs font-gurmukhi" lang="pa">ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ, ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਿਹ</p>
 </div>
@@ -90,5 +86,6 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 </footer>`;
 
 export default function Footer() {
-  return <div dangerouslySetInnerHTML={{ __html: FOOTER_HTML }} />;
+  // The copyright year follows the visitor's clock, so it never goes stale.
+  return <div dangerouslySetInnerHTML={{ __html: FOOTER_HTML.replace('{{YEAR}}', String(new Date().getFullYear())) }} />;
 }

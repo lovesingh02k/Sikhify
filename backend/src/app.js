@@ -15,9 +15,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRouter, HttpError, sendJson, readBody, parseCookies, serializeCookie, unauthorized, forbidden } from './lib/http.js';
-import { hashToken, createRateLimiter } from './lib/security.js';
+import { hashToken } from './lib/security.js';
+import { createSharedLimiter } from './lib/rateLimit.js';
 import { can } from '../../shared/roles.js';
 import { parseJson, isRemoteDatabase, schemaVersion } from './db/database.js';
+import { SITE_SECURITY_HEADERS } from '../../shared/securityHeaders.js';
 
 import registerAuth from './routes/auth.js';
 import registerUsers from './routes/users.js';
@@ -33,6 +35,8 @@ import registerSubmissions from './routes/submissions.js';
 import registerAdmin from './routes/admin.js';
 import registerSearch from './routes/search.js';
 import registerGurdwaras from './routes/gurdwaras.js';
+import registerFestivals from './routes/festivals.js';
+import registerBanners from './routes/banners.js';
 
 export const SESSION_COOKIE = 'sk_session';
 const JSON_LIMIT = 200 * 1024;
@@ -49,15 +53,28 @@ export function createApp({ db, config, mailer, log = console }) {
   const router = createRouter();
   // Safe diagnostics only: which kind of database and its schema version (no hostnames, URLs or tokens).
   router.get('/api/health', () => ({ ok: true, service: 'sikhify-api', database: { provider: isRemoteDatabase(db) ? 'Turso/libSQL' : 'local SQLite', schemaVersion: schemaVersion(db) } }));
+  // Stored in the database, so every serverless instance shares the same counters (lib/rateLimit.js).
+  const limiter = (name, windowMs, max) => createSharedLimiter(db, { name, windowMs, max, log });
   const limits = {
-    auth: createRateLimiter({ windowMs: 15 * 60 * 1000, max: 20 }),
-    reset: createRateLimiter({ windowMs: 60 * 60 * 1000, max: 5 }),
-    post: createRateLimiter({ windowMs: 60 * 60 * 1000, max: 30 }),
-    comment: createRateLimiter({ windowMs: 60 * 60 * 1000, max: 120 }),
-    report: createRateLimiter({ windowMs: 24 * 60 * 60 * 1000, max: 40 }),
-    submission: createRateLimiter({ windowMs: 24 * 60 * 60 * 1000, max: 20 }),
-    upload: createRateLimiter({ windowMs: 60 * 60 * 1000, max: 60 }),
-    group: createRateLimiter({ windowMs: 24 * 60 * 60 * 1000, max: 10 }),
+    auth: limiter('auth', 15 * 60 * 1000, 20),
+    reset: limiter('reset', 60 * 60 * 1000, 5),
+    resetEmail: limiter('reset-email', 60 * 60 * 1000, 3),
+    // Login: failures per account+IP and per IP, plus a looser account-wide cap. A wrong password from
+    // one address can't lock the account for everyone else (see routes/auth.js).
+    loginIp: limiter('login-ip', 15 * 60 * 1000, 30),
+    loginFailIdIp: limiter('login-fail-id-ip', 15 * 60 * 1000, 10),
+    loginFailId: limiter('login-fail-id', 60 * 60 * 1000, 100),
+    post: limiter('post', 60 * 60 * 1000, 30),
+    comment: limiter('comment', 60 * 60 * 1000, 120),
+    report: limiter('report', 24 * 60 * 60 * 1000, 40),
+    submission: limiter('submission', 24 * 60 * 60 * 1000, 200),
+    // Visitors without an account, per IP address: saved submissions (a short burst limit and a daily cap —
+    // counted only when a submission is stored), plus a generous cap on attempts of any kind.
+    guestSubmission: limiter('guest-submission', 60 * 60 * 1000, 30),
+    guestSubmissionDaily: limiter('guest-submission-day', 24 * 60 * 60 * 1000, 100),
+    guestAttempt: limiter('guest-attempt', 60 * 60 * 1000, 300),
+    upload: limiter('upload', 60 * 60 * 1000, 60),
+    group: limiter('group', 24 * 60 * 60 * 1000, 10),
   };
 
   /* ---------- helpers shared by route modules */
@@ -82,6 +99,19 @@ export function createApp({ db, config, mailer, log = console }) {
     if (!userId || userId === actorId) return;
     db.prepare('INSERT INTO notifications (user_id, type, actor_id, message, link) VALUES (?, ?, ?, ?, ?)').run(userId, type, actorId, message.slice(0, 300), link);
   }
+  /**
+   * Notifies every active staff member who has `capability` (e.g. everyone who reviews
+   * submissions). The person who caused it is not notified about their own action.
+   */
+  function notifyStaff(capability, { type, actorId = null, message, link = '' }) {
+    try {
+      for (const u of db.prepare("SELECT id, role, status FROM users WHERE role IN ('moderator','admin') AND status = 'active'").all()) {
+        if (can(u, capability)) notify(Number(u.id), { type, actorId, message, link });
+      }
+    } catch (err) {
+      log.error?.('[notify] staff notification failed', err && err.message); // never fails the visitor's request
+    }
+  }
   function logModeration(actorId, action, targetType, targetId, note = '') {
     db.prepare('INSERT INTO moderation_log (actor_id, action, target_type, target_id, note) VALUES (?, ?, ?, ?, ?)').run(actorId, action, targetType, targetId, String(note).slice(0, 1000));
   }
@@ -90,9 +120,9 @@ export function createApp({ db, config, mailer, log = console }) {
     if (!r.ok) throw new HttpError(429, `Too many attempts — please wait ${Math.ceil(r.retryAfter / 60)} minute(s) and try again`);
   }
 
-  const deps = { db, config, mailer, log, settings, notify, logModeration, rate, limits };
+  const deps = { db, config, mailer, log, settings, notify, notifyStaff, logModeration, rate, limits };
   [registerAuth, registerUsers, registerPosts, registerGroups, registerNotifications, registerReports, registerUploads,
-    registerHukamnama, registerMedia, registerEntries, registerSubmissions, registerAdmin, registerSearch, registerGurdwaras]
+    registerHukamnama, registerMedia, registerEntries, registerSubmissions, registerAdmin, registerSearch, registerGurdwaras, registerFestivals, registerBanners]
     .forEach((register) => register(router, deps));
 
   function loadSession(req) {
@@ -183,10 +213,12 @@ export function createApp({ db, config, mailer, log = console }) {
     '.jpeg': 'image/jpeg', '.webp': 'image/webp', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.ico': 'image/x-icon',
     '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8',
   };
-  function serveFile(res, file, { cache = 'no-cache', method = 'GET' } = {}) {
+  /** `site`: the built site's own files get the site security headers (uploads set their own). */
+  function serveFile(res, file, { cache = 'no-cache', method = 'GET', site = false } = {}) {
     const ext = path.extname(file).toLowerCase();
     const stat = fs.statSync(file);
     res.writeHead(200, {
+      ...(site ? SITE_SECURITY_HEADERS : {}),
       'Content-Type': MIME[ext] || 'application/octet-stream',
       'Content-Length': stat.size,
       'Cache-Control': cache,
@@ -213,8 +245,15 @@ export function createApp({ db, config, mailer, log = console }) {
     if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
 
     if (pathname.startsWith('/uploads/')) {
-      const rel = pathname.slice('/uploads/'.length);
-      const stored = db.prepare('SELECT mime, bytes, data FROM uploads WHERE path = ?').get(rel);
+      let rel = pathname.slice('/uploads/'.length);
+      let stored = db.prepare('SELECT mime, bytes, data FROM uploads WHERE path = ?').get(rel);
+      // A display-size variant ("….w960.webp", see routes/uploads.js) that was never made — the image was
+      // already small, or it predates variants — is answered with the original image.
+      const variant = /^(.+)\.w\d+\.webp$/.exec(rel);
+      if (!stored && variant) {
+        const base = db.prepare('SELECT path FROM uploads WHERE path LIKE ? AND path NOT LIKE ? ORDER BY id LIMIT 1').get(variant[1] + '.%', '%.w%.webp');
+        if (base) { rel = base.path; stored = db.prepare('SELECT mime, bytes, data FROM uploads WHERE path = ?').get(rel); }
+      }
       if (stored && stored.data) {
         const buf = Buffer.isBuffer(stored.data) ? stored.data : Buffer.from(stored.data);
         res.writeHead(200, {
@@ -240,10 +279,10 @@ export function createApp({ db, config, mailer, log = console }) {
     if (config.serveStatic) {
       const file = safeJoin(config.distDir, pathname);
       if (file && isFile(file)) {
-        return serveFile(res, file, { cache: pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache', method: req.method });
+        return serveFile(res, file, { cache: pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'no-cache', method: req.method, site: true });
       }
       const index = path.join(config.distDir, 'index.html');
-      if (isFile(index)) return serveFile(res, index, { method: req.method });
+      if (isFile(index)) return serveFile(res, index, { method: req.method, site: true });
     }
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Not found');

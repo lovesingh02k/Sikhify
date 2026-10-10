@@ -25,7 +25,7 @@ export const STATUS_FILTERS = [
   { key: 'active', label: 'Active' },
   { key: 'temporarily_closed', label: 'Temporarily Closed' },
   { key: 'permanently_closed', label: 'Permanently Closed' },
-  { key: 'needs_verification', label: 'Needs Verification' },
+  { key: 'verified', label: 'Verified only' },
 ];
 export const DEFAULT_STATUS_FILTER = ['active'];
 
@@ -76,9 +76,14 @@ export const PAGE_SIZES = [20, 50];
 
 /** Common spellings of the same word, so a search for one finds the others. */
 export const SEARCH_VARIANTS = [
-  ['gurdwara', 'gurudwara', 'gurdwaara', 'gurudwaara', 'gurduara', 'gurdawara'],
-  ['sri', 'shri', 'shree'],
-  ['sahib', 'saheb', 'sahab'],
+  ['gurdwara', 'gurudwara', 'gurdwaara', 'gurudwaara', 'gurduara', 'gurdawara', 'गुरुद्वारा', 'गुरूद्वारा', 'गुरद्वारा', 'गुरुदवारा', 'ਗੁਰਦੁਆਰਾ', 'ਗੁਰਦਵਾਰਾ'],
+  ['sri', 'shri', 'shree', 'श्री', 'ਸ੍ਰੀ'],
+  ['sahib', 'saheb', 'sahab', 'साहिब', 'ਸਾਹਿਬ'],
+  ['singh', 'सिंह', 'ਸਿੰਘ'],
+  ['sabha', 'सभा', 'ਸਭਾ'],
+  // Hindi spellings of Chhattisgarh's larger towns, so a search in Hindi finds the English-named listings.
+  ['raipur', 'रायपुर'], ['bilaspur', 'बिलासपुर'], ['durg', 'दुर्ग'], ['bhilai', 'भिलाई'], ['korba', 'कोरबा'], ['raigarh', 'रायगढ़'],
+  ['rajnandgaon', 'राजनांदगांव'], ['jagdalpur', 'जगदलपुर'], ['dongargarh', 'डोंगरगढ़'], ['ambikapur', 'अंबिकापुर'],
 ];
 
 /* ---------- normalizers (duplicate detection) */

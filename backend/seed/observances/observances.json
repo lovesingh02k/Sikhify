@@ -1,0 +1,311 @@
+{
+  "about": "Sikh Festivals & Important Days — initial curated set. Imported by scripts/import-observances.js as drafts. Every date is an UNVERIFIED candidate taken from the sources named on it; an admin confirms it against the SGPC Nanakshahi Jantri for that year and marks it verified in /admin/festivals before it is shown publicly. Movable observances need a date for each year; none is copied from a previous year.",
+  "retrieved": "2026-10-09",
+  "sources": {
+    "sikhnet": {
+      "name": "SikhNet — Sikh Gurpurab Calendar 2026-27 (says: \"All dates are as per SGPC Calendar\")",
+      "url": "https://www.sikhnet.com/pages/sikh-gurpurab-calendar"
+    },
+    "gta": {
+      "name": "goldentempleamritsar.org — Nanakshahi Calendar 558 (2026–27) (says: \"Source: SGPC Amritsar\")",
+      "url": "https://www.goldentempleamritsar.org/sikh-nanakshahi-calendar/2026-2027/samvat-558/calendar-2026-2027-nanakshahi-558.php"
+    }
+  },
+  "records": [
+    {
+      "slug": "parkash-purab-guru-nanak-dev-ji",
+      "title": "Parkash Purab of Sri Guru Nanak Dev Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Nanak Dev Ji, the founder of Sikhi — one of the most widely celebrated Gurpurabs.",
+      "description": "Sri Guru Nanak Dev Ji was born in 1469 at Rai Bhoi di Talwandi, now Nankana Sahib in present-day Pakistan.\n\nThe Gurpurab is celebrated in Gurdwaras with Akhand Path, Kirtan, Katha, Prabhat Pheris, Nagar Kirtans and Langar. Its date is traditionally reckoned by the lunar calendar (the full moon of Kattak), so it changes from year to year.",
+      "significance": "Guru Nanak Dev Ji taught devotion to one Creator (Ik Onkar), the equality of all people, honest living, sharing with others and remembering Waheguru. His Bani is enshrined in Sri Guru Granth Sahib Ji.",
+      "relatedGuru": "guru-nanak-dev-ji",
+      "relatedTopic": "/sikh-history#event=1469-birth-guru-nanak",
+      "featured": true,
+      "priority": 10,
+      "dates": [{ "startDate": "2026-11-24", "sources": ["sikhnet", "gta"], "notes": "Both sources give 9 Maghar, Samvat 558 (Tuesday 24 November 2026)." }]
+    },
+    {
+      "slug": "parkash-purab-guru-angad-dev-ji",
+      "title": "Parkash Purab of Sri Guru Angad Dev Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Angad Dev Ji, the second Guru, who gave the Gurmukhi script its standard form.",
+      "description": "Sri Guru Angad Dev Ji (Bhai Lehna Ji before he became Guru) was chosen by Guru Nanak Dev Ji as his successor.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Angad Dev Ji standardised the Gurmukhi script, strengthened the institution of Langar and encouraged physical fitness among the Sikhs.",
+      "relatedGuru": "guru-angad-dev-ji",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-amar-das-ji",
+      "title": "Parkash Purab of Sri Guru Amar Das Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Amar Das Ji, the third Guru, known for Langar for all and for his service.",
+      "description": "Sri Guru Amar Das Ji became the third Guru at Goindwal Sahib.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Amar Das Ji made Langar central — all who came sat and ate together, regardless of caste or status — and organised the growing Sikh community into regions (the Manji system). He spoke against practices such as sati and purdah.",
+      "relatedGuru": "guru-amar-das-ji",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-ram-das-ji",
+      "title": "Parkash Purab of Sri Guru Ram Das Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Ram Das Ji, the fourth Guru, who founded the city of Amritsar (Ramdaspur).",
+      "description": "Sri Guru Ram Das Ji was born in Lahore and became the fourth Guru.\n\nThe date of this Gurpurab varies by calendar and year.",
+      "significance": "Guru Ram Das Ji founded Ramdaspur, later Amritsar, and began the excavation of the sacred pool. He composed the Laavan, the four hymns recited at the Sikh wedding ceremony (Anand Karaj).",
+      "relatedGuru": "guru-ram-das-ji",
+      "dates": [{ "startDate": "2026-10-27", "sources": ["sikhnet"], "notes": "11 Katak, Samvat 558. Only one source checked gives this date — confirm before verifying." }]
+    },
+    {
+      "slug": "parkash-purab-guru-arjan-dev-ji",
+      "title": "Parkash Purab of Sri Guru Arjan Dev Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Arjan Dev Ji, the fifth Guru, who compiled the Adi Granth.",
+      "description": "Sri Guru Arjan Dev Ji was born at Goindwal Sahib and became the fifth Guru.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Arjan Dev Ji completed Sri Harmandir Sahib and compiled the Adi Granth, installed there in 1604. He is the author of Sukhmani Sahib.",
+      "relatedGuru": "guru-arjan-dev-ji",
+      "relatedTopic": "/sikh-history#event=1604-adi-granth",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-hargobind-sahib-ji",
+      "title": "Parkash Purab of Sri Guru Hargobind Sahib Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Hargobind Sahib Ji, the sixth Guru, who wore the two swords of Miri and Piri.",
+      "description": "Sri Guru Hargobind Sahib Ji became the sixth Guru after the martyrdom of Guru Arjan Dev Ji.\n\nThe sources checked disagree on this Gurpurab's date, so it must be confirmed against the SGPC Jantri before it is verified.",
+      "significance": "Guru Hargobind Sahib Ji wore two swords representing Miri (temporal) and Piri (spiritual) authority and established Sri Akal Takht Sahib.",
+      "relatedGuru": "guru-hargobind-sahib-ji",
+      "dates": [{ "startDate": "2027-02-19", "sources": ["gta"], "notes": "DISCREPANCY — goldentempleamritsar.org gives 7 Phagan, Samvat 558 (19 February 2027), while SikhNet's SGPC-based list gives 16 Harh (30 June 2026) for this Gurpurab. Confirm the correct date with the SGPC Jantri before verifying." }]
+    },
+    {
+      "slug": "parkash-purab-guru-har-rai-ji",
+      "title": "Parkash Purab of Sri Guru Har Rai Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Har Rai Ji, the seventh Guru, remembered for his compassion.",
+      "description": "Sri Guru Har Rai Ji was born at Kiratpur Sahib and became the seventh Guru.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Har Rai Ji is remembered for his gentleness and care for all living beings; Sikh tradition records that he kept a dispensary of medicinal herbs open to all.",
+      "relatedGuru": "guru-har-rai-ji",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-har-krishan-ji",
+      "title": "Parkash Purab of Sri Guru Har Krishan Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Har Krishan Ji, the eighth Guru, who became Guru as a child.",
+      "description": "Sri Guru Har Krishan Ji was born at Kiratpur Sahib and became Guru at about five years of age.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "In Delhi, Guru Har Krishan Ji served people suffering in an epidemic; Gurdwara Bangla Sahib stands where he stayed.",
+      "relatedGuru": "guru-har-krishan-ji",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-tegh-bahadur-ji",
+      "title": "Parkash Purab of Sri Guru Tegh Bahadur Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Tegh Bahadur Ji, the ninth Guru.",
+      "description": "Sri Guru Tegh Bahadur Ji was born in Amritsar, the youngest son of Guru Hargobind Sahib Ji, and became the ninth Guru.\n\nThe date of this Gurpurab varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Tegh Bahadur Ji's Bani, included in Sri Guru Granth Sahib Ji, speaks of detachment and fearlessness. He founded Anandpur Sahib.",
+      "relatedGuru": "guru-tegh-bahadur-ji",
+      "dates": []
+    },
+    {
+      "slug": "parkash-purab-guru-gobind-singh-ji",
+      "title": "Parkash Purab of Sri Guru Gobind Singh Ji",
+      "category": "gurpurab",
+      "summary": "The birth anniversary of Sri Guru Gobind Singh Ji, the tenth Guru, who created the Khalsa.",
+      "description": "Sri Guru Gobind Singh Ji was born at Patna Sahib in 1666.\n\nThe Gurpurab is celebrated with Akhand Path, Kirtan, Nagar Kirtans and Langar. Its date varies from year to year.",
+      "significance": "Guru Gobind Singh Ji created the Khalsa in 1699 and, before leaving this world in 1708, passed the Guruship to Sri Guru Granth Sahib Ji.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1699-khalsa",
+      "featured": true,
+      "priority": 9,
+      "dates": [{ "startDate": "2027-01-15", "sources": ["sikhnet", "gta"], "notes": "Both sources give 2 Magh, Samvat 558 (Friday 15 January 2027)." }]
+    },
+    {
+      "slug": "gurgaddi-divas-sri-guru-granth-sahib-ji",
+      "title": "Gurgaddi Divas of Sri Guru Granth Sahib Ji",
+      "category": "gurpurab",
+      "summary": "The day Guru Gobind Singh Ji conferred the eternal Guruship on Sri Guru Granth Sahib Ji at Nanded (1708).",
+      "description": "At Nanded (Sri Hazur Sahib), Guru Gobind Singh Ji declared Sri Guru Granth Sahib Ji the eternal Guru of the Sikhs.",
+      "significance": "Since 1708 there is no living human Guru: Sri Guru Granth Sahib Ji is the Guru, and the Panth is guided by the Shabad.",
+      "relatedTopic": "/sikh-history#event=1708-guru-granth-sahib",
+      "dates": [{ "startDate": "2026-11-11", "sources": ["sikhnet"], "notes": "26 Katak, Samvat 558 (listed as \"Gurgaddi: Sri Guru Granth Sahib Ji (Nanded)\"). Only one source checked gives this date — confirm before verifying." }]
+    },
+    {
+      "slug": "pehla-parkash-sri-guru-granth-sahib-ji",
+      "title": "First Parkash of Sri Guru Granth Sahib Ji",
+      "category": "gurpurab",
+      "summary": "The anniversary of the first installation (Parkash) of the Adi Granth at Sri Harmandir Sahib in 1604.",
+      "description": "Guru Arjan Dev Ji installed the newly compiled Adi Granth at Sri Harmandir Sahib, Amritsar, in 1604, with Baba Buddha Ji as the first Granthi.\n\nThe date varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "The Adi Granth brought together the Bani of the Gurus and of saints from different backgrounds — later, with the Bani of Guru Tegh Bahadur Ji added, it became Sri Guru Granth Sahib Ji.",
+      "relatedGuru": "guru-arjan-dev-ji",
+      "relatedTopic": "/sikh-history#event=1604-adi-granth",
+      "dates": []
+    },
+    {
+      "slug": "shaheedi-purab-guru-arjan-dev-ji",
+      "title": "Shaheedi Purab of Sri Guru Arjan Dev Ji",
+      "category": "shaheedi",
+      "summary": "Remembering the martyrdom of Sri Guru Arjan Dev Ji in Lahore in 1606 — the first Sikh Guru to be martyred.",
+      "description": "Guru Arjan Dev Ji was tortured and martyred in Lahore in 1606. Gurdwara Dera Sahib, Lahore, marks the place.\n\nThe day is widely marked with Chhabeels serving cool sweetened water to all. The date varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Guru Arjan Dev Ji accepted martyrdom with complete calm, remembered in Sikh tradition as an example of living in Waheguru's will (Bhana).",
+      "relatedGuru": "guru-arjan-dev-ji",
+      "relatedTopic": "/sikh-history#event=1606-guru-arjan-martyrdom",
+      "dates": []
+    },
+    {
+      "slug": "shaheedi-purab-guru-tegh-bahadur-ji",
+      "title": "Shaheedi Purab of Sri Guru Tegh Bahadur Ji",
+      "category": "shaheedi",
+      "summary": "Remembering the martyrdom of Sri Guru Tegh Bahadur Ji in Delhi in 1675, who gave his life for the freedom of others to practise their faith.",
+      "description": "Guru Tegh Bahadur Ji was martyred at Chandni Chowk, Delhi, in 1675, where Gurdwara Sis Ganj Sahib now stands. Gurdwara Rakab Ganj Sahib marks where his body was cremated.",
+      "significance": "Guru Tegh Bahadur Ji is remembered as \"Hind di Chadar\" — the shield of India — for standing up for the right of all people to follow their own faith.",
+      "relatedGuru": "guru-tegh-bahadur-ji",
+      "relatedTopic": "/sikh-history#event=1675-martyrdom",
+      "featured": true,
+      "priority": 8,
+      "dates": [{ "startDate": "2026-12-14", "sources": ["sikhnet", "gta"], "notes": "Both sources give 29 Maghar, Samvat 558 (Monday 14 December 2026)." }]
+    },
+    {
+      "slug": "shaheedi-bhai-mati-das-bhai-sati-das-bhai-dyala-ji",
+      "title": "Shaheedi of Bhai Mati Das Ji, Bhai Sati Das Ji and Bhai Dyala Ji",
+      "category": "shaheedi",
+      "summary": "Remembering the three Sikhs martyred in Delhi in 1675 alongside Guru Tegh Bahadur Ji.",
+      "description": "Bhai Mati Das Ji, Bhai Sati Das Ji and Bhai Dyala Ji accompanied Guru Tegh Bahadur Ji and were martyred in Delhi shortly before him.",
+      "significance": "Their steadfastness in the face of torture is remembered daily in the Sikh Ardas.",
+      "relatedGuru": "guru-tegh-bahadur-ji",
+      "relatedTopic": "/sikh-history#event=1675-martyrdom",
+      "dates": [{ "startDate": "2026-12-13", "sources": ["sikhnet"], "notes": "28 Maghar, Samvat 558. Only one source checked gives this date — confirm before verifying." }]
+    },
+    {
+      "slug": "shaheedi-vadde-sahibzade",
+      "title": "Shaheedi of the Vadde Sahibzade (Saka Chamkaur Sahib)",
+      "category": "shaheedi",
+      "summary": "Remembering Sahibzada Baba Ajit Singh Ji and Sahibzada Baba Jujhar Singh Ji, martyred in battle at Chamkaur Sahib in 1704.",
+      "description": "After leaving Anandpur Sahib, Guru Gobind Singh Ji and a small band of Sikhs were besieged at Chamkaur. The Guru's elder sons, Sahibzada Ajit Singh Ji and Sahibzada Jujhar Singh Ji, fell fighting against an overwhelming force.",
+      "significance": "The courage of the elder Sahibzade is remembered every year in the Shaheedi Jor Mela at Chamkaur Sahib.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1704-chamkaur",
+      "priority": 7,
+      "dates": [{ "startDate": "2026-12-23", "sources": ["sikhnet", "gta"], "notes": "Both sources give 8 Poh, Samvat 558 (23 December 2026)." }]
+    },
+    {
+      "slug": "shaheedi-chhote-sahibzade-mata-gujri-ji",
+      "title": "Shaheedi of the Chhote Sahibzade and Mata Gujri Ji",
+      "category": "shaheedi",
+      "summary": "Remembering Sahibzada Baba Zorawar Singh Ji and Sahibzada Baba Fateh Singh Ji, martyred at Sirhind in 1704, and Mata Gujri Ji.",
+      "description": "The Guru's youngest sons, Sahibzada Zorawar Singh Ji and Sahibzada Fateh Singh Ji, were executed at Sirhind for refusing to give up their faith. Mata Gujri Ji, held with them in the Thanda Burj, passed away in captivity. Gurdwara Fatehgarh Sahib marks the place.",
+      "significance": "The Shaheedi of the youngest Sahibzade, who were still children, is among the most deeply felt events in Sikh history, remembered at the annual Shaheedi Jor Mela at Fatehgarh Sahib.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1704-sirhind",
+      "priority": 7,
+      "dates": [{ "startDate": "2026-12-28", "sources": ["sikhnet", "gta"], "notes": "Both sources give 13 Poh, Samvat 558 (28 December 2026)." }]
+    },
+    {
+      "slug": "shaheedi-baba-deep-singh-ji",
+      "title": "Shaheedi Purab of Baba Deep Singh Ji",
+      "category": "shaheedi",
+      "summary": "Remembering Baba Deep Singh Ji, martyred in 1757 while fighting to free Sri Harmandir Sahib.",
+      "description": "In 1757, Baba Deep Singh Ji led Sikhs towards Amritsar to free Sri Harmandir Sahib from desecration, and was martyred in the battle. Gurdwara Shaheed Ganj Baba Deep Singh Ji, Amritsar, marks the place.",
+      "significance": "Baba Deep Singh Ji, a learned scholar as well as a warrior, is remembered for his vow to reach Sri Harmandir Sahib and his unwavering resolve.",
+      "relatedTopic": "/sikh-history#event=1757-baba-deep-singh",
+      "dates": [{ "startDate": "2026-11-15", "sources": ["sikhnet"], "notes": "30 Katak, Samvat 558. Only one source checked gives this date — confirm before verifying." }]
+    },
+    {
+      "slug": "shaheedi-banda-singh-bahadur",
+      "title": "Shaheedi of Baba Banda Singh Bahadur",
+      "category": "shaheedi",
+      "summary": "Remembering Baba Banda Singh Bahadur, executed in Delhi in 1716.",
+      "description": "Sent to Punjab by Guru Gobind Singh Ji, Banda Singh Bahadur captured Sirhind in 1710 and established Sikh rule before being captured and executed in Delhi in 1716.\n\nThe date varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Banda Singh Bahadur's campaign was the first time Sikh political authority was established, and he is remembered for his steadfastness at his execution.",
+      "relatedTopic": "/sikh-history#event=1716-banda-singh-martyrdom",
+      "dates": []
+    },
+    {
+      "slug": "shaheedi-bhai-mani-singh-ji",
+      "title": "Shaheedi of Bhai Mani Singh Ji",
+      "category": "shaheedi",
+      "summary": "Remembering Bhai Mani Singh Ji, scholar and Granthi of Sri Harmandir Sahib, executed in Lahore in 1734.",
+      "description": "Bhai Mani Singh Ji, Granthi of Sri Harmandir Sahib and a scribe of the Granth, was executed limb by limb in Lahore.\n\nThe date varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Bhai Mani Singh Ji's martyrdom — accepting to be cut limb by limb rather than give up his faith — is remembered in the Sikh Ardas.",
+      "relatedTopic": "/sikh-history#event=1734-bhai-mani-singh",
+      "dates": []
+    },
+    {
+      "slug": "vaisakhi-khalsa-sajna-divas",
+      "title": "Vaisakhi — Khalsa Sajna Divas",
+      "category": "festival",
+      "summary": "The day Guru Gobind Singh Ji created the Khalsa at Anandpur Sahib in 1699, also celebrated as the harvest festival of Punjab.",
+      "description": "On Vaisakhi 1699 at Anandpur Sahib, Guru Gobind Singh Ji called for Sikhs ready to give their heads; the five who rose became the Panj Pyare, the first to receive Khande di Pahul (Amrit).\n\nVaisakhi follows the solar calendar, so its Gregorian date is usually 13 or 14 April; it needs to be confirmed for each year.",
+      "significance": "The creation of the Khalsa gave the Sikhs a distinct identity and a code of conduct, and is celebrated with Nagar Kirtans and Amrit Sanchar around the world.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1699-khalsa",
+      "featured": true,
+      "priority": 9,
+      "dates": []
+    },
+    {
+      "slug": "bandi-chhor-divas",
+      "title": "Bandi Chhor Divas",
+      "category": "festival",
+      "summary": "Celebrating Guru Hargobind Sahib Ji's release from Gwalior Fort together with 52 imprisoned kings.",
+      "description": "Sikh tradition records that when Guru Hargobind Sahib Ji was released from Gwalior Fort, he secured the release of 52 kings held with him. On his return to Amritsar, Sri Harmandir Sahib was lit up in celebration.\n\nIt is celebrated on the same day as Diwali, so its date changes every year.",
+      "significance": "Bandi Chhor Divas — \"the day of liberation\" — celebrates freedom and the Guru's care for others, marked with illuminations at Sri Harmandir Sahib and Gurdwaras worldwide.",
+      "relatedGuru": "guru-hargobind-sahib-ji",
+      "relatedTopic": "/sikh-history#event=bandi-chhor",
+      "featured": true,
+      "priority": 8,
+      "dates": [{ "startDate": "2026-11-08", "sources": ["sikhnet", "gta"], "notes": "Both sources give 23 Katak, Samvat 558 (Sunday 8 November 2026)." }]
+    },
+    {
+      "slug": "hola-mohalla",
+      "title": "Hola Mohalla",
+      "category": "festival",
+      "summary": "The festival begun by Guru Gobind Singh Ji at Anandpur Sahib, with displays of martial skill, Kirtan and poetry.",
+      "description": "Hola Mohalla is held at Anandpur Sahib the day after Holi, with Gatka and other displays of martial skill, Kirtan, Darbars and Langar, drawing very large gatherings.\n\nIts date follows the lunar calendar, so it changes every year; it needs to be confirmed for each year.",
+      "significance": "Guru Gobind Singh Ji began Hola Mohalla as a day for the Sikhs to practise martial skills and readiness, alongside devotion.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1665-anandpur",
+      "dates": []
+    },
+    {
+      "slug": "maghi-sri-muktsar-sahib",
+      "title": "Maghi — Chali Mukte (Sri Muktsar Sahib)",
+      "category": "festival",
+      "summary": "Remembering the Forty Liberated Ones (Chali Mukte) who fell at the Battle of Muktsar in 1705, with the Maghi Jor Mela at Sri Muktsar Sahib.",
+      "description": "Forty Sikhs who had left Guru Gobind Singh Ji returned, led by Mai Bhago Ji, and fell fighting at Khidrana in 1705. The Guru blessed them as the Chali Mukte, and the place became Sri Muktsar Sahib.\n\nMaghi falls on the first of the month of Magh (solar calendar), so its Gregorian date is usually 13 or 14 January; it needs to be confirmed for each year.",
+      "significance": "The Chali Mukte are remembered in the Sikh Ardas; Maghi is marked with a large Jor Mela at Sri Muktsar Sahib.",
+      "relatedGuru": "guru-gobind-singh-ji",
+      "relatedTopic": "/sikh-history#event=1705-muktsar",
+      "dates": [{ "startDate": "2027-01-14", "sources": ["sikhnet"], "notes": "1 Magh, Samvat 558 (listed as \"Jor Mela, Sri Muktsar Sahib (Maaghi)\"). Only one source checked gives this date — confirm before verifying." }]
+    },
+    {
+      "slug": "nanakshahi-new-year",
+      "title": "Nanakshahi New Year (1 Chet)",
+      "category": "historical",
+      "summary": "The start of the Sikh year in the Nanakshahi calendar, on the first of Chet.",
+      "description": "The Nanakshahi calendar, named after Guru Nanak Dev Ji, begins its year on 1 Chet. The calendar was introduced in 2003; the version followed by the SGPC was amended in 2010.",
+      "significance": "The new year is an occasion for Ardas and reflection at the start of the Sikh calendar year.",
+      "calendarType": "nanakshahi",
+      "dates": [{ "startDate": "2027-03-14", "sources": ["gta"], "notes": "Inferred, not stated directly: goldentempleamritsar.org says Samvat 558 runs from 14 March 2026 to 13 March 2027, so 1 Chet, Samvat 559 would be 14 March 2027. Confirm against the SGPC Jantri for Samvat 559 before verifying." }]
+    },
+    {
+      "slug": "saka-nankana-sahib",
+      "title": "Saka Nankana Sahib",
+      "category": "historical",
+      "summary": "Remembering the Sikhs killed at Gurdwara Janam Asthan, Nankana Sahib, in February 1921 during the Gurdwara reform movement.",
+      "description": "In February 1921, Sikhs who came peacefully to Gurdwara Janam Asthan at Nankana Sahib — the birthplace of Guru Nanak Dev Ji — were attacked and killed by men of the Mahant who controlled it. Bhai Lachhman Singh Dharowali was among the martyrs.",
+      "significance": "The Saka became a turning point in the Gurdwara reform movement, which led to Sikh Gurdwaras coming under the management of the Panth.",
+      "relatedGuru": "guru-nanak-dev-ji",
+      "dates": [{ "startDate": "2027-02-21", "sources": ["sikhnet"], "notes": "9 Phagun, Samvat 558 (SikhNet gives 21 February 2027; it lists 10 Phagun for the same event in 2026). Only one source checked — confirm before verifying." }]
+    },
+    {
+      "slug": "miri-piri-divas",
+      "title": "Miri Piri Divas",
+      "category": "historical",
+      "summary": "Marking Guru Hargobind Sahib Ji's adoption of the two swords of Miri and Piri.",
+      "description": "Guru Hargobind Sahib Ji wore two swords — one for temporal authority (Miri) and one for spiritual authority (Piri) — and established Sri Akal Takht Sahib.\n\nThe date varies by calendar and year; it needs to be confirmed for each year.",
+      "significance": "Miri and Piri express the Sikh ideal of joining spiritual life with responsibility in the world.",
+      "relatedGuru": "guru-hargobind-sahib-ji",
+      "dates": []
+    }
+  ]
+}

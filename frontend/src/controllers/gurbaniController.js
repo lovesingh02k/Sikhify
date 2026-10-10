@@ -197,7 +197,7 @@ export function initGurbani() {
       gTitle: it.gurmukhiTitle, title: it.title,
       meta: [it.author, it.raag, S.gurbani.sourceLabel(it), it.lineCount ? it.lineCount + " lines" : ""].filter(Boolean).join(" · "),
       actions: '<button type="button" class="sk-btn sk-btn-sm" data-bookmark-id="gurbani:' + it.id + '" data-bm-current aria-pressed="false">' + S.icon("bookmark", 15) + '<span class="sk-btn-label">Bookmark</span></button>' + shareBtn(),
-      audio: S.audio.playerHtml(it.track, yt),
+      audio: S.audio.playerHtml(it.track, yt, it.youtube ? { id: it.youtube.id, title: it.title, by: it.youtube.artist } : null),
       note: it.type === "Bani" ? '<p class="sk-card-meta mt-6">Full text of the SGPC version from BaniDB.' + (it.nitnem ? ' <a class="panel-view-all" href="/nitnem#bani=' + it.id + '">Read with the Nitnem checklist →</a>' : "") + "</p>" : '<p class="sk-card-meta mt-6">Text and meanings: BaniDB.</p>',
       nav: (prev ? '<a class="sk-nav-card" href="#item=' + prev.id + '"><small>← Previous</small>' + S.esc(prev.title) + "</a>" : "<span></span>") + "<span></span>" +
         (next ? '<a class="sk-nav-card sk-next" href="#item=' + next.id + '"><small>Next →</small>' + S.esc(next.title) + "</a>" : "<span></span>"),

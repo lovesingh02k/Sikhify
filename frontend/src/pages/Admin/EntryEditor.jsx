@@ -67,15 +67,16 @@ export default function EntryEditor() {
       <form className="sk-form" onSubmit={save} noValidate>
         <FormError error={state.error} />
         {!id ? (
-          <div className="sk-card">
+          <div className="sk-card sk-step">
+            <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">1</span><div><h3 className="sk-step-title">What are you adding?</h3><p className="sk-step-hint">Pick the kind of record — the form below changes to match.</p></div></header>
             <Select label="Content type" required value={type} placeholder="Choose…" options={Object.entries(CONTENT_TYPES).map(([value, x]) => ({ value, label: x.label }))} onChange={(e) => setType(e.target.value)} />
           </div>
         ) : null}
         {t ? (
           <>
-            <section className="sk-card"><h3 className="sk-card-title mb-4">Details</h3><SchemaFields type={type} values={values} onChange={setValues} errors={state.fields} /></section>
-            <section className="sk-card sk-form">
-              <h3 className="sk-card-title">Sources &amp; verification</h3>
+            <section className="sk-card sk-step"><header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">{id ? 1 : 2}</span><div><h3 className="sk-step-title">Details</h3><p className="sk-step-hint">Fill in the starred fields; everything else is optional.</p></div></header><SchemaFields type={type} values={values} onChange={setValues} errors={state.fields} foldOptional /></section>
+            <section className="sk-card sk-form sk-step">
+              <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">{id ? 2 : 3}</span><div><h3 className="sk-step-title">Where it came from &amp; publishing</h3><p className="sk-step-hint">Add a source link so others can check it, then choose whether it is public.</p></div></header>
               <div className="sk-form-grid">
                 <TextInput className="sk-span-2" label="Source" value={meta.source} onChange={(e) => setMeta({ ...meta, source: e.target.value })} error={state.fields.source} help="Where this information was confirmed (organization, official site, publication)." />
                 <TextArea className="sk-span-2" label="References" rows={3} value={meta.references} onChange={(e) => setMeta({ ...meta, references: e.target.value })} error={state.fields.references} help="One per line: Label | https://…" />

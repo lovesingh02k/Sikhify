@@ -22,6 +22,7 @@ async function runtime() {
       if (!config.databaseAuthToken) {
         throw new Error('SIKHIFY_DATABASE_AUTH_TOKEN is not configured. Add the Turso database token in Vercel Environment Variables.');
       }
+      if (!config.publicUrl) console.warn('[sikhify] No public URL (SIKHIFY_PUBLIC_URL or Vercel URL): password-reset links cannot be built.');
       const db = await openDatabaseForConfig(config);
       // Safe to log: provider + hostname only (never the token).
       console.info(`[sikhify] database: ${describeDatabase(config).label}, schema version ${schemaVersion(db)}`);

@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { initCore } from '../controllers/coreController.js';
 import { initCommonInteractions } from '../controllers/commonController.js';
 import { startPageMotion } from '../motion/pageMotion.js';
-import { markChromeReady } from '../app/navigation.js';
+import { markChromeReady, restoreDocumentScroll } from '../app/navigation.js';
 import { usePageMeta } from './usePageMeta.js';
 
 /**
@@ -14,7 +14,7 @@ export function useReactPage(title, description, { noindex = false, motion = tru
   usePageMeta(title, description, { noindex });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useLayoutEffect(() => (motion ? startPageMotion({ hero }) : undefined), []);
+  useLayoutEffect(() => { restoreDocumentScroll(); return motion ? startPageMotion({ hero }) : undefined; }, []);
 
   useEffect(() => {
     if (markChromeReady() || window.Sikhify?.search) return;

@@ -10,6 +10,17 @@ import { guruArtwork } from '../data/guruArtwork.js';
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /* ---------- YouTube thumbnails (served by YouTube; always JPEG — WebP isn't available for every video) */
+/**
+ * Feed photo: the 960 px display copy the server makes for each upload (routes/uploads.js), with the
+ * full-size image as the larger candidate. For older or small uploads the server answers the
+ * "….w960.webp" URL with the original, so the markup is the same for every photo.
+ */
+export function feedImage(src) {
+  if (typeof src !== 'string' || !src.startsWith('/uploads/')) return { src };
+  const thumb = src.replace(/\.[a-z0-9]+$/i, '.w960.webp');
+  return { src: thumb, srcSet: `${thumb} 960w, ${src} 1600w` };
+}
+
 export function youTubeThumb(id) {
   const base = `https://i.ytimg.com/vi/${encodeURIComponent(id)}`;
   return {

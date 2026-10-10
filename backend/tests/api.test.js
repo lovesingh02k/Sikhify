@@ -357,12 +357,17 @@ test('submissions: pending → review → published, never auto-published', asyn
 });
 
 test('uploads accept real images only', async () => {
-  const png = 'data:image/png;base64,' + Buffer.from('89504e470d0a1a0a0000000d4948445200000001000000010806000000', 'hex').toString('base64');
-  const ok = await alice.post('/api/uploads', { purpose: 'avatar', dataUrl: png });
+  // A real 2×2 PNG (images are fully decoded and optimised before they are stored).
+  const { default: sharp } = await import('sharp');
+  const pngBytes = await sharp({ create: { width: 2, height: 2, channels: 4, background: { r: 240, g: 169, b: 59, alpha: 1 } } }).png().toBuffer();
+  const ok = await alice.post('/api/uploads', { purpose: 'avatar', dataUrl: 'data:image/png;base64,' + pngBytes.toString('base64') });
   assert.equal(ok.status, 200);
-  assert.match(ok.data.url, /^\/uploads\/\d{4}\/\d{2}\/[a-f0-9]{32}\.png$/);
+  assert.match(ok.data.url, /^\/uploads\/\d{4}\/\d{2}\/[a-f0-9]{32}\.(png|webp)$/);
   const fake = 'data:image/png;base64,' + Buffer.from('<svg onload=alert(1)>').toString('base64');
   assert.equal((await alice.post('/api/uploads', { purpose: 'avatar', dataUrl: fake })).status, 400);
+  // A PNG signature without image data is now rejected too (it used to pass the signature check alone).
+  const headerOnly = 'data:image/png;base64,' + Buffer.from('89504e470d0a1a0a0000000d4948445200000001000000010806000000', 'hex').toString('base64');
+  assert.equal((await alice.post('/api/uploads', { purpose: 'avatar', dataUrl: headerOnly })).status, 400);
   const prof = await alice.patch('/api/me/profile', { avatarUrl: ok.data.url, bio: 'Learning Gurmukhi', location: 'Toronto', showLocation: false });
   assert.equal(prof.data.user.avatarUrl, ok.data.url);
   // Bob cannot use Alice's upload as his avatar.
@@ -370,7 +375,7 @@ test('uploads accept real images only', async () => {
   // Location is private unless shared.
   assert.equal((await guest.get('/api/users/alice')).data.profile.location, '');
   const img = await fetch(base + ok.data.url);
-  assert.equal(img.headers.get('content-type'), 'image/png');
+  assert.match(img.headers.get('content-type'), /^image\/(png|webp)$/);
   assert.equal(img.headers.get('x-content-type-options'), 'nosniff');
 });
 

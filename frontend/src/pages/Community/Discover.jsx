@@ -15,8 +15,12 @@ function MemberSearch() {
   const [res, setRes] = useState({ items: null, error: null });
   useEffect(() => {
     if (q.trim().length < 2) { setRes({ items: null, error: null }); return undefined; }
-    const id = setTimeout(() => userService.search(q.trim()).then((items) => setRes({ items, error: null })).catch((error) => setRes({ items: null, error })), 250);
-    return () => clearTimeout(id);
+    // `current` is cleared when the query changes, so a slower answer to an older query can't replace newer results.
+    let current = true;
+    const id = setTimeout(() => userService.search(q.trim())
+      .then((items) => { if (current) setRes({ items, error: null }); })
+      .catch((error) => { if (current) setRes({ items: null, error }); }), 250);
+    return () => { current = false; clearTimeout(id); };
   }, [q]);
   return (
     <section className="sk-card" aria-labelledby="find-members">

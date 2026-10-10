@@ -42,60 +42,110 @@ function Toggles({ legend, items, value, onChange }) {
   );
 }
 
-/** Every editable field of a Gurdwara record. `compact` hides the long-form fields (submission review). */
+/**
+ * Every editable field of a Gurdwara record, in plain steps: the few required
+ * facts first, then contact, map, facilities, description, and "more details"
+ * folded away. `compact` hides the long-form fields (submission review).
+ * Same fields and values as before — only grouped and explained.
+ */
 export function RecordFields({ value, onChange, errors = {}, countries = [], compact = false, showStatus = true }) {
   const on = (k) => (e) => onChange({ ...value, [k]: e.target.value });
   const lat = Number(value.latitude), lng = Number(value.longitude);
   const hasPoint = value.latitude !== '' && value.longitude !== '' && Number.isFinite(lat) && Number.isFinite(lng);
   const countryOptions = countries.map((c) => ({ value: c.code || c.name, label: c.name }));
   if (value.country && !countryOptions.some((o) => o.value === value.country)) countryOptions.unshift({ value: value.country, label: value.country });
+  const moreHasError = !!(errors.established_year);
+  const coordsHaveError = !!errors.coordinates;
+  let n = 0;
+  const Step = ({ title, hint, children, className = '' }) => (
+    <section className={`sk-step ${className}`}>
+      <header className="sk-step-head"><span className="sk-step-num" aria-hidden="true">{++n}</span><div><h3 className="sk-step-title">{title}</h3>{hint ? <p className="sk-step-hint">{hint}</p> : null}</div></header>
+      <div className="sk-form-grid">{children}</div>
+    </section>
+  );
   return (
-    <div className="sk-form-grid">
-      <TextInput className="sk-span-2" label="Display name" required value={value.name} onChange={on('name')} error={errors.name} maxLength={200} />
-      {!compact ? (
+    <div className="sk-steps">
+      <p className="sk-step-intro"><strong>Only 4 things are required:</strong> the name, country, state and city. Everything else can be added later.</p>
+
+      {Step({ title: 'Name & place', hint: 'What people call it and where it is.', children: (
         <>
-          <TextInput label="Official name" value={value.officialName} onChange={on('officialName')} maxLength={300} />
-          <TextInput label="Also known as" value={value.alsoKnownAs} onChange={on('alsoKnownAs')} maxLength={300} help="Other names people search for, comma-separated." />
+          <TextInput className="sk-span-2" label="Gurdwara name" required value={value.name} onChange={on('name')} error={errors.name} maxLength={200} placeholder="e.g. Gurdwara Sri Guru Singh Sabha" />
+          <Select label="Country" required value={value.country} onChange={on('country')} error={errors.country} placeholder="Choose…" options={countryOptions} />
+          <TextInput label="State / Province" required value={value.state} onChange={on('state')} error={errors.state} maxLength={100} placeholder="e.g. Chhattisgarh" />
+          <TextInput label="City / Town" required value={value.city} onChange={on('city')} error={errors.city} maxLength={100} placeholder="e.g. Raipur" />
+          <TextInput label="District" value={value.district} onChange={on('district')} maxLength={100} help="Only if different from the city." />
+          <TextInput className="sk-span-2" label="Street address" value={value.address} onChange={on('address')} error={errors.address} maxLength={500} placeholder="House / road / area" />
+          <TextInput label="PIN / Postal code" value={value.postalCode} onChange={on('postalCode')} maxLength={30} placeholder="e.g. 492001" />
         </>
-      ) : null}
-      <Select label="Country" required value={value.country} onChange={on('country')} error={errors.country} placeholder="Choose…" options={countryOptions} />
-      <TextInput label="State / Province / Region" required value={value.state} onChange={on('state')} error={errors.state} maxLength={100} />
-      <TextInput label="City / Town" required value={value.city} onChange={on('city')} error={errors.city} maxLength={100} />
-      <TextInput label="District" value={value.district} onChange={on('district')} maxLength={100} help="If different from the city (optional)." />
-      <TextInput label="Postal code" value={value.postalCode} onChange={on('postalCode')} maxLength={30} />
-      <TextInput className="sk-span-2" label="Street address" value={value.address} onChange={on('address')} error={errors.address} maxLength={500} />
-      <TextInput label="Phone" type="tel" value={value.phone} onChange={on('phone')} maxLength={60} />
-      <TextInput label="Email" type="email" value={value.email} onChange={on('email')} error={errors.email} maxLength={200} />
-      <TextInput className="sk-span-2" label="Website" type="url" placeholder="https://" value={value.website} onChange={on('website')} error={errors.website} maxLength={300} />
-      <div className="sk-span-2">
-        <div className="sk-form-grid">
-          <TextInput label="Latitude" inputMode="decimal" value={value.latitude} onChange={on('latitude')} error={errors.coordinates} placeholder="e.g. 31.62" />
-          <TextInput label="Longitude" inputMode="decimal" value={value.longitude} onChange={on('longitude')} placeholder="e.g. 74.88" />
-        </div>
-        <p className="sk-form-help">Click the map to place the pin, or type coordinates from a reliable source. Leave both empty if unknown.</p>
-        <div className="mt-2">
-          <MapView points={hasPoint ? [{ id: 'pin', lat, lng, title: value.name || 'Gurdwara' }] : []} selectedId="pin" zoom={hasPoint ? 16 : 2} height={240}
+      ) })}
+
+      {Step({ title: 'Contact', hint: 'Optional — only details you have checked.', children: (
+        <>
+          <TextInput label="Phone" type="tel" value={value.phone} onChange={on('phone')} maxLength={60} placeholder="e.g. +91 98765 43210" />
+          <TextInput label="Email" type="email" value={value.email} onChange={on('email')} error={errors.email} maxLength={200} placeholder="name@example.com" />
+          <TextInput className="sk-span-2" label="Website" type="url" placeholder="https://" value={value.website} onChange={on('website')} error={errors.website} maxLength={300} />
+        </>
+      ) })}
+
+      {Step({ title: 'Location on the map', hint: 'Click the map where the Gurdwara is — the pin is placed for you.', children: (
+        <div className="sk-span-2">
+          <MapView points={hasPoint ? [{ id: 'pin', lat, lng, title: value.name || 'Gurdwara' }] : []} selectedId="pin" zoom={hasPoint ? 16 : 4} height={260}
             onPick={({ lat: la, lng: lo }) => onChange({ ...value, latitude: Math.round(la * 1e6) / 1e6, longitude: Math.round(lo * 1e6) / 1e6 })}
             label="Coordinate picker: click to place the Gurdwara" />
+          <p className="sk-step-pin">{hasPoint ? <>📍 Pin placed at <strong>{lat.toFixed(5)}, {lng.toFixed(5)}</strong>{' '}
+            <button type="button" className="sk-link-btn" onClick={() => onChange({ ...value, latitude: '', longitude: '' })}>Remove pin</button></> : 'No pin yet — leave it empty if you are not sure.'}</p>
+          <details className="sk-step-more" open={coordsHaveError || undefined}>
+            <summary>Type the coordinates instead</summary>
+            <div className="sk-form-grid mt-3">
+              <TextInput label="Latitude" inputMode="decimal" value={value.latitude} onChange={on('latitude')} error={errors.coordinates} placeholder="e.g. 21.2514" />
+              <TextInput label="Longitude" inputMode="decimal" value={value.longitude} onChange={on('longitude')} placeholder="e.g. 81.6296" />
+            </div>
+            <p className="sk-form-help">From Google Maps: right-click the place → the first line is “latitude, longitude”.</p>
+          </details>
         </div>
-      </div>
-      {showStatus ? (
-        <Select label="Status" value={value.status} onChange={on('status')} options={Object.entries(STATUSES).map(([k, s]) => ({ value: k, label: s.label }))} />
-      ) : null}
-      {!compact ? (
+      ) })}
+
+      {Step({ title: 'Facilities & services', hint: 'Tick what the Gurdwara offers.', children: (
         <>
-          <TextInput label="Established (year)" inputMode="numeric" value={value.establishedYear} onChange={on('establishedYear')} error={errors.established_year} />
-          <TextInput className="sk-span-2" label="Management / committee" value={value.managementOrganization} onChange={on('managementOrganization')} maxLength={300} />
+          <Toggles legend="Facilities" items={FACILITIES} value={value.facilities} onChange={(v) => onChange({ ...value, facilities: v })} />
+          <Toggles legend="Services" items={SERVICES} value={value.services} onChange={(v) => onChange({ ...value, services: v })} />
         </>
-      ) : null}
-      <Toggles legend="Facilities" items={FACILITIES} value={value.facilities} onChange={(v) => onChange({ ...value, facilities: v })} />
-      <Toggles legend="Services" items={SERVICES} value={value.services} onChange={(v) => onChange({ ...value, services: v })} />
-      <TextArea className="sk-span-2" label="About" rows={compact ? 3 : 6} value={value.description} onChange={on('description')} maxLength={10000} help="Facts from the sources only." />
-      {!compact ? (
+      ) })}
+
+      {Step({ title: 'About the Gurdwara', hint: 'A few lines in your own words — facts from the sources only.', children: (
         <>
-          <TextArea className="sk-span-2" label="Programs" rows={3} value={value.programs} onChange={on('programs')} maxLength={3000} help="Regular programs, e.g. “Daily Nitnem 5 am; Sunday Diwan 10 am–1 pm”." />
-          <TextArea className="sk-span-2" label="Opening hours" rows={2} value={value.openingHours} onChange={on('openingHours')} maxLength={1000} />
+          <TextArea className="sk-span-2" label="About" rows={compact ? 3 : 5} value={value.description} onChange={on('description')} maxLength={10000} placeholder="History, what it is known for…" />
+          {!compact ? (
+            <>
+              <TextArea className="sk-span-2" label="Regular programs" rows={2} value={value.programs} onChange={on('programs')} maxLength={3000} placeholder="e.g. Daily Nitnem 5 am · Sunday Diwan 10 am–1 pm" />
+              <TextArea className="sk-span-2" label="Opening hours" rows={2} value={value.openingHours} onChange={on('openingHours')} maxLength={1000} placeholder="e.g. Open daily 4 am – 9 pm" />
+            </>
+          ) : null}
         </>
+      ) })}
+
+      {!compact || showStatus ? (
+        <details className="sk-step sk-step-fold" open={moreHasError || undefined}>
+          <summary className="sk-step-head">
+            <span className="sk-step-num" aria-hidden="true">+</span>
+            <div><span className="sk-step-title">More details <span className="sk-step-opt">optional</span></span>
+              <span className="sk-step-hint">{[!compact && 'official name, other names, year, committee', showStatus && `status: ${(STATUSES[value.status] || STATUSES.active).label}`].filter(Boolean).join(' · ')}</span></div>
+          </summary>
+          <div className="sk-form-grid mt-3">
+            {!compact ? (
+              <>
+                <TextInput label="Official name" value={value.officialName} onChange={on('officialName')} maxLength={300} help="If the full registered name is different." />
+                <TextInput label="Also known as" value={value.alsoKnownAs} onChange={on('alsoKnownAs')} maxLength={300} help="Other names people search for, separated by commas." />
+                <TextInput label="Year established" inputMode="numeric" value={value.establishedYear} onChange={on('establishedYear')} error={errors.established_year} placeholder="e.g. 1952" />
+                <TextInput label="Managed by" value={value.managementOrganization} onChange={on('managementOrganization')} maxLength={300} placeholder="e.g. Gurdwara Prabandhak Committee" />
+              </>
+            ) : null}
+            {showStatus ? (
+              <Select label="Status" value={value.status} onChange={on('status')} options={Object.entries(STATUSES).map(([k, s]) => ({ value: k, label: s.label }))}
+                help="Change only if it has closed or moved." />
+            ) : null}
+          </div>
+        </details>
       ) : null}
     </div>
   );

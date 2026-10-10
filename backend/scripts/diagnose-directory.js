@@ -26,13 +26,14 @@ export const PANJ_TAKHT = [
   ['takht-sri-damdama-sahib', 'Takht Sri Damdama Sahib'],
 ];
 
-/** Real counts from the database. Public = what /api/gurdwaras lists by default (active + verified, not archived). */
+/** Real counts from the database. Public = what /api/gurdwaras lists by default (active, not archived — verified or awaiting verification). */
 export function directoryCounts(db) {
   const n = (sql, ...p) => Number(db.prepare(sql).get(...p).n || 0);
   const live = "archived_at IS NULL AND (external_ref IS NULL OR external_ref NOT LIKE 'fixture:%')";
   const gurdwaras = {
     total: n('SELECT COUNT(*) AS n FROM gurdwaras'),
-    public: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND status = 'active' AND verification_status = 'verified'`),
+    public: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND status = 'active'`),
+    publicVerified: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND status = 'active' AND verification_status = 'verified'`),
     active: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND status = 'active'`),
     verified: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND verification_status = 'verified'`),
     needsVerification: n(`SELECT COUNT(*) AS n FROM gurdwaras WHERE ${live} AND verification_status = 'needs_verification'`),
@@ -49,7 +50,7 @@ export function directoryCounts(db) {
       FROM gurdwaras g WHERE g.slug = ? ORDER BY g.archived_at IS NOT NULL, g.id LIMIT 1`).get(slug);
     return {
       name, found: !!r,
-      public: !!r && !r.archived_at && r.status === 'active' && r.verification_status === 'verified',
+      public: !!r && !r.archived_at && r.status === 'active',
       designation: r ? r.designation : '', images: r ? Number(r.images) : 0, coordinates: !!r && r.latitude !== null,
     };
   });
@@ -91,10 +92,11 @@ if (isMain) {
   const g = c.gurdwaras;
   out.push('Gurdwaras:',
     `  ${pad('Total:')}${g.total}`,
-    `  ${pad('Public (listed):')}${g.public}   ← active + verified, shown by default`,
+    `  ${pad('Public (listed):')}${g.public}   ← active, not archived — shown by default (cards say which are verified)`,
+    `  ${pad('Public + verified:')}${g.publicVerified}   ← shown with the "Verified only" filter`,
     `  ${pad('Active:')}${g.active}`,
     `  ${pad('Verified:')}${g.verified}`,
-    `  ${pad('Needs verification:')}${g.needsVerification}   ← shown only with the "Needs Verification" filter`,
+    `  ${pad('Needs verification:')}${g.needsVerification}   ← listed with a "Needs verification" label`,
     `  ${pad('Archived:')}${g.archived}`,
     `  ${pad('Takht:')}${g.takht}`,
     `  ${pad('Historic:')}${g.historic}`,

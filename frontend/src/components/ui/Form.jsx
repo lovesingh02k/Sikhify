@@ -1,5 +1,6 @@
 /* Sikhify — accessible form controls: every field has a label, help text and an error wired with aria-describedby. */
-import { useId } from 'react';
+import { useId, useState } from 'react';
+import Icon from './Icon.jsx';
 
 export function Field({ label, error, help, required, children, className = '' }) {
   const id = useId();
@@ -22,6 +23,28 @@ export function TextInput({ label, error, help, required, className, ...props })
   return (
     <Field label={label} error={error} help={help} required={required} className={className}>
       {(a) => <input className="sk-form-input" {...a} {...props} />}
+    </Field>
+  );
+}
+
+/**
+ * A password field with a show/hide toggle. The input stays type="password" unless the visitor
+ * asks to see it, keeps its value and autocomplete, and goes back to hidden whenever the field
+ * unmounts (form closed, page changed) — the state lives only in this component.
+ */
+export function PasswordInput({ label, error, help, required, className, ...props }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <Field label={label} error={error} help={help} required={required} className={className}>
+      {(a) => (
+        <div className="sk-pw">
+          <input className="sk-form-input" {...a} {...props} type={visible ? 'text' : 'password'} autoCapitalize="off" autoCorrect="off" spellCheck={false} />
+          <button type="button" className="sk-pw-toggle" onClick={() => setVisible((v) => !v)}
+            aria-label={visible ? `Hide ${String(label).toLowerCase()}` : `Show ${String(label).toLowerCase()}`} aria-pressed={visible} aria-controls={a.id}>
+            <Icon name={visible ? 'eyeOff' : 'eye'} size={18} />
+          </button>
+        </div>
+      )}
     </Field>
   );
 }

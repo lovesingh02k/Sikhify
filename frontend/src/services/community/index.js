@@ -58,7 +58,7 @@ export const reportService = {
 };
 
 /* ---------- uploads: images are resized in the browser before upload */
-const MAX_SIDE = { avatar: 512, post: 1600, 'group-cover': 1600 };
+const MAX_SIDE = { avatar: 512, post: 1600, 'group-cover': 1600, festival: 1600, banner: 2000 };
 
 function loadImage(file) {
   return new Promise((resolve, reject) => {
@@ -68,6 +68,13 @@ function loadImage(file) {
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('That file could not be read as an image')); };
     img.src = url;
   });
+}
+
+/** True when any pixel is not fully opaque. */
+function usesTransparency(ctx, w, h) {
+  const px = ctx.getImageData(0, 0, w, h).data;
+  for (let i = 3; i < px.length; i += 4) if (px[i] < 255) return true;
+  return false;
 }
 
 async function toDataUrl(file, purpose, maxSide) {
@@ -91,8 +98,15 @@ async function encode(file, purpose, maxSide) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
   canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
-  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-  return { dataUrl: canvas.toDataURL('image/jpeg', 0.86), width: canvas.width, height: canvas.height };
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  // The server makes the final, optimised copy (WebP), so send a high-quality intermediate:
+  // PNG when the image really uses transparency (JPEG would turn it black), otherwise JPEG at 0.92.
+  const transparent = /^image\/(png|webp)$/i.test(file.type) && usesTransparency(ctx, canvas.width, canvas.height);
+  let dataUrl = transparent ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.92);
+  // A large transparent PNG may exceed the upload limit: WebP keeps the transparency at a fraction of the size.
+  if (transparent && dataUrl.length * 0.75 > 2.8 * 1024 * 1024) dataUrl = canvas.toDataURL('image/webp', 0.92);
+  return { dataUrl, width: canvas.width, height: canvas.height };
 }
 
 export const uploadService = {

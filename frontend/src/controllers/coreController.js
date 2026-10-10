@@ -3,6 +3,7 @@ import { STATUS, statusKind, fetchJson } from "../status/messages.js";
 import { searchService } from "../services/search/searchService.js";
 import { CONTENT_TYPES } from "../../../shared/contentTypes.js";
 import { installImageFallbacks } from "../utils/images.js";
+import { isYouTubeVideoId, youTubeEmbedUrl, youTubeWatchUrl } from "../../../shared/youtube.js";
 
 /** Data files loaded on demand (S.loadScript), each split into its own chunk by Vite. */
 var DATA_MODULES = {
@@ -215,7 +216,7 @@ export function initCore() {
         });
         dlg.addEventListener("close", function () {
           if (S.dialog.onClose) { var cb = S.dialog.onClose; S.dialog.onClose = null; cb(); }
-          if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+          if (lastFocus && document.contains(lastFocus)) lastFocus.focus({ preventScroll: true });
         });
       }
       // Re-rendering an open dialog (e.g. after a language change) keeps the original return-focus target.
@@ -616,7 +617,7 @@ export function initCore() {
       if (!reader || reader.hidden) return;
       reader.hidden = true;
       document.body.classList.remove("sk-no-scroll");
-      if (readerLast && document.contains(readerLast)) readerLast.focus();
+      if (readerLast && document.contains(readerLast)) readerLast.focus({ preventScroll: true });
     },
   };
   function trapFocus(container, e) {
@@ -697,12 +698,20 @@ export function initCore() {
   el.addEventListener("error", function () { if (A.track) A.fail(); });
 
   var RATES = [0.75, 1, 1.25, 1.5, 2];
-  /** Inline player markup for a track (or an honest "unavailable" state). */
-  A.playerHtml = function (track, extra) {
+  /**
+   * Inline player markup for a track.
+   * • A direct, licensed audio file → the audio player (checked before it is offered: see A.check).
+   * • No audio file, but a verified YouTube recording (yt: { id, title, by }) → that recording plays
+   *   on the page in YouTube's own embedded player (loaded only when the visitor presses play).
+   *   YouTube pages are never used as an <audio> source and no stream is extracted.
+   * • Neither → an honest "no recording yet" note.
+   */
+  A.playerHtml = function (track, extra, yt) {
     extra = extra || "";
+    if ((!track || !track.url) && yt && isYouTubeVideoId(yt.id)) return A.youtubeHtml(yt);
     if (!track || !track.url) {
       return '<div class="sk-player is-unavailable" role="note">' + S.icon("volume") +
-        "<div><p class=\"sk-player-title\">Audio unavailable</p><p class=\"sk-player-sub\">We don't have a verified recording for this yet." + extra + "</p></div></div>";
+        "<div><p class=\"sk-player-title\">No recording yet</p><p class=\"sk-player-sub\">We don't have a verified recording for this yet." + extra + "</p></div></div>";
     }
     return (
       '<div class="sk-player" data-player="' + S.esc(track.id) + '">' +
@@ -716,9 +725,84 @@ export function initCore() {
       RATES.map(function (r) { return '<option value="' + r + '"' + (S.store.get("audioRate", 1) === r ? " selected" : "") + ">" + r + "×</option>"; }).join("") +
       "</select></label>" +
       (track.credit ? '<p class="sk-player-credit">' + track.credit + "</p>" : "") +
-      '</div><p class="sk-player-error" data-audio-error hidden></p></div></div>'
+      '</div><p class="sk-player-error" data-audio-error hidden></p>' +
+      '<p class="sk-player-error" data-audio-missing hidden>This recording isn\'t available right now' + (track.missingHint ? " — " + S.esc(track.missingHint) : "") + '. <button type="button" class="sk-link-btn" data-audio-retry>Try again</button></p>' +
+      "</div></div>"
     );
   };
+  /** On-page YouTube player (privacy-enhanced embed, click to load — nothing loads or plays before that). */
+  A.youtubeHtml = function (yt) {
+    var label = yt.title || "Recording";
+    return '<div class="sk-player sk-player-yt" data-yt-player>' +
+      '<div class="sk-player-yt-head">' + S.icon("volume", 18) + '<div class="min-w-0"><p class="sk-player-title">Listen: ' + S.esc(label) + "</p>" +
+      '<p class="sk-player-sub">' + (yt.by ? "Recording by " + S.esc(yt.by) + " · " : "") + "plays here through YouTube's player</p></div></div>" +
+      '<div class="sk-yt-frame"><button type="button" class="sk-yt-poster" data-yt-load="' + yt.id + '" data-yt-title="' + S.esc(label) + '" aria-label="Play ' + S.esc(label) + ' (YouTube player)">' +
+      '<img src="https://i.ytimg.com/vi/' + yt.id + '/mqdefault.jpg" alt="" loading="lazy" decoding="async" width="320" height="180">' +
+      '<span class="sk-yt-play">' + S.icon("play", 22) + "</span></button></div>" +
+      '<p class="sk-player-credit">Direct audio isn\'t available for this recording. If it doesn\'t play, <a href="' + youTubeWatchUrl(yt.id) + '" target="_blank" rel="noopener noreferrer">open it on YouTube<span class="sr-only"> (opens in a new tab)</span></a>.</p></div>';
+  };
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-yt-load]");
+    if (!b) return;
+    var src = youTubeEmbedUrl(b.getAttribute("data-yt-load"), { autoplay: "1" }); // the visitor pressed play
+    if (!src) return;
+    if (!el.paused) A.pause(); // one recording at a time
+    var f = document.createElement("iframe");
+    f.src = src;
+    f.title = b.getAttribute("data-yt-title") + " — YouTube player";
+    f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    f.allowFullscreen = true;
+    f.referrerPolicy = "strict-origin-when-cross-origin";
+    b.replaceWith(f);
+    f.focus();
+  });
+
+  /**
+   * Checks each rendered audio player's recording once (metadata only) before it is offered as playable.
+   * A recording that can't be reached (e.g. today's SGPC Hukamnama before it is published) shows that,
+   * with a Retry button, instead of a player that looks ready but fails when pressed.
+   */
+  var checked = {};
+  A.check = function (root) {
+    (root || document).querySelectorAll("[data-player]:not([data-checked])").forEach(function (p) {
+      var t = A.registry[p.dataset.player];
+      if (!t || !t.url) return;
+      p.setAttribute("data-checked", "");
+      var done = function (ok) {
+        checked[t.url] = ok;
+        p.classList.toggle("is-missing", !ok);
+        var msg = p.querySelector("[data-audio-missing]");
+        if (msg) msg.hidden = ok;
+        p.querySelector("[data-audio-toggle]").disabled = !ok;
+      };
+      if (t.url in checked) return done(checked[t.url]);
+      var probe = new Audio();
+      probe.preload = "metadata";
+      var timer = setTimeout(function () { finish(false); }, 15000);
+      var finish = function (ok) { clearTimeout(timer); probe.removeAttribute("src"); probe.load(); done(ok); };
+      probe.addEventListener("loadedmetadata", function () { finish(true); }, { once: true });
+      probe.addEventListener("error", function () { finish(false); }, { once: true });
+      probe.src = t.url;
+    });
+  };
+  document.addEventListener("click", function (e) {
+    var r = e.target.closest && e.target.closest("[data-audio-retry]");
+    if (!r) return;
+    var p = r.closest("[data-player]");
+    var t = p && A.registry[p.dataset.player];
+    if (!t) return;
+    delete checked[t.url];
+    p.removeAttribute("data-checked");
+    A.check(p.parentNode);
+  });
+  if (typeof MutationObserver !== "undefined") {
+    var pendingCheck = 0;
+    new MutationObserver(function () {
+      if (pendingCheck) return;
+      pendingCheck = requestAnimationFrame(function () { pendingCheck = 0; A.check(); });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
   /** Registry of tracks rendered on the page, so delegated clicks know what to load. */
   A.registry = {};
   A.register = function (tracks) { tracks.forEach(function (t) { if (t && t.id) A.registry[t.id] = t; }); };
@@ -971,7 +1055,7 @@ export function initCore() {
       if (!overlay || overlay.hidden) return;
       overlay.hidden = true;
       document.body.classList.remove("sk-no-scroll");
-      if (searchReturnFocus && document.contains(searchReturnFocus)) searchReturnFocus.focus();
+      if (searchReturnFocus && document.contains(searchReturnFocus)) searchReturnFocus.focus({ preventScroll: true });
     },
     /** Rebuild the index (e.g. after a Hukamnama is opened). */
     invalidate: function () {
@@ -1029,7 +1113,9 @@ export function initCore() {
         return { type: "Gurdwara", title: g.name, preview: [g.address, g.city.name, g.state.name, g.country.name].filter(Boolean).join(", "), url: g.url };
       });
       if (overlay && !overlay.hidden && input.value.trim() === q) run();
-    });
+    }).catch(function () {
+      // Offline or API unavailable: the bundled results still show; the same query can be tried again later.
+    }).finally(function () { delete gurdwaraPending[q]; });
   }, 250);
   var SUGGESTIONS = ["Japji Sahib", "Guru Nanak Dev Ji", "Five Ks", "1699", "Hukamnama", "Langar", "Ang 633", "Raag Asa", "Kirtan"];
   function run() {

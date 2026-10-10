@@ -50,7 +50,7 @@ export default function Sitemap() {
           <h2 className="sk-section-title" id="sm-soon">Coming soon</h2>
           <p className="sk-section-sub">These sections are planned but not available yet.</p>
           <ul className="sitemap-soon" role="list">
-            {COMING_SOON.map((p) => (
+            {COMING_SOON.filter((p) => !p.retired).map((p) => (
               <li key={p.path}><a className="sk-chip" href={p.path}>{p.title}<span className="soon-pill">Soon</span></a></li>
             ))}
           </ul>

@@ -7,13 +7,14 @@ export default function register(router, { db }) {
     const me = c.requireUser();
     const unreadOnly = c.query.get('unread') === '1';
     const before = int(c.query.get('before'), { fallback: null });
+    const limit = int(c.query.get('limit'), { min: 1, max: 30, fallback: 30 }); // e.g. 1 for the pop-up of the newest one
     const rows = db.prepare(`SELECT n.*, ${AUTHOR_COLUMNS} FROM notifications n LEFT JOIN users u ON u.id = n.actor_id
       WHERE n.user_id = ? ${unreadOnly ? 'AND n.read_at IS NULL' : ''} ${before ? 'AND n.id < ?' : ''}
-      ORDER BY n.id DESC LIMIT 31`).all(me.id, ...(before ? [before] : []));
-    const items = rows.slice(0, 30).map((r) => ({
+      ORDER BY n.id DESC LIMIT ?`).all(me.id, ...(before ? [before] : []), limit + 1);
+    const items = rows.slice(0, limit).map((r) => ({
       id: r.id, type: r.type, message: r.message, link: r.link, read: !!r.read_at, createdAt: r.created_at, actor: authorFrom(r),
     }));
-    return { items, next: rows.length > 30 ? { before: items[items.length - 1].id } : null, unread: unreadCount(me.id) };
+    return { items, next: rows.length > limit ? { before: items[items.length - 1].id } : null, unread: unreadCount(me.id) };
   });
 
   const unreadCount = (uid) => db.prepare('SELECT COUNT(*) AS n FROM notifications WHERE user_id = ? AND read_at IS NULL').get(uid).n;

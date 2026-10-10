@@ -4,7 +4,7 @@ import SiteLayout from '../components/layout/SiteLayout.jsx';
 import ErrorBoundary from '../components/status/ErrorBoundary.jsx';
 import PageLoader from '../components/status/PageLoader.jsx';
 import { COMING_SOON } from '../data/comingSoon.js';
-import { useTrackClientNavigation, needsFreshDocument } from './navigation.js';
+import { useTrackClientNavigation, needsFreshDocument, reloadAsFreshDocument, RouteScrollReset } from './navigation.js';
 import { RequireAuth, RequireCapability } from './guards.jsx';
 import { CONTENT_TYPES, TYPE_BY_PATH } from '../../../shared/contentTypes.js';
 
@@ -32,13 +32,17 @@ const DirectoryList = lazy(() => import('../pages/Directory/DirectoryList.jsx'))
 const EntryDetail = lazy(() => import('../pages/Directory/EntryDetail.jsx'));
 const SubmitPage = lazy(() => import('../pages/Directory/SubmitPage.jsx'));
 const ImageCredits = lazy(() => import('../pages/ImageCredits.jsx'));
+// File named neutrally: ad/cookie blockers (e.g. Brave Shields) block scripts called "PrivacyPolicy".
+const PrivacyPolicy = lazy(() => import('../pages/YourData.jsx'));
+const About = lazy(() => import('../pages/About.jsx'));
+const FestivalsIndex = lazy(() => import('../pages/Festivals/FestivalsIndex.jsx'));
+const FestivalDetail = lazy(() => import('../pages/Festivals/FestivalDetail.jsx'));
 const GurdwaraSearch = lazy(() => import('../pages/Gurdwaras/GurdwaraSearch.jsx'));
 const GurdwaraDetail = lazy(() => import('../pages/Gurdwaras/GurdwaraDetail.jsx'));
 const GurdwaraSuggest = lazy(() => import('../pages/Gurdwaras/GurdwaraSuggest.jsx'));
 
 const Login = lazy(() => import('../pages/Auth/Login.jsx'));
 const Signup = lazy(() => import('../pages/Auth/Signup.jsx'));
-const ForgotPassword = lazy(() => import('../pages/Auth/ForgotPassword.jsx'));
 const ResetPassword = lazy(() => import('../pages/Auth/ResetPassword.jsx'));
 
 const Feed = lazy(() => import('../pages/Community/Feed.jsx'));
@@ -66,10 +70,15 @@ const AdminEntryEditor = lazy(() => import('../pages/Admin/EntryEditor.jsx'));
 const AdminMedia = lazy(() => import('../pages/Admin/Media.jsx'));
 const AdminHukamnamaList = lazy(() => import('../pages/Admin/HukamnamaList.jsx'));
 const AdminHukamnamaEditor = lazy(() => import('../pages/Admin/HukamnamaEditor.jsx'));
-const AdminAnalytics = lazy(() => import('../pages/Admin/Analytics.jsx'));
+// Named neutrally: ad blockers block scripts called "Analytics".
+const AdminAnalytics = lazy(() => import('../pages/Admin/SiteStats.jsx'));
 const AdminSettings = lazy(() => import('../pages/Admin/Settings.jsx'));
 const AdminGurdwaras = lazy(() => import('../pages/Admin/Gurdwaras.jsx'));
 const AdminGurdwaraEditor = lazy(() => import('../pages/Admin/GurdwaraEditor.jsx'));
+const AdminFestivals = lazy(() => import('../pages/Admin/FestivalsList.jsx'));
+const AdminFestivalEditor = lazy(() => import('../pages/Admin/FestivalEditor.jsx'));
+const AdminBanners = lazy(() => import('../pages/Admin/Banners.jsx'));
+const AdminBannerEditor = lazy(() => import('../pages/Admin/BannerEditor.jsx'));
 
 const LEGACY_PAGES = [
   ['/', Home],
@@ -87,7 +96,7 @@ const LEGACY_PAGES = [
 /** Short and legacy URLs → canonical pages (search and hash are kept). */
 const REDIRECTS = [
   ['/media', '/sikh-media'], ['/learn', '/learn-sikhism'], ['/history', '/sikh-history'], ['/rehat', '/rehat-maryada'],
-  ['/signin', '/login'], ['/kids-zone', '/kids'],
+  ['/signin', '/login'], ['/kids-zone', '/kids'], ['/sikh-calendar', '/festivals'],
 ];
 
 /** Legacy `page.html` URLs (from the original static site) keep working. */
@@ -99,7 +108,7 @@ const legacy = (path) => (path === '/' ? '/index.html' : `${path}.html`);
  */
 function Legacy({ component: Page, ...props }) {
   const fresh = !needsFreshDocument();
-  useEffect(() => { if (!fresh) window.location.reload(); }, [fresh]);
+  useEffect(() => { if (!fresh) reloadAsFreshDocument(); }, [fresh]);
   return fresh ? <Page {...props} /> : <PageLoader />;
 }
 
@@ -107,7 +116,7 @@ function Legacy({ component: Page, ...props }) {
 function Redirect({ to }) {
   const { search, hash } = useLocation();
   const target = to + search + hash;
-  const react = ['/login', '/kids', '/community'].some((p) => to.startsWith(p));
+  const react = ['/login', '/kids', '/community', '/festivals'].some((p) => to.startsWith(p));
   useEffect(() => { if (!react) window.location.replace(target); }, [react, target]);
   return react ? <Navigate to={target} replace /> : <PageLoader />;
 }
@@ -140,11 +149,13 @@ export default function App() {
   const { pathname } = useLocation();
   useTrackClientNavigation();
   const soonPaths = new Set(COMING_SOON.map((p) => p.path));
-  // Moving between Gurdwara directory places (country → state → city) keeps the search page mounted.
+  // Moving between Gurdwara directory places (country → state → city) keeps the search page mounted
+  // (and its scroll position: the search scrolls to its own results).
   const boundaryKey = /^\/directory\/gurdwaras(\/(?!suggest$)[^/]+){0,3}\/?$/.test(pathname) ? '/directory/gurdwaras' : pathname;
 
   return (
     <SiteLayout>
+      <RouteScrollReset pageKey={boundaryKey} />
       <ErrorBoundary key={boundaryKey}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -181,11 +192,18 @@ export default function App() {
             ])}
             <Route path="/submit" element={<SubmitPage />} />
             <Route path="/image-credits" element={<ImageCredits />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/about" element={<About />} />
+
+            {/* Sikh Festivals & Important Days */}
+            <Route path="/festivals" element={<FestivalsIndex />} />
+            <Route path="/festivals/:slug" element={<FestivalDetail />} />
 
             {/* Accounts */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* "Forgot password" was removed; old links go to Sign In (admins create reset links in Admin → Users). */}
+            <Route path="/forgot-password" element={<Navigate to="/login" replace />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Community */}
@@ -222,6 +240,12 @@ export default function App() {
               <Route path="news" element={admin('content.manage', <AdminContent type="news" />)} />
               <Route path="media" element={admin('content.manage', <AdminMedia />)} />
               <Route path="hukamnama" element={admin('content.manage', <AdminHukamnamaList />)} />
+              <Route path="festivals" element={admin('content.manage', <AdminFestivals />)} />
+              <Route path="festivals/new" element={admin('content.manage', <AdminFestivalEditor />)} />
+              <Route path="festivals/:id" element={admin('content.manage', <AdminFestivalEditor />)} />
+              <Route path="banners" element={admin('content.manage', <AdminBanners />)} />
+              <Route path="banners/new" element={admin('content.manage', <AdminBannerEditor />)} />
+              <Route path="banners/:id" element={admin('content.manage', <AdminBannerEditor />)} />
               <Route path="hukamnama/new" element={admin('content.manage', <AdminHukamnamaEditor />)} />
               <Route path="hukamnama/:id" element={admin('content.manage', <AdminHukamnamaEditor />)} />
               <Route path="analytics" element={admin('analytics.view', <AdminAnalytics />)} />

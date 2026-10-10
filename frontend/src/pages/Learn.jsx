@@ -5,7 +5,6 @@ import { initCommonInteractions } from '../controllers/commonController.js';
 import { initLearn } from '../controllers/learnController.js';
 import '../data/learn.js';
 import '../data/gurus.js';
-
 const PAGE_HTML = `<main id="main-content">
 <section aria-labelledby="page-title" class="page-hero">
 <span class="page-hero-glyph" aria-hidden="true" lang="pa">ਸਿੱਖੀ</span>

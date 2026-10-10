@@ -7,8 +7,9 @@
      GET  /api/gurdwaras/locations            countries → states → cities that have records
      GET  /api/gurdwaras/place                display names for a country/state/city path
      GET  /api/gurdwaras/by-path/:co/:st/:ci/:slug   full detail + nearby
-   Members:
+   Anyone (members, or visitors without an account — see lib/submitters.js):
      POST /api/gurdwaras/submissions          suggest a Gurdwara / an update (→ pending)
+   Members:
      GET  /api/me/gurdwara-submissions        my suggestions and their review status
      PATCH /api/gurdwaras/submissions/:id     resubmit after "changes requested"
    Staff (content.manage / submission.review): /api/admin/gurdwaras…
@@ -21,6 +22,8 @@ import { HttpError, badRequest, notFound, forbidden, str, int, oneOf } from '../
 import { createGurdwaraStore, parseCsv, gurdwaraUrl, ftsQuery } from '../lib/gurdwaraStore.js';
 import { transaction, isRemoteDatabase } from '../db/database.js';
 import { can } from '../../../shared/roles.js';
+import { resolveSubmitter, rejectDuplicate, fingerprint, newReference } from '../lib/submitters.js';
+import { checkEvidence } from '../lib/gurdwaraEvidence.js';
 import {
   FACILITIES, SERVICES, STATUSES, STATUS_FILTERS, SOURCE_TYPES, QUICK_COUNTRY_CODES, PAGE_SIZES, STATUS_KEYS,
 } from '../../../shared/gurdwaras.js';
@@ -122,9 +125,7 @@ export default function register(router, deps) {
   }
 
   router.post('/api/gurdwaras/submissions', (c) => {
-    const user = c.require('submission.create');
-    if (!deps.settings.get('submissions_open')) throw new HttpError(403, 'Submissions are paused right now. Please try again later.');
-    rate('submission', 'gurdwara-submission:' + user.id);
+    const who = resolveSubmitter(c, { rate, settings: deps.settings, limits: deps.limits });
     const { out, fields } = cleanSubmission(c.body);
     let gurdwaraId = null;
     if (out.kind === 'update') {
@@ -134,13 +135,27 @@ export default function register(router, deps) {
       if (!out.name) out.name = g.name;
     }
     if (Object.keys(fields).length) throw badRequest('Please fix the highlighted fields', fields);
-    const info = db.prepare(`INSERT INTO gurdwara_submissions (kind, gurdwara_id, submitter_id, name, country, state, city, address, website, phone, details, source)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(out.kind, gurdwaraId, user.id, out.name, out.country, out.state, out.city, out.address, out.website, out.phone, out.details, out.source);
+    // A bot filled the hidden field: answer like a success, store nothing (it still counts towards the limit).
+    if (who.spam) { who.commit(); return { id: 0, status: 'pending', reference: newReference('G'), possibleExisting: [] }; }
+    const fp = fingerprint(who.identity, [out.kind, gurdwaraId, out.name, out.country, out.state, out.city, out.address, out.details]);
+    rejectDuplicate(db, 'gurdwara_submissions', fp);
+    const reference = newReference('G');
+    const info = db.prepare(`INSERT INTO gurdwara_submissions (kind, gurdwara_id, submitter_id, name, country, state, city, address, website, phone, details, source, is_guest, guest_name, guest_email, reference, fingerprint)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).run(out.kind, gurdwaraId, who.userId, out.name, out.country, out.state, out.city, out.address, out.website, out.phone, out.details, out.source,
+      who.userId ? 0 : 1, who.guestName, who.guestEmail, reference, fp);
+    who.commit(); // only a stored suggestion uses up the submitter's limit
+    // Everyone who reviews submissions is told straight away (bell + pop-up in the site).
+    const from = who.userId ? (db.prepare('SELECT username FROM users WHERE id = ?').get(who.userId) || {}).username : '';
+    deps.notifyStaff('submission.review', {
+      type: 'submission_received', actorId: who.userId,
+      message: `${out.kind === 'update' ? 'Gurdwara correction' : 'New Gurdwara suggested'}: “${out.name.slice(0, 80)}”${out.city ? ', ' + out.city.slice(0, 40) : ''} from ${from ? '@' + from : who.guestName ? who.guestName + ' (visitor)' : 'a visitor'} · ${reference}`,
+      link: '/admin/gurdwaras?tab=submissions',
+    });
     // Possible matches are shown to the submitter (public, verified records only) so they can spot an existing listing.
     const possible = out.kind === 'new'
       ? store.findDuplicates(out).filter((d) => !d.archived && d.verification === 'verified').map((d) => ({ name: d.name, url: d.url, city: d.city }))
       : [];
-    return { id: Number(info.lastInsertRowid), status: 'pending', possibleExisting: possible };
+    return { id: Number(info.lastInsertRowid), status: 'pending', reference, possibleExisting: possible };
   });
 
   const subShape = (r) => ({
@@ -148,6 +163,7 @@ export default function register(router, deps) {
     address: r.address, website: r.website, phone: r.phone, details: r.details, source: r.source, status: r.status,
     reviewNote: r.review_note, resultGurdwaraId: r.result_gurdwara_id, createdAt: r.created_at, updatedAt: r.updated_at, reviewedAt: r.reviewed_at,
     submitter: r.submitter_name ? { name: r.submitter_name, username: r.submitter_username } : undefined,
+    reference: r.reference || '', guest: !!r.is_guest,
     reviewer: r.reviewer_name || undefined,
     resultUrl: r.result_gurdwara_id ? (() => { const g = store.row(r.result_gurdwara_id); return g && !g.archived_at ? gurdwaraUrl(g) : null; })() : null,
     targetUrl: r.gurdwara_id ? (() => { const g = store.row(r.gurdwara_id); return g ? gurdwaraUrl(g) : null; })() : null,
@@ -193,6 +209,21 @@ export default function register(router, deps) {
     if (ver) { where.push('g.verification_status = ?'); params.push(ver); }
     const country = str(q.get('country'), { max: 80 });
     if (country) { where.push('co.slug = ?'); params.push(country); }
+    const state = str(q.get('state'), { max: 80 });
+    if (state) { where.push('st.slug = ?'); params.push(state); }
+    const district = str(q.get('district'), { max: 80 });
+    if (district) { where.push('(g.district LIKE ? OR ci.name LIKE ?)'); params.push(`%${district}%`, `%${district}%`); }
+    // Where the record came from: Wikidata import, OpenStreetMap import, or added by people (staff/submissions).
+    const origin = oneOf(q.get('origin'), ['wikidata', 'osm', 'manual']);
+    if (origin === 'wikidata') where.push("g.external_ref LIKE 'wikidata:%'");
+    if (origin === 'osm') where.push("g.external_ref LIKE 'osm:%'");
+    if (origin === 'manual') where.push("(g.external_ref IS NULL OR (g.external_ref NOT LIKE 'wikidata:%' AND g.external_ref NOT LIKE 'osm:%'))");
+    const missing = oneOf(q.get('missing'), ['coordinates', 'address', 'contact', 'source', 'photo']);
+    if (missing === 'coordinates') where.push('g.latitude IS NULL');
+    if (missing === 'address') where.push("g.address = ''");
+    if (missing === 'contact') where.push("g.phone = '' AND g.website = ''");
+    if (missing === 'source') where.push("NOT EXISTS (SELECT 1 FROM gurdwara_sources s WHERE s.gurdwara_id = g.id AND s.source_url != '' AND s.source_type != 'community')");
+    if (missing === 'photo') where.push('NOT EXISTS (SELECT 1 FROM gurdwara_images i WHERE i.gurdwara_id = g.id)');
     const term = str(q.get('q'), { max: 120 });
     if (term) {
       const match = ftsQuery(term) || '""';
@@ -203,12 +234,16 @@ export default function register(router, deps) {
     const w = where.join(' AND ');
     const FROM = `FROM gurdwaras g JOIN cities ci ON ci.id = g.city_id JOIN states_regions st ON st.id = g.state_region_id JOIN countries co ON co.id = g.country_id`;
     const total = db.prepare(`SELECT COUNT(*) AS n ${FROM} WHERE ${w}`).get(...params).n;
-    const rows = db.prepare(`SELECT g.id, g.name, g.slug, g.status, g.verification_status, g.updated_at, g.archived_at, g.latitude,
+    const rows = db.prepare(`SELECT g.id, g.name, g.slug, g.status, g.verification_status, g.updated_at, g.archived_at, g.latitude, g.district, g.address, g.phone, g.website, g.external_ref,
         ci.name AS city_name, ci.slug AS city_slug, st.name AS state_name, st.slug AS state_slug, co.name AS country_name, co.slug AS country_slug,
         (SELECT COUNT(*) FROM gurdwara_sources s WHERE s.gurdwara_id = g.id) AS source_count
       ${FROM} WHERE ${w} ORDER BY g.updated_at DESC LIMIT 25 OFFSET ?`).all(...params, (page - 1) * 25);
     return {
-      items: rows.map((r) => ({ id: r.id, name: r.name, url: gurdwaraUrl(r), status: r.status, verification: r.verification_status, city: r.city_name, state: r.state_name, country: r.country_name, updatedAt: r.updated_at, archived: !!r.archived_at, hasCoordinates: r.latitude !== null, sourceCount: r.source_count })),
+      items: rows.map((r) => ({
+        id: r.id, name: r.name, url: gurdwaraUrl(r), status: r.status, verification: r.verification_status, city: r.city_name, district: r.district, state: r.state_name, country: r.country_name,
+        updatedAt: r.updated_at, archived: !!r.archived_at, hasCoordinates: r.latitude !== null, hasAddress: !!r.address, hasContact: !!(r.phone || r.website), sourceCount: r.source_count,
+        origin: /^wikidata:/.test(r.external_ref || '') ? 'wikidata' : /^osm:/.test(r.external_ref || '') ? 'osm' : 'manual',
+      })),
       total, page, pages: Math.max(1, Math.ceil(total / 25)),
     };
   });
@@ -262,8 +297,23 @@ export default function register(router, deps) {
    * Verify several records the reviewer has checked (e.g. after an import). Each record still
    * needs at least one source; the reviewer's note is kept in every record's verification log.
    */
+  /** Read-only: the evidence for selected records (same rules as scripts/audit-gurdwara-verification.js). */
+  router.post('/api/admin/gurdwaras/evidence-preview', async (c) => {
+    c.require('content.manage');
+    const ids = [...new Set((Array.isArray(c.body.ids) ? c.body.ids : []).map((x) => int(x, { fallback: 0 })).filter(Boolean))];
+    if (!ids.length) throw badRequest('Choose at least one record');
+    if (ids.length > 50) throw badRequest('Preview at most 50 records at a time');
+    const rows = ids.map((id) => store.row(id)).filter(Boolean).map((r) => ({
+      ...r, sources: db.prepare('SELECT source_name AS name, source_url AS url, source_type AS type FROM gurdwara_sources WHERE gurdwara_id = ?').all(r.id),
+    }));
+    const results = await checkEvidence(rows);
+    return { items: results.map((x) => ({ ...x, url: gurdwaraUrl(rows.find((r) => r.id === x.id)), verification: rows.find((r) => r.id === x.id).verification_status })) };
+  });
+
   router.post('/api/admin/gurdwaras/verify-bulk', (c) => {
     const user = c.require('content.manage');
+    // Only an explicit, previewed list: there is no "verify everything" request.
+    if (c.body.confirm !== true) throw badRequest('Review the evidence and confirm before verifying');
     const ids = [...new Set((Array.isArray(c.body.ids) ? c.body.ids : []).map((x) => int(x, { fallback: 0 })).filter(Boolean))];
     if (!ids.length) throw badRequest('Choose at least one record');
     if (ids.length > 100) throw badRequest('Verify at most 100 records at a time');
@@ -299,6 +349,62 @@ export default function register(router, deps) {
     store.log(r.id, archived ? 'archived' : 'restored', {}, user);
     logModeration(user.id, archived ? 'gurdwara.archive' : 'gurdwara.restore', 'gurdwara', r.id, r.name);
     return { gurdwara: adminDetail(r.id) };
+  });
+
+  /**
+   * Reject: the record was reviewed and should not be listed (it doesn't exist, it isn't a Gurdwara, it can't be
+   * located…). The schema has no separate "rejected" state, so a rejection unpublishes (archives) the record and the
+   * reason is kept in its verification log — "Restore" in the editor undoes it.
+   */
+  router.post('/api/admin/gurdwaras/:id/reject', (c) => {
+    const user = c.require('content.manage');
+    const r = requireRecord(c.params.id);
+    const note = str(c.body.note, { max: 1000 });
+    if (note.length < 5) throw badRequest('Please fix the highlighted fields', { note: 'Say why it is rejected (kept in the record’s log)' });
+    const now = new Date().toISOString();
+    transaction(db, () => {
+      db.prepare("UPDATE gurdwaras SET archived_at = ?, verification_status = 'needs_verification', updated_by = ?, updated_at = ? WHERE id = ?").run(now, user.id, now, r.id);
+      db.prepare("INSERT INTO gurdwara_verification (gurdwara_id, action, note, actor_id) VALUES (?, 'rejected', ?, ?)").run(r.id, note, user.id);
+      store.log(r.id, 'rejected', { note }, user);
+    });
+    logModeration(user.id, 'gurdwara.reject', 'gurdwara', r.id, note);
+    return { gurdwara: adminDetail(r.id) };
+  });
+
+  /**
+   * Merge a duplicate into the record that stays: sources, photos, facilities and services it has that the kept
+   * record lacks are moved over, suggestions pointing at it are re-pointed, and the duplicate is archived with a
+   * note on both records. Nothing is deleted.
+   */
+  router.post('/api/admin/gurdwaras/:id/merge', (c) => {
+    const user = c.require('content.manage');
+    const dup = requireRecord(c.params.id);
+    const keep = requireRecord(c.body.intoId);
+    if (dup.id === keep.id) throw badRequest('Choose a different record to keep');
+    if (dup.archived_at) throw new HttpError(409, 'This record is already archived');
+    const note = str(c.body.note, { max: 1000 }) || 'Same Gurdwara';
+    const now = new Date().toISOString();
+    const moved = { sources: 0, images: 0, facilities: 0, services: 0 };
+    transaction(db, () => {
+      for (const s2 of db.prepare('SELECT * FROM gurdwara_sources WHERE gurdwara_id = ?').all(dup.id)) {
+        if (s2.source_url && db.prepare('SELECT 1 FROM gurdwara_sources WHERE gurdwara_id = ? AND source_url = ?').get(keep.id, s2.source_url)) continue;
+        db.prepare('INSERT INTO gurdwara_sources (gurdwara_id, source_name, source_url, source_type, notes, verified_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)')
+          .run(keep.id, s2.source_name, s2.source_url, s2.source_type, [s2.notes, `from merged record #${dup.id}`].filter(Boolean).join(' · '), s2.verified_at, user.id);
+        moved.sources++;
+      }
+      const hasPhoto = !!db.prepare('SELECT 1 FROM gurdwara_images WHERE gurdwara_id = ?').get(keep.id);
+      moved.images = db.prepare('UPDATE gurdwara_images SET gurdwara_id = ?, is_primary = CASE WHEN ? THEN 0 ELSE is_primary END WHERE gurdwara_id = ?').run(keep.id, hasPhoto ? 1 : 0, dup.id).changes;
+      moved.facilities = db.prepare('INSERT OR IGNORE INTO gurdwara_facilities (gurdwara_id, facility_key) SELECT ?, facility_key FROM gurdwara_facilities WHERE gurdwara_id = ?').run(keep.id, dup.id).changes;
+      moved.services = db.prepare('INSERT OR IGNORE INTO gurdwara_services (gurdwara_id, service_key) SELECT ?, service_key FROM gurdwara_services WHERE gurdwara_id = ?').run(keep.id, dup.id).changes;
+      db.prepare('UPDATE gurdwara_submissions SET gurdwara_id = ? WHERE gurdwara_id = ?').run(keep.id, dup.id);
+      db.prepare('UPDATE gurdwara_submissions SET result_gurdwara_id = ? WHERE result_gurdwara_id = ?').run(keep.id, dup.id);
+      db.prepare('UPDATE gurdwaras SET archived_at = ?, updated_by = ?, updated_at = ? WHERE id = ?').run(now, user.id, now, dup.id);
+      db.prepare("INSERT INTO gurdwara_verification (gurdwara_id, action, note, actor_id) VALUES (?, 'merged', ?, ?)").run(dup.id, `Merged into #${keep.id} ${keep.name}: ${note}`, user.id);
+      store.log(dup.id, 'merged into another record', { into: keep.id }, user);
+      store.log(keep.id, 'merged a duplicate into this record', { from: dup.id, ...moved }, user);
+    });
+    logModeration(user.id, 'gurdwara.merge', 'gurdwara', dup.id, `into #${keep.id}: ${note}`);
+    return { kept: adminDetail(keep.id), merged: adminDetail(dup.id), moved };
   });
 
   router.post('/api/admin/gurdwaras/:id/sources', (c) => {
@@ -407,12 +513,21 @@ export default function register(router, deps) {
   router.get('/api/admin/gurdwara-submissions', (c) => {
     c.require('submission.review');
     const status = oneOf(c.query.get('status'), ['pending', 'changes_requested', 'approved', 'rejected']);
+    const from = oneOf(c.query.get('from'), ['guest', 'member']);
+    const q = str(c.query.get('q'), { max: 100 });
     const page = int(c.query.get('page'), { min: 1, max: 1000, fallback: 1 });
-    const w = status ? 'WHERE s.status = ?' : '';
-    const params = status ? [status] : [];
-    const total = db.prepare(`SELECT COUNT(*) AS n FROM gurdwara_submissions s ${w}`).get(...params).n;
+    const where = [];
+    const params = [];
+    if (status) { where.push('s.status = ?'); params.push(status); }
+    if (from) where.push(from === 'guest' ? 's.is_guest = 1' : 's.is_guest = 0');
+    if (q) {
+      where.push('(s.name LIKE ? OR s.city LIKE ? OR s.state LIKE ? OR s.country LIKE ? OR s.details LIKE ? OR s.reference LIKE ? OR s.guest_name LIKE ? OR su.name LIKE ? OR su.username LIKE ?)');
+      params.push(...Array(9).fill(`%${q}%`));
+    }
+    const w = where.length ? 'WHERE ' + where.join(' AND ') : '';
+    const total = db.prepare(`SELECT COUNT(*) AS n FROM gurdwara_submissions s LEFT JOIN users su ON su.id = s.submitter_id ${w}`).get(...params).n;
     const items = db.prepare(`${SUB_SELECT} ${w} ORDER BY CASE s.status WHEN 'pending' THEN 0 ELSE 1 END, s.id DESC LIMIT 25 OFFSET ?`).all(...params, (page - 1) * 25)
-      .map((r) => ({ ...subShape(r), possibleDuplicates: r.kind === 'new' && r.status === 'pending' ? store.findDuplicates(r) : [] }));
+      .map((r) => ({ ...subShape(r), guestName: r.guest_name || '', guestEmail: r.guest_email || '', possibleDuplicates: r.kind === 'new' && r.status === 'pending' ? store.findDuplicates(r) : [] }));
     return { items, total, page, pages: Math.max(1, Math.ceil(total / 25)) };
   });
 

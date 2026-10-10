@@ -17,21 +17,39 @@ export function toFormValues(type, fields = {}, common = {}) {
   return out;
 }
 
-export default function SchemaFields({ type, values, onChange, errors = {}, skip = [] }) {
+/**
+ * `foldOptional`: required fields first; the optional ones go in a "More details"
+ * fold that opens by itself when one of them already has a value or an error.
+ */
+export default function SchemaFields({ type, values, onChange, errors = {}, skip = [], foldOptional = false }) {
   const set = (name) => (e) => onChange({ ...values, [name]: e && e.target ? e.target.value : e });
+  const field = (f) => {
+    // Required fields carry the * marker; everything else says so in plain words (not needed inside the fold).
+    const label = f.required || foldOptional ? f.label : `${f.label} (optional)`;
+    const common = { label, required: f.required, error: errors[f.name], value: values[f.name] ?? '' };
+    const wide = f.kind === 'textarea' || f.kind === 'list' || f.kind === 'youtube' || f.kind === 'links' || f.name === 'title';
+    const cls = wide ? 'sk-span-2' : '';
+    if (f.kind === 'select') return <Select key={f.name} {...common} className={cls} options={f.options} placeholder="Choose…" help={f.help} onChange={set(f.name)} />;
+    if (f.kind === 'boolean') return <Checkbox key={f.name} label={f.label} help={f.help} checked={!!values[f.name]} onChange={set(f.name)} />;
+    if (f.kind === 'textarea' || f.kind === 'list' || f.kind === 'youtube' || f.kind === 'links') {
+      return <TextArea key={f.name} {...common} className={cls} rows={f.rows || (f.kind === 'textarea' ? 4 : 3)} maxLength={f.max} help={[f.help, LIST_HELP[f.kind]].filter(Boolean).join(' ')} onChange={set(f.name)} />;
+    }
+    return <TextInput key={f.name} {...common} className={cls} type={INPUT_TYPE[f.kind] || 'text'} maxLength={f.max} help={f.help} onChange={set(f.name)} />;
+  };
+  const all = fieldsFor(type).filter((f) => !skip.includes(f.name));
+  if (!foldOptional) return <div className="sk-form-grid">{all.map(field)}</div>;
+  const req = all.filter((f) => f.required);
+  const opt = all.filter((f) => !f.required);
+  const filled = opt.some((f) => errors[f.name] || (values[f.name] !== undefined && values[f.name] !== '' && values[f.name] !== false));
   return (
-    <div className="sk-form-grid">
-      {fieldsFor(type).filter((f) => !skip.includes(f.name)).map((f) => {
-        const common = { key: f.name, label: f.label, required: f.required, error: errors[f.name], value: values[f.name] ?? '' };
-        const wide = f.kind === 'textarea' || f.kind === 'list' || f.kind === 'youtube' || f.kind === 'links' || f.name === 'title';
-        const cls = wide ? 'sk-span-2' : '';
-        if (f.kind === 'select') return <Select {...common} className={cls} options={f.options} placeholder="Choose…" help={f.help} onChange={set(f.name)} />;
-        if (f.kind === 'boolean') return <Checkbox key={f.name} label={f.label} help={f.help} checked={!!values[f.name]} onChange={set(f.name)} />;
-        if (f.kind === 'textarea' || f.kind === 'list' || f.kind === 'youtube' || f.kind === 'links') {
-          return <TextArea {...common} className={cls} rows={f.rows || (f.kind === 'textarea' ? 4 : 3)} maxLength={f.max} help={[f.help, LIST_HELP[f.kind]].filter(Boolean).join(' ')} onChange={set(f.name)} />;
-        }
-        return <TextInput {...common} className={cls} type={INPUT_TYPE[f.kind] || 'text'} maxLength={f.max} help={f.help} onChange={set(f.name)} />;
-      })}
-    </div>
+    <>
+      <div className="sk-form-grid">{req.map(field)}</div>
+      {opt.length ? (
+        <details className="sk-step-more sk-fold-optional" open={filled || undefined}>
+          <summary>More details — {opt.length} optional field{opt.length === 1 ? '' : 's'}</summary>
+          <div className="sk-form-grid mt-3">{opt.map(field)}</div>
+        </details>
+      ) : null}
+    </>
   );
 }

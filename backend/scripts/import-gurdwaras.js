@@ -18,9 +18,9 @@
    of that admin, with a note in each record's verification log. Use it only for a
    file whose rows have been checked against their sources.
 
-   Every imported record is "needs verification": it is not shown in the
-   public directory until an admin has checked it against its sources and
-   verified it (/admin/gurdwaras → Records → Needs verification).
+   Every imported record is "needs verification": it is listed publicly with
+   that label (never presented as confirmed) until an admin has checked it
+   against its sources and verified it (/admin/gurdwaras → Records → Review & verify).
    Rows with `external_ref` update the record imported from that source
    before, so running the same import again never creates duplicates.
 
@@ -114,4 +114,4 @@ if (apply && verifyRows) {
   console.log(`  Verified:        ${res.verified.length}${res.skipped.length ? ` (skipped ${res.skipped.length}: ${reasons})` : ''}`);
 }
 if (!apply) console.log('\nNothing was saved. Run again with --apply to import.');
-else if (!verifyRows) console.log('\nImported records need verification before they appear publicly: /admin/gurdwaras → Records → Verification: Needs verification.');
+else if (!verifyRows) console.log('\nImported records are listed publicly as "needs verification" until an admin verifies them: /admin/gurdwaras → Records → Review & verify.');

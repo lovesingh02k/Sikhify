@@ -32,6 +32,9 @@ export const LIMITS = {
   groupAbout: 5000,
   reportDetails: 1000,
   uploadBytes: 3 * 1024 * 1024,
+  // Total stored (optimised) image bytes per account. Staff who manage directory/festival photos get more.
+  uploadQuotaBytes: 50 * 1024 * 1024,
+  uploadQuotaBytesStaff: 1024 * 1024 * 1024,
   interests: 12,
 };
 
@@ -49,10 +52,12 @@ export const SUBMISSION_KINDS = {
   organization: { label: 'An organization', creates: 'organization' },
   correction: { label: 'A correction to existing information', creates: null },
   incorrect: { label: 'Report incorrect information', creates: null },
+  // Requests about personal data (see /privacy-policy): access, correction, deletion. Needs no page or source.
+  privacy: { label: 'A privacy or data request', creates: null, privacy: true },
 };
 export const SUBMISSION_STATUSES = ['pending', 'approved', 'rejected', 'published'];
 
 export const NOTIFICATION_TYPES = [
   'reaction', 'comment', 'reply', 'group_join_request', 'group_join_approved',
-  'group_role', 'moderation', 'report_resolved', 'submission_reviewed', 'system',
+  'group_role', 'moderation', 'report_resolved', 'submission_reviewed', 'submission_received', 'system',
 ];
