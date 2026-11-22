@@ -166,7 +166,7 @@ export function restoreDocumentScroll() {
 }
 
 /** Path prefixes rendered by React pages (safe for client-side <Link>). */
-const REACT_PREFIXES = ['/community', '/admin', '/login', '/signup', '/forgot-password', '/reset-password', '/directory', '/gurus', '/media/', '/submit', '/image-credits', '/about', '/festivals'];
+const REACT_PREFIXES = ['/community', '/admin', '/login', '/signup', '/forgot-password', '/reset-password', '/directory', '/gurus', '/media/', '/submit', '/image-credits', '/about', '/contact', '/festivals'];
 
 export function isReactRoute(href, reactTypePaths = []) {
   if (!href || !href.startsWith('/') || href.startsWith('//')) return false;

@@ -1,0 +1,42 @@
+/* Sikhify — the Sikh Store (listing and product pages). Uses the site tokens from index.css. */
+.sk-store-grid{ display:grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0,1fr)); list-style:none; margin:0; padding:0; }
+@media (min-width: 768px){ .sk-store-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.25rem; } }
+@media (min-width: 1100px){ .sk-store-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+
+.sk-pcard{ display:flex; flex-direction:column; height:100%; overflow:hidden; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card, 18px); }
+.sk-pcard-media{ display:block; position:relative; aspect-ratio: 1 / 1; overflow:hidden; background: var(--surface-2); }
+.sk-pcard-media img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .25s ease; }
+.sk-pcard:hover .sk-pcard-media img{ transform: scale(1.03); }
+.sk-pcard-body{ display:flex; flex-direction:column; flex:1; gap: 0.3rem; padding: 0.8rem 0.85rem 0.9rem; min-width:0; }
+.sk-pcard-cat{ font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; color: var(--gold-text); }
+.sk-pcard-title{ font-family:'Poppins',sans-serif; font-size: 0.95rem; font-weight: 600; line-height: 1.3; color: var(--text); }
+.sk-pcard-title a{ color: inherit; }
+.sk-pcard-foot{ margin-top:auto; padding-top: 0.55rem; }
+
+.sk-price{ display:flex; flex-wrap:wrap; align-items:baseline; gap: 0.15rem 0.45rem; font-family:'Poppins',sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); }
+.sk-price s{ font-size: 0.82em; font-weight: 500; color: var(--text-muted); }
+.sk-price.is-large{ font-size: 1.7rem; }
+.sk-stock-out{ position:absolute; left: 8px; top: 8px; padding: 0.2rem 0.55rem; border-radius: 999px; background: rgba(15,34,66,0.86); color:#fff; font-size: 0.7rem; font-weight: 700; }
+
+.sk-wa-btn{ display:inline-flex; align-items:center; justify-content:center; gap: 0.45rem; width:100%; min-height: 44px; padding: 0.55rem 0.8rem; border-radius: 12px; background:#0B7A53; color:#fff !important; font-weight: 700; font-size: 0.88rem; line-height: 1.2; text-align:center; transition: background .2s ease; }
+.sk-wa-btn:hover{ background:#09664A; }
+.sk-wa-btn:focus-visible{ outline: 3px solid var(--gold-500); outline-offset: 2px; }
+.sk-wa-btn.is-large{ min-height: 52px; font-size: 1rem; }
+
+.sk-product{ display:grid; gap: 2rem; }
+@media (min-width: 900px){ .sk-product{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 3rem; align-items:start; } }
+.sk-gallery-main{ aspect-ratio: 1 / 1; overflow:hidden; border-radius: var(--radius-card, 18px); border: 1px solid var(--line); background: var(--surface-2); }
+.sk-gallery-main img{ width:100%; height:100%; object-fit:contain; display:block; }
+.sk-gallery-thumbs{ display:flex; flex-wrap:wrap; gap: 0.5rem; margin-top: 0.75rem; }
+.sk-gallery-thumbs button{ width: 64px; height: 64px; padding:0; overflow:hidden; border-radius: 10px; border: 2px solid var(--line); background: var(--surface-2); cursor:pointer; }
+.sk-gallery-thumbs button[aria-pressed="true"]{ border-color: var(--gold-500); }
+.sk-gallery-thumbs img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+.sk-buy{ display:flex; flex-direction:column; gap: 1.1rem; }
+.sk-buy-label{ display:block; margin-bottom: 0.45rem; font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.sk-buy-note{ font-size: 0.84rem; line-height: 1.55; color: var(--text-muted); }
+.sk-qty{ display:inline-flex; align-items:center; border: 1px solid var(--line); border-radius: 12px; overflow:hidden; }
+.sk-qty button{ width: 44px; height: 44px; font-size: 1.2rem; font-weight: 700; color: var(--text); background: var(--surface-2); cursor:pointer; }
+.sk-qty button:disabled{ opacity: 0.45; cursor:not-allowed; }
+.sk-qty output{ min-width: 48px; text-align:center; font-weight: 700; color: var(--text); }
+.sk-product-text{ white-space: pre-line; color: var(--text-muted); line-height: 1.7; }

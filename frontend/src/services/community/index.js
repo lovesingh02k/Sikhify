@@ -58,7 +58,7 @@ export const reportService = {
 };
 
 /* ---------- uploads: images are resized in the browser before upload */
-const MAX_SIDE = { avatar: 512, post: 1600, 'group-cover': 1600, festival: 1600, banner: 2000 };
+const MAX_SIDE = { avatar: 512, post: 1600, 'group-cover': 1600, festival: 1600, banner: 2000, blog: 1600, kids: 1600, download: 1600 };
 
 function loadImage(file) {
   return new Promise((resolve, reject) => {
@@ -120,5 +120,18 @@ export const uploadService = {
     const { dataUrl, width, height } = await encode(file, purpose, maxSide);
     const url = await post('/api/uploads', { purpose, dataUrl }, { timeout: 60000 }).then((d) => d.url);
     return { url, width, height };
+  },
+  /**
+   * Uploads a video file straight to the Vercel Blob store (staff only): the API hands out a
+   * one-file token, then the browser sends the file in parts. Resolves to the video's https URL.
+   */
+  async video(file, { onProgress, signal } = {}) {
+    const { token, pathname, contentType } = await post('/api/uploads/video-token', { contentType: file.type, size: file.size });
+    const { put } = await import('@vercel/blob/client');
+    const blob = await put(pathname, file, {
+      access: 'public', token, contentType, multipart: file.size > 8 * 1024 * 1024, abortSignal: signal,
+      onUploadProgress: onProgress ? (p) => onProgress(p.percentage) : undefined,
+    });
+    return blob.url;
   },
 };

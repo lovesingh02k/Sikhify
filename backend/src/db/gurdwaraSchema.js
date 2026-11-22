@@ -190,8 +190,18 @@ CREATE VIRTUAL TABLE gurdwaras_fts USING fts5(
 );
 `;
 
-/** ISO 3166-1 alpha-2 codes that ICU names but which aren't countries/territories. */
-const NOT_COUNTRIES = new Set(['AA', 'AC', 'CP', 'CQ', 'DG', 'EA', 'EU', 'EZ', 'IC', 'TA', 'UN', 'ZZ']);
+/**
+ * Retired ISO codes that ICU still names after today's country (DD → "Germany", BU → "Myanmar (Burma)"…).
+ * Listed in A–Z order they came first and took the country's name, so the real code (DE) never matched
+ * and imports created a bare "DE" country. They are skipped; fixRetiredCountryCodes repairs old databases.
+ */
+export const RETIRED_COUNTRY_CODES = {
+  AN: 'CW', BU: 'MM', CS: 'RS', DD: 'DE', DY: 'BJ', FX: 'FR', HV: 'BF', NH: 'VU',
+  RH: 'ZW', SU: 'RU', TP: 'TL', UK: 'GB', VD: 'VN', YD: 'YE', YU: 'RS', ZR: 'CD',
+};
+
+/** ISO 3166-1 alpha-2 codes that ICU names but which aren't countries/territories (or are retired). */
+const NOT_COUNTRIES = new Set(['AA', 'AC', 'CP', 'CQ', 'DG', 'EA', 'EU', 'EZ', 'IC', 'TA', 'UN', 'ZZ', ...Object.keys(RETIRED_COUNTRY_CODES)]);
 
 export function countryList() {
   const names = new Intl.DisplayNames(['en'], { type: 'region', fallback: 'none' });
@@ -280,6 +290,49 @@ export function findOrCreateCity(db, countryId, stateId, name) {
   const info = db.prepare('INSERT INTO cities (country_id, state_region_id, name, slug) VALUES (?, ?, ?, ?)').run(countryId, stateId, v, slugify(v));
   return db.prepare('SELECT * FROM cities WHERE id = ?').get(Number(info.lastInsertRowid));
 }
+/**
+ * Migration 15 — countries saved under a retired code get today's code, and a country that was
+ * created from the bare code (e.g. "DE", holding German listings) is merged into the real one:
+ * its states, cities and Gurdwaras move over (joining same-named places), then it is removed.
+ */
+export function fixRetiredCountryCodes(db) {
+  for (const [old, code] of Object.entries(RETIRED_COUNTRY_CODES)) {
+    const real = db.prepare('SELECT * FROM countries WHERE code = ?').get(old);
+    if (!real || db.prepare('SELECT 1 FROM countries WHERE code = ?').get(code)) continue;
+    db.prepare('UPDATE countries SET code = ? WHERE id = ?').run(code, real.id);
+    const stray = db.prepare('SELECT * FROM countries WHERE code IS NULL AND id != ? AND (slug = ? OR name = ? COLLATE NOCASE)').get(real.id, code.toLowerCase(), code);
+    if (stray) mergeCountry(db, stray.id, real.id);
+  }
+}
+
+function mergeCountry(db, fromId, toId) {
+  const moved = db.prepare('SELECT id FROM gurdwaras WHERE country_id = ?').all(fromId).map((r) => r.id);
+  for (const st of db.prepare('SELECT * FROM states_regions WHERE country_id = ?').all(fromId)) {
+    const target = db.prepare('SELECT * FROM states_regions WHERE country_id = ? AND slug = ?').get(toId, st.slug);
+    if (!target) {
+      db.prepare('UPDATE states_regions SET country_id = ? WHERE id = ?').run(toId, st.id);
+      db.prepare('UPDATE cities SET country_id = ? WHERE state_region_id = ?').run(toId, st.id);
+      continue;
+    }
+    for (const ci of db.prepare('SELECT * FROM cities WHERE state_region_id = ?').all(st.id)) {
+      const same = db.prepare('SELECT * FROM cities WHERE state_region_id = ? AND slug = ?').get(target.id, ci.slug);
+      if (!same) {
+        db.prepare('UPDATE cities SET country_id = ?, state_region_id = ? WHERE id = ?').run(toId, target.id, ci.id);
+        db.prepare('UPDATE gurdwaras SET state_region_id = ? WHERE city_id = ?').run(target.id, ci.id);
+        continue;
+      }
+      for (const g of db.prepare('SELECT id, name FROM gurdwaras WHERE city_id = ?').all(ci.id)) {
+        db.prepare('UPDATE gurdwaras SET city_id = ?, state_region_id = ?, slug = ? WHERE id = ?').run(same.id, target.id, uniqueSlug(db, same.id, g.name, g.id), g.id);
+      }
+      db.prepare('DELETE FROM cities WHERE id = ?').run(ci.id);
+    }
+    db.prepare('DELETE FROM states_regions WHERE id = ?').run(st.id);
+  }
+  db.prepare('UPDATE gurdwaras SET country_id = ? WHERE country_id = ?').run(toId, fromId);
+  db.prepare('DELETE FROM countries WHERE id = ?').run(fromId);
+  for (const id of moved) reindexV2(db, id); // the index as it was at migration 15
+}
+
 export function uniqueSlug(db, cityId, name, exceptId = null) {
   const base = slugify(name);
   let slug = base;
@@ -309,13 +362,47 @@ export function migrateGurdwaraDirectoryV2(db) {
       prefix = '2 3'
     );
   `);
-  for (const { id } of db.prepare('SELECT id FROM gurdwaras').all()) reindex(db, id);
+  for (const { id } of db.prepare('SELECT id FROM gurdwaras').all()) reindexV2(db, id);
 }
 
-export function reindex(db, id) {
+/** Migration 6's index (kept as it was, so a new database can still run that step before migration 16). */
+function reindexV2(db, id) {
   db.prepare('DELETE FROM gurdwaras_fts WHERE rowid = ?').run(id);
   const r = db.prepare(`SELECT g.id, g.name, g.official_name, g.also_known_as, g.address, g.postal_code, g.district, ci.name AS city, st.name AS state, co.name AS country
     FROM gurdwaras g JOIN cities ci ON ci.id = g.city_id JOIN states_regions st ON st.id = g.state_region_id JOIN countries co ON co.id = g.country_id WHERE g.id = ?`).get(id);
   if (r) db.prepare('INSERT INTO gurdwaras_fts (rowid, name, official_name, also_known_as, address, postal_code, city, district, state, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     .run(r.id, r.name, r.official_name, r.also_known_as, r.address, r.postal_code, r.city, r.district, r.state, r.country);
+}
+
+/**
+ * Migration 16 — search finds a Gurdwara by what it is known for, not only by name and place:
+ * its description (history), programmes, the body that manages it, and its facilities and
+ * services ("langar", "accommodation", "anand karaj").
+ */
+export function migrateGurdwaraSearchV3(db) {
+  db.exec(`
+    DROP TABLE gurdwaras_fts;
+    CREATE VIRTUAL TABLE gurdwaras_fts USING fts5(
+      name, official_name, also_known_as, address, postal_code, city, district, state, country,
+      management_organization, programs, description, tags,
+      tokenize = 'unicode61 remove_diacritics 2',
+      prefix = '2 3'
+    );
+  `);
+  // Every record in one statement: on Turso each statement is a network round trip, and this runs at start-up.
+  db.exec(`INSERT INTO gurdwaras_fts (${FTS_COLUMNS}) ${FTS_SELECT}`);
+}
+
+const FTS_COLUMNS = 'rowid, name, official_name, also_known_as, address, postal_code, city, district, state, country, management_organization, programs, description, tags';
+/** One search row per Gurdwara; facilities and services go in as their labels ("Langar", "Anand Karaj"). */
+const FTS_SELECT = `SELECT g.id, g.name, g.official_name, g.also_known_as, g.address, g.postal_code, ci.name, g.district, st.name, co.name,
+      g.management_organization, g.programs, g.description,
+      trim(coalesce((SELECT group_concat(f.label, ' ') FROM gurdwara_facilities gf JOIN facilities f ON f.key = gf.facility_key WHERE gf.gurdwara_id = g.id), '') || ' ' ||
+           coalesce((SELECT group_concat(s.label, ' ') FROM gurdwara_services gs JOIN services s ON s.key = gs.service_key WHERE gs.gurdwara_id = g.id), ''))
+    FROM gurdwaras g JOIN cities ci ON ci.id = g.city_id JOIN states_regions st ON st.id = g.state_region_id JOIN countries co ON co.id = g.country_id`;
+
+/** Keeps one Gurdwara's search entry in step with its record (called after every change). */
+export function reindex(db, id) {
+  db.prepare('DELETE FROM gurdwaras_fts WHERE rowid = ?').run(id);
+  db.prepare(`INSERT INTO gurdwaras_fts (${FTS_COLUMNS}) ${FTS_SELECT} WHERE g.id = ?`).run(id);
 }

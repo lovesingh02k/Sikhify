@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sikhify's start screen: the gold Khanda on navy (Android 11 and older; newer phones use values-v31). -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/sikhify_navy" />
+    <item android:width="120dp" android:height="120dp" android:gravity="center">
+        <bitmap android:gravity="fill" android:src="@drawable/splash_logo" />
+    </item>
+</layer-list>

@@ -28,7 +28,7 @@ const GROUPS = [
   { key: 'People', label: 'People', icon: 'users', sub: 'The Guru Sahibs, the Sikhs who shaped history, and the voices of Kirtan and Katha today.' },
   { key: 'Community', label: 'Community', icon: 'calendar', sub: 'Gurpurabs and Samagams, Sikh institutions and sourced community news.' },
   { key: 'Resources', label: 'Resources', icon: 'book', sub: 'Trusted websites, apps, books and research for Gurbani, learning and history.' },
-  { key: 'Learn', label: 'Learn', icon: 'heart', sub: 'Stories, Sakhis and values for children.' },
+  { key: 'Learn', label: 'Learn', icon: 'heart', sub: 'Articles on Sikhi, and stories, Sakhis and values for children.' },
 ];
 const num = (n) => (typeof n === 'number' ? n.toLocaleString('en-IN') : '');
 
@@ -75,7 +75,7 @@ export default function DirectoryHub() {
 
   const c = counts.data;
   const countOf = (key) => (counts.error ? null : c ? c[key] : undefined);
-  const published = counts.error ? null : c ? Object.values(c).reduce((a, b) => a + b, 0) : undefined;
+  const published = counts.error ? null : c ? Object.entries(c).reduce((a, [type, n]) => (type === 'product' ? a : a + n), 0) : undefined;
   const gVerified = meta.error ? null : meta.data ? meta.data.totalVerified : undefined;
   const historic = meta.error ? null : meta.data ? Object.values(meta.data.designations || {}).reduce((a, b) => a + b, 0) : undefined;
   const states = india.error ? null : india.data ? (india.data.states || []).filter((s) => s.count > 0).length : undefined;

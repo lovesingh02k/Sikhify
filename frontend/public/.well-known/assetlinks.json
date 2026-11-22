@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "in.sikhify.app",
+      "sha256_cert_fingerprints": [
+        "75:C9:CF:48:49:AC:95:F7:1B:A3:3A:7F:13:BB:40:E6:B4:36:42:16:C6:96:8A:AD:5D:C8:57:93:5B:87:4B:A6"
+      ]
+    }
+  }
+]

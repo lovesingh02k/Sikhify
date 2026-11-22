@@ -30,7 +30,7 @@ export const THUMB_WIDTH = 960;
 export const variantPath = (rel, width = THUMB_WIDTH) => rel.replace(/\.[a-z0-9]+$/i, `.w${width}.webp`);
 
 /** Longest side stored for each upload purpose (what the site displays, with room for high-DPI screens). */
-export const MAX_SIDE = { avatar: 512, post: 2048, 'group-cover': 2048, gurdwara: 2400, festival: 2048, banner: 2400, 'post-thumb': 960 };
+export const MAX_SIDE = { avatar: 512, post: 2048, 'group-cover': 2048, gurdwara: 2400, festival: 2048, banner: 2400, blog: 2048, kids: 2048, download: 2048, product: 2048, entry: 2048, 'post-thumb': 960 };
 export const MAX_INPUT_PIXELS = 40_000_000; // e.g. 8000 × 5000
 export const MAX_INPUT_SIDE = 12_000;
 const TIMEOUT_SECONDS = 15;

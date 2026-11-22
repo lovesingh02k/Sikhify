@@ -23,11 +23,11 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-expanded="false" aria-haspopup="true" class="nav-link nav-dropdown-trigger" type="button">Learn <svg aria-hidden="true" fill="none" height="6" viewbox="0 0 10 6" width="10"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="nav-dropdown-panel">
 <a href="/learn-sikhism">Learn Sikhism</a>
+<a href="/kids">Kids — Learn Sikhi</a>
 <a href="/gurus">The Ten Gurus</a>
 <a href="/sikh-history">Sikh History</a>
 <a href="/rehat-maryada">Rehat Maryada</a>
 <a href="/faq">FAQ</a>
-<a href="/kids">Kids — Learn Sikhi</a>
 </div>
 </div>
 <div class="nav-dropdown">
@@ -42,7 +42,8 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-expanded="false" aria-haspopup="true" class="nav-link nav-dropdown-trigger" type="button">Media <svg aria-hidden="true" fill="none" height="6" viewbox="0 0 10 6" width="10"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="nav-dropdown-panel">
 <a href="/sikh-media">Kirtan &amp; Katha</a>
-<a href="/blog">Blog <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/blog">Blog</a>
+<a href="/downloads">Downloads</a>
 </div>
 </div>
 <div class="nav-dropdown">
@@ -71,9 +72,9 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <div class="nav-dropdown">
 <button aria-expanded="false" aria-haspopup="true" class="nav-link nav-dropdown-trigger" type="button">More <svg aria-hidden="true" fill="none" height="6" viewbox="0 0 10 6" width="10"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="nav-dropdown-panel">
-<a href="/sikh-store">Sikh Store <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/sikh-store">Sikh Store</a>
 <a href="/about">About Us</a>
-<a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/contact">Contact Us</a>
 </div>
 </div>
 </nav>
@@ -102,11 +103,11 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-controls="m-learn" aria-expanded="false" class="mobile-nav-link mobile-nav-toggle" type="button">Learn <svg aria-hidden="true" fill="none" height="8" viewbox="0 0 10 6" width="12"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="mobile-subnav" hidden="" id="m-learn">
 <a href="/learn-sikhism">Learn Sikhism</a>
+<a href="/kids">Kids — Learn Sikhi</a>
 <a href="/gurus">The Ten Gurus</a>
 <a href="/sikh-history">Sikh History</a>
 <a href="/rehat-maryada">Rehat Maryada</a>
 <a href="/faq">FAQ</a>
-<a href="/kids">Kids — Learn Sikhi</a>
 </div>
 </div>
 <div class="mobile-nav-group">
@@ -121,7 +122,8 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <button aria-controls="m-media" aria-expanded="false" class="mobile-nav-link mobile-nav-toggle" type="button">Media <svg aria-hidden="true" fill="none" height="8" viewbox="0 0 10 6" width="12"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="mobile-subnav" hidden="" id="m-media">
 <a href="/sikh-media">Kirtan &amp; Katha</a>
-<a href="/blog">Blog <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/blog">Blog</a>
+<a href="/downloads">Downloads</a>
 </div>
 </div>
 <div class="mobile-nav-group">
@@ -150,9 +152,9 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <div class="mobile-nav-group">
 <button aria-controls="m-more" aria-expanded="false" class="mobile-nav-link mobile-nav-toggle" type="button">More <svg aria-hidden="true" fill="none" height="8" viewbox="0 0 10 6" width="12"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5"></path></svg></button>
 <div class="mobile-subnav" hidden="" id="m-more">
-<a href="/sikh-store">Sikh Store <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/sikh-store">Sikh Store</a>
 <a href="/about">About Us</a>
-<a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a>
+<a href="/contact">Contact Us</a>
 </div>
 </div>
 <div data-mobile-account-slot=""></div>

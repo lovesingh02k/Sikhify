@@ -24,7 +24,7 @@ export const COMMON_FIELDS = [
   { name: 'title', label: 'Name / title', kind: 'text', required: true, max: 200 },
   { name: 'summary', label: 'Short summary', kind: 'textarea', max: 600, help: 'One or two sentences shown on cards and in search.' },
   { name: 'body', label: 'Full description', kind: 'textarea', max: 20000, rows: 8 },
-  { name: 'image_url', label: 'Image URL', kind: 'url', help: 'Only use an image you have permission to publish.' },
+  { name: 'image_url', label: 'Image URL', kind: 'url', upload: true, help: 'A direct https:// link to the image file itself (not a Google Drive, Google Photos, Instagram or Facebook page). Only use an image you have permission to publish.' },
   { name: 'image_credit', label: 'Image credit', kind: 'text', max: 300, help: 'Who made the image and its licence, e.g. “Photo: A. Singh, CC BY-SA 4.0, via Wikimedia Commons”.' },
 ];
 
@@ -137,13 +137,60 @@ export const CONTENT_TYPES = {
       { name: 'author', label: 'Author', kind: 'text', max: 200 },
     ],
   },
+  blog: {
+    label: 'Blog post', plural: 'Blog', path: 'blog', group: 'Learn', ownContent: true,
+    description: 'Articles on Sikhism, lifestyle, spirituality, history and more.',
+    sort: 'published_date',
+    fields: [
+      { name: 'category', label: 'Category', kind: 'select', required: true, options: ['Sikhism', 'Spirituality', 'History', 'Lifestyle', 'Gurbani', 'Community', 'Other'] },
+      { name: 'published_date', label: 'Published on', kind: 'date', required: true },
+      { name: 'author', label: 'Author', kind: 'text', required: true, max: 200 },
+      { name: 'reading_time', label: 'Reading time (minutes)', kind: 'number' },
+      { name: 'tags', label: 'Tags', kind: 'list', help: 'One tag per line.' },
+      VIDEOS,
+    ],
+  },
+  // Files Sikhify shares (kept on Google Drive or similar): the record holds the link, not the file.
+  download: {
+    label: 'Download', plural: 'Downloads', path: 'downloads', group: 'Resources', ownContent: true,
+    description: 'Free resources to download — wallpapers, Gutkas and Banis, calendars, posters and activities for children.',
+    fields: [
+      { name: 'category', label: 'Category', kind: 'select', custom: true, required: true, options: ['Wallpapers', 'Gutkas & Banis', 'Books', 'Calendars', 'Posters', 'Kids activities', 'Audio', 'Other'],
+        help: 'Pick one, or choose “+ New category…” to make your own.' },
+      { name: 'drive_url', label: 'Download link', kind: 'url', required: true, help: 'Your Google Drive (or other) link. In Drive, set sharing to “Anyone with the link”.' },
+      { name: 'file_type', label: 'File type', kind: 'select', options: ['PDF', 'Image', 'Audio', 'Video', 'ZIP', 'Document', 'Other'] },
+      { name: 'file_size', label: 'File size', kind: 'text', max: 40, help: 'e.g. “2.4 MB”.' },
+      { name: 'language', label: 'Language', kind: 'text', max: 80 },
+    ],
+  },
+  // The Sikh Store: orders are taken on WhatsApp (shared/store.js). Its group is not a directory group,
+  // so products stay out of the directory hub.
+  product: {
+    label: 'Product', plural: 'Sikh Store', path: 'sikh-store', group: 'Store', ownContent: true,
+    description: 'Kara, Gutka Sahib, Khanda pendants and more. Choose a product and order directly on WhatsApp.',
+    fields: [
+      { name: 'category', label: 'Category', kind: 'select', custom: true, required: true, options: ['Kara', 'Gutka Sahib & Books', 'Khanda & Pendants', 'Dastar & Clothing', 'Home & Gifts', 'Kids', 'Other'],
+        help: 'Pick one, or choose “+ New category…” to make your own.' },
+      { name: 'price', label: 'Price (₹)', kind: 'number', required: true, min: 0 },
+      { name: 'availability', label: 'Availability', kind: 'select', required: true, options: ['In stock', 'Out of stock'] },
+      { name: 'mrp', label: 'MRP before discount (₹)', kind: 'number', min: 0, help: 'Optional. Shown crossed out when it is higher than the price.' },
+      { name: 'variants', label: 'Sizes / options', kind: 'list', help: 'The buyer picks one, e.g. “Small”, “Medium”.' },
+      // Filled by the upload buttons in the admin editor (not shown as a text field).
+      { name: 'photos', label: 'Photos', kind: 'list', upload: 'photos' },
+    ],
+  },
   kids: {
     label: 'Kids resource', plural: 'Kids — Learn Sikhi', path: 'kids', group: 'Learn',
     description: 'Stories, Sakhis, Sikh heroes, values, Gurmukhi, quizzes and educational videos for children.',
     fields: [
-      { name: 'kind', label: 'Kind', kind: 'select', required: true, options: ['Story', 'Sakhi', 'Guru', 'Sikh hero', 'Values', 'Gurmukhi', 'Quiz', 'Flashcards', 'Educational video'] },
+      { name: 'kind', label: 'Kind', kind: 'select', required: true, options: ['Story', 'Sakhi', 'Guru', 'Sikh hero', 'Values', 'Gurmukhi', 'Quiz', 'Flashcards', 'Educational video', 'Colouring page', 'Picture / printable'] },
       { name: 'age_group', label: 'Age group', kind: 'select', options: ['3–5', '6–8', '9–12', '13+'] },
       VIDEOS,
+      // Filled by the upload buttons in the admin editor (not shown as text fields).
+      { name: 'photos', label: 'Photos', kind: 'list', upload: 'photos' },
+      { name: 'video_files', label: 'Uploaded videos', kind: 'list', upload: 'videos' },
+      { name: 'downloadable', label: 'Let visitors download the pictures', kind: 'boolean', upload: 'option' },
+      { name: 'quiz', label: 'Quiz questions', kind: 'quiz', help: 'Built with the quiz builder when Kind is “Quiz”.' },
     ],
   },
 };
@@ -162,12 +209,30 @@ export function fieldsFor(type) {
    -------------------------------------------------------------------------- */
 const URL_RE = /^https?:\/\/[^\s]+$/i;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/** An image uploaded to Sikhify (routes/uploads.js names files YYYY/MM/<random hex>.<ext>). */
+export const UPLOAD_PATH_RE = /^\/uploads\/\d{4}\/\d{2}\/[a-f0-9]{32}\.(?:webp|jpg|png|gif)$/;
+/** A video uploaded to Sikhify's Vercel Blob store (routes/uploads.js names it videos/YYYY/MM/<random hex>.<ext>). */
+export const VIDEO_URL_RE = /^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/videos\/\d{4}\/\d{2}\/[a-f0-9]{32}\.(?:mp4|webm|mov)$/;
+export const VIDEO_TYPES = { 'video/mp4': 'mp4', 'video/webm': 'webm', 'video/quicktime': 'mov' };
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_RE = /^\d{2}:\d{2}$/;
 
 export function isHttpUrl(v) {
   if (typeof v !== 'string' || !URL_RE.test(v.trim())) return false;
   try { const u = new URL(v.trim()); return u.protocol === 'http:' || u.protocol === 'https:'; } catch { return false; }
+}
+
+/** Sites whose share links open a page, not the picture, so they never show as an image. */
+const PAGE_HOSTS = /(^|\.)(drive\.google\.com|photos\.google\.com|photos\.app\.goo\.gl|instagram\.com|facebook\.com|fb\.com|fb\.watch|whatsapp\.com|wa\.me)$/i;
+
+/** Why a pasted image link would not show on the site ('' when it is fine). */
+export function imageLinkProblem(url) {
+  let u;
+  try { u = new URL(String(url).trim()); } catch { return ''; }
+  // The site only loads secure images: an http:// picture is blocked by the browser.
+  if (u.protocol === 'http:') return 'Use an https:// image link, or upload the photo';
+  if (PAGE_HOSTS.test(u.hostname)) return 'This link opens a page, not the image file. Upload the photo instead';
+  return '';
 }
 
 /** "Label | https://…" lines → [{label, url}] (invalid URLs are reported by validate). */
@@ -190,6 +255,41 @@ export function parseList(text) {
  * lists → arrays, links → [{label,url}], booleans → true/false.
  * `getVideoId` is injected (shared/youtube.js) to keep this module standalone.
  */
+export const QUIZ_LIMITS = { questions: 30, options: 4, question: 300, option: 150 };
+
+/**
+ * Quiz questions from the admin quiz builder: [{ question, options: [2–4], answer: index }].
+ * Accepts the array or its JSON text. Returns { questions } or { error } (a message for the form).
+ */
+export function parseQuiz(value) {
+  let list = value;
+  if (typeof list === 'string') {
+    if (!list.trim()) return { questions: [] };
+    try { list = JSON.parse(list); } catch { return { error: 'The quiz could not be read — please add the questions again' }; }
+  }
+  if (list === undefined || list === null) return { questions: [] };
+  if (!Array.isArray(list)) return { error: 'The quiz could not be read — please add the questions again' };
+  if (list.length > QUIZ_LIMITS.questions) return { error: `A quiz can have at most ${QUIZ_LIMITS.questions} questions` };
+  const questions = [];
+  for (const [i, raw] of list.entries()) {
+    const n = i + 1;
+    const question = String((raw && raw.question) || '').trim();
+    // Empty answer boxes are dropped; the right answer keeps pointing at the same text.
+    const typed = (Array.isArray(raw && raw.options) ? raw.options : []).map((o) => String(o || '').trim());
+    const options = typed.filter(Boolean);
+    const picked = Number(raw && raw.answer);
+    const answer = Number.isInteger(picked) && typed[picked] ? typed.slice(0, picked).filter(Boolean).length : -1;
+    if (!question) return { error: `Question ${n}: write the question` };
+    if (question.length > QUIZ_LIMITS.question) return { error: `Question ${n} is too long (${QUIZ_LIMITS.question} characters at most)` };
+    if (options.length < 2) return { error: `Question ${n}: add at least two answers` };
+    if (options.length > QUIZ_LIMITS.options) return { error: `Question ${n}: at most ${QUIZ_LIMITS.options} answers` };
+    if (options.some((o) => o.length > QUIZ_LIMITS.option)) return { error: `Question ${n}: an answer is too long (${QUIZ_LIMITS.option} characters at most)` };
+    if (!Number.isInteger(answer) || answer < 0 || answer >= options.length) return { error: `Question ${n}: choose the right answer` };
+    questions.push({ question, options, answer });
+  }
+  return { questions };
+}
+
 export function validateContent(type, input, { getVideoId } = {}) {
   const errors = {};
   const data = {};
@@ -197,6 +297,12 @@ export function validateContent(type, input, { getVideoId } = {}) {
   for (const f of fieldsFor(type)) {
     let v = input ? input[f.name] : undefined;
     if (f.kind === 'boolean') { data[f.name] = !!v; continue; }
+    if (f.kind === 'quiz') {
+      const { questions, error } = parseQuiz(v);
+      if (error) errors[f.name] = error;
+      else if (questions.length) data[f.name] = questions;
+      continue;
+    }
     if (f.kind === 'list' || f.kind === 'youtube') {
       const items = parseList(v);
       if (f.kind === 'youtube') {
@@ -208,8 +314,12 @@ export function validateContent(type, input, { getVideoId } = {}) {
         }
         if (ids.length) data[f.name] = ids;
       } else if (f.name === 'photos') {
-        const bad = items.find((u) => !isHttpUrl(u));
+        const bad = items.find((u) => !isHttpUrl(u) && !UPLOAD_PATH_RE.test(u));
         if (bad) errors[f.name] = 'Each line must be an http(s) image URL';
+        else if (items.length) data[f.name] = items;
+      } else if (f.upload === 'videos') {
+        const bad = items.find((u) => !VIDEO_URL_RE.test(u));
+        if (bad) errors[f.name] = 'Upload videos with the Upload video button';
         else if (items.length) data[f.name] = items;
       } else if (items.length) data[f.name] = items.map((s) => s.slice(0, 500));
       if (f.required && !items.length) errors[f.name] = `${f.label} is required`;
@@ -218,14 +328,20 @@ export function validateContent(type, input, { getVideoId } = {}) {
     v = v === undefined || v === null ? '' : String(v).trim();
     if (!v) { if (f.required) errors[f.name] = `${f.label} is required`; continue; }
     if (f.max && v.length > f.max) { errors[f.name] = `${f.label} must be ${f.max} characters or fewer`; continue; }
-    if (f.kind === 'url' && !isHttpUrl(v)) { errors[f.name] = `${f.label} must be a full http(s):// link`; continue; }
+    if (f.kind === 'url' && !isHttpUrl(v) && !(f.upload && UPLOAD_PATH_RE.test(v))) { errors[f.name] = `${f.label} must be a full http(s):// link`; continue; }
+    if (f.name === 'image_url' && !UPLOAD_PATH_RE.test(v)) {
+      const problem = imageLinkProblem(v);
+      if (problem) { errors[f.name] = problem; continue; }
+    }
     if (f.kind === 'email' && !EMAIL_RE.test(v)) { errors[f.name] = 'Enter a valid email address'; continue; }
     if (f.kind === 'date' && !DATE_RE.test(v)) { errors[f.name] = 'Use the date picker (YYYY-MM-DD)'; continue; }
     if (f.kind === 'time' && !TIME_RE.test(v)) { errors[f.name] = 'Use HH:MM'; continue; }
     if (f.kind === 'number' && !Number.isFinite(Number(v))) { errors[f.name] = `${f.label} must be a number`; continue; }
-    if (f.kind === 'select' && f.options && !f.options.includes(v)) { errors[f.name] = `Choose one of the listed options`; continue; }
+    if (f.kind === 'number' && f.min !== undefined && Number(v) < f.min) { errors[f.name] = `${f.label} must be ${f.min} or more`; continue; }
+    if (f.kind === 'select' && f.options && !f.custom && !f.options.includes(v)) { errors[f.name] = `Choose one of the listed options`; continue; }
     data[f.name] = f.kind === 'number' ? Number(v) : v;
   }
+  if (data.kind === 'Quiz' && fieldsFor(type).some((f) => f.kind === 'quiz') && !data.quiz && !errors.quiz) errors.quiz = 'Add at least one question to the quiz';
   return { data, errors };
 }
 

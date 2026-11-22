@@ -123,30 +123,10 @@ const PAGE_HTML = `<main id="main-content">
 <article class="panel-card store-card">
 <div class="panel-card-head">
 <h2 class="panel-title font-heading"><span class="panel-title-icon" aria-hidden="true"><svg width="15" height="15" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9l1.5-4.5h13L20 9"></path><path d="M4 9h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V9Z"></path></svg></span>Sikh Store</h2>
-<span class="soon-pill" aria-label="coming soon">Soon</span>
 </div>
-<!-- EL:INNER-SECTION product-thumbs-row -->
-<p class="panel-soon-text mb-3">Kara, Gutka Sahib, Khanda pendants and more — a preview of what's planned. The store isn't open yet.</p>
-<div class="product-thumb-row is-preview">
-<!-- EL:WIDGET:Image + Text -->
-<a class="product-thumb" href="/sikh-store">
-<!-- Photo: bracelet close-up — by monicore-style placeholder, Pexels -->
-<img alt="Polished steel Kara bracelet" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/16461255/pexels-photo-16461255.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Steel Kara</span>
-</a>
-<a class="product-thumb" href="/sikh-store">
-<!-- Photo: leather-bound book — by Jess Bailey Designs, Pexels -->
-<img alt="Gutka Sahib prayer book" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/1018133/pexels-photo-1018133.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Gutka Sahib</span>
-</a>
-<a class="product-thumb" href="/sikh-store">
-<!-- Photo: pendant necklace — by monicore, Pexels (pexels.com/photo/135486) -->
-<img alt="Khanda pendant necklace" decoding="async" height="400" loading="lazy" width="400" src="https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400" srcset="https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=200 200w, https://images.pexels.com/photos/135486/pexels-photo-135486.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w" sizes="(min-width: 1024px) 110px, 30vw"/>
-<span class="product-thumb-tag">Preview</span><span class="product-thumb-title">Khanda Pendant</span>
-</a>
-</div>
-<div class="store-note"><span class="khanda-mark store-note-mark" aria-hidden="true"></span><p><strong>Opening soon.</strong> We'll announce it here on the homepage when the store opens.</p></div>
-<div class="panel-foot store-foot"><a class="pill-link pill-link-soft" href="/sikh-store">Learn more <span aria-hidden="true">→</span></a></div>
+<p class="panel-soon-text mb-3">Kara, Gutka Sahib, Khanda pendants and more. Choose a product and order directly on WhatsApp.</p>
+<div class="product-thumb-row" data-home-store=""></div>
+<div class="panel-foot store-foot"><a class="pill-link pill-link-soft" href="/sikh-store">Visit the store <span aria-hidden="true">→</span></a></div>
 </article>
 </div>
 </div>
@@ -211,7 +191,7 @@ const PAGE_HTML = `<main id="main-content">
 <!-- Photo: pen and open notebook — by Negative Space, Pexels (pexels.com/photo/coffee-notebook-pen-writing-34587/) -->
 <img alt="Pen resting on an open notebook" decoding="async" height="400" loading="lazy" width="600" src="https://images.pexels.com/photos/34587/pexels-photo.jpg?auto=compress&amp;cs=tinysrgb&amp;w=600" srcset="https://images.pexels.com/photos/34587/pexels-photo.jpg?auto=compress&amp;cs=tinysrgb&amp;w=400 400w, https://images.pexels.com/photos/34587/pexels-photo.jpg?auto=compress&amp;cs=tinysrgb&amp;w=600 600w, https://images.pexels.com/photos/34587/pexels-photo.jpg?auto=compress&amp;cs=tinysrgb&amp;w=900 900w" sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"/>
 <div class="content-card-body">
-<h3 class="content-card-title">Blog <span class="soon-pill" aria-label="coming soon">Soon</span></h3>
+<h3 class="content-card-title">Blog</h3>
 <p class="content-card-text">Read articles on Sikhism, lifestyle, spirituality, history and more.</p>
 <span class="content-card-link">Explore →</span>
 </div>

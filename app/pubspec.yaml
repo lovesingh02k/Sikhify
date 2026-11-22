@@ -1,0 +1,47 @@
+name: sikhify
+description: "Sikhify: Nitnem, Gurbani and the daily Hukamnama."
+publish_to: 'none'
+
+# Raise the number after + (and the version before it) for every new APK, so phones accept it as an update.
+version: 1.0.0+16
+
+environment:
+  sdk: ^3.13.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: 1.6.0
+  just_audio: 0.10.6
+  shared_preferences: 2.5.6
+  path_provider: 2.1.6
+  url_launcher: 6.3.3
+  wakelock_plus: 1.8.2
+  share_plus: 13.3.1
+  flutter_map: 8.3.2
+  latlong2: 0.10.1
+  youtube_player_iframe: 6.0.2
+  flutter_local_notifications: 22.3.3
+  timezone: 0.11.2
+  flutter_timezone: 5.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/
+    - assets/images/
+    - assets/images/gurus/
+  # Noto Sans Gurmukhi (SIL Open Font License, assets/fonts/OFL.txt): Gurmukhi, including ੴ, looks the same on every phone.
+  fonts:
+    - family: NotoSansGurmukhi
+      fonts:
+        - asset: assets/fonts/NotoSansGurmukhi-Regular.ttf
+        - asset: assets/fonts/NotoSansGurmukhi-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansGurmukhi-Bold.ttf
+          weight: 700

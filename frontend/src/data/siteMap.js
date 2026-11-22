@@ -20,6 +20,7 @@ export const SITE_SECTIONS = [
       { href: '/rehat-maryada', title: 'Rehat Maryada', text: 'A plain-language guide to the Sikh code of conduct.' },
       { href: '/faq', title: 'FAQ', text: 'Clear answers to the questions people ask most often.' },
       { href: '/gurus', title: 'The Ten Gurus', text: 'Profiles of the Ten Gurus: biography, timeline, teachings and Bani.' },
+      { href: '/blog', title: 'Blog', text: 'Articles on Sikhism, lifestyle, spirituality and history.' },
       { href: '/kids', title: 'Kids — Learn Sikhi', text: 'Stories, Sakhis, values and Gurmukhi for children.' },
     ],
   },
@@ -34,6 +35,7 @@ export const SITE_SECTIONS = [
   {
     title: 'Media',
     links: [
+      { href: '/downloads', title: 'Downloads', text: 'Wallpapers, Gutkas, calendars and more to download.' },
       { href: '/sikh-media', title: 'Kirtan & Katha', text: 'Ragis, Katha Vachaks and Dhadi Jathas — videos play on Sikhify.' },
     ],
   },
@@ -61,9 +63,16 @@ export const SITE_SECTIONS = [
     ],
   },
   {
+    title: 'Store',
+    links: [
+      { href: '/sikh-store', title: 'Sikh Store', text: 'Kara, Gutka Sahib, Khanda pendants and more, ordered on WhatsApp.' },
+    ],
+  },
+  {
     title: 'About',
     links: [
       { href: '/about', title: 'About Sikhify', text: 'What Sikhify is, what it offers, and who builds it.' },
+      { href: '/contact', title: 'Contact Us', text: 'How to reach the Sikhify team.' },
       { href: '/image-credits', title: 'Image credits', text: 'Sources and licences for every image.' },
     ],
   },

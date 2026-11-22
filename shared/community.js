@@ -32,6 +32,8 @@ export const LIMITS = {
   groupAbout: 5000,
   reportDetails: 1000,
   uploadBytes: 3 * 1024 * 1024,
+  // Video files (Kids videos) go straight from the browser to Vercel Blob, not through the API.
+  videoUploadBytes: 200 * 1024 * 1024,
   // Total stored (optimised) image bytes per account. Staff who manage directory/festival photos get more.
   uploadQuotaBytes: 50 * 1024 * 1024,
   uploadQuotaBytesStaff: 1024 * 1024 * 1024,
@@ -52,6 +54,8 @@ export const SUBMISSION_KINDS = {
   organization: { label: 'An organization', creates: 'organization' },
   correction: { label: 'A correction to existing information', creates: null },
   incorrect: { label: 'Report incorrect information', creates: null },
+  // Ideas and feedback about Sikhify itself (website or app): needs only the message.
+  suggestion: { label: 'A suggestion or feedback', creates: null, general: true },
   // Requests about personal data (see /privacy-policy): access, correction, deletion. Needs no page or source.
   privacy: { label: 'A privacy or data request', creates: null, privacy: true },
 };

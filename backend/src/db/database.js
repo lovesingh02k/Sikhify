@@ -13,7 +13,7 @@ import path from 'node:path';
 
 const NOW = "(strftime('%Y-%m-%dT%H:%M:%fZ','now'))";
 
-import { migrateGurdwaraDirectory, migrateGurdwaraDirectoryV2, registerFunctions } from './gurdwaraSchema.js';
+import { migrateGurdwaraDirectory, migrateGurdwaraDirectoryV2, migrateGurdwaraSearchV3, fixRetiredCountryCodes, registerFunctions } from './gurdwaraSchema.js';
 
 const remoteDatabases = new WeakSet();
 const activeTransactions = new WeakSet();
@@ -442,6 +442,15 @@ export const MIGRATIONS = [
   /* 14 — A festival banner's own wording, each optional (empty = the festival's own text): the top
      label, the small line above the name, the subtitle and the Gurmukhi line. JSON. Additive only. */
   `ALTER TABLE home_banners ADD COLUMN options TEXT NOT NULL DEFAULT '{}';`,
+
+  /* 15 — Countries stored under a retired ISO code (Germany as "DD", Myanmar as "BU"…) get today's
+     code, and stray countries created from the bare code (a "DE" country) are merged into them. */
+  fixRetiredCountryCodes,
+
+  /* 16 — Gurdwara search also looks at a Gurdwara's description, programmes, managing body, facilities
+     and services (so "langar", "SGPC" or a Guru's name find the Gurdwaras connected with them). Rebuilds
+     the search index only; no data changes. */
+  migrateGurdwaraSearchV3,
 ];
 
 export function openDatabase(file) {

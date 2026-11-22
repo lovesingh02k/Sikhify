@@ -254,9 +254,14 @@ export function createApp({ db, config, mailer, log = console }) {
         const base = db.prepare('SELECT path FROM uploads WHERE path LIKE ? AND path NOT LIKE ? ORDER BY id LIMIT 1').get(variant[1] + '.%', '%.w%.webp');
         if (base) { rel = base.path; stored = db.prepare('SELECT mime, bytes, data FROM uploads WHERE path = ?').get(rel); }
       }
+      // ?download=1 (Kids "Download image" buttons) saves the file instead of showing it — browsers and the
+      // Android app (whose WebView ignores <a download>) both honour an attachment response.
+      const attachment = url.searchParams.get('download') === '1'
+        ? { 'Content-Disposition': `attachment; filename="sikhify-${path.posix.basename(rel)}"` } : {};
       if (stored && stored.data) {
         const buf = Buffer.isBuffer(stored.data) ? stored.data : Buffer.from(stored.data);
         res.writeHead(200, {
+          ...attachment,
           'Content-Type': stored.mime,
           'Content-Length': buf.length,
           'Cache-Control': 'public, max-age=31536000, immutable',
@@ -270,6 +275,7 @@ export function createApp({ db, config, mailer, log = console }) {
       const file = safeJoin(config.uploadDir, rel);
       if (file && /\.(png|jpe?g|webp|gif)$/i.test(file) && isFile(file)) {
         res.setHeader('Content-Security-Policy', "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'");
+        if (attachment['Content-Disposition']) res.setHeader('Content-Disposition', attachment['Content-Disposition']);
         return serveFile(res, file, { cache: 'public, max-age=31536000, immutable', method: req.method });
       }
       res.writeHead(404, { 'Content-Type': 'text/plain' });

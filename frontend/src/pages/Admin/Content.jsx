@@ -20,11 +20,14 @@ export default function Content({ type: fixedType }) {
   const query = { ...f, type: fixedType || f.type };
   const state = useAsync(() => adminService.entries(query), [JSON.stringify(query)]);
   const newType = fixedType || f.type || '';
+  // Blog posts have their own writing screen; every other type uses the directory record editor.
+  const newPath = newType === 'blog' ? '/admin/blog/new' : `/admin/content/new${newType ? `?type=${newType}` : ''}`;
+  const editPath = (e) => (e.type === 'blog' ? `/admin/blog/${e.id}` : `/admin/content/${e.id}`);
 
   return (
     <>
       <AdminHeader title={t ? t.plural : 'All content'} sub={t ? t.description : 'Every directory record: Gurdwaras, events, personalities, organizations, websites, apps, books, heritage, news and kids resources.'}
-        actions={<Link className="sk-btn sk-btn-gold" to={`/admin/content/new${newType ? `?type=${newType}` : ''}`}><Icon name="plus" size={16} />New {t ? t.label.toLowerCase() : 'record'}</Link>} />
+        actions={<Link className="sk-btn sk-btn-gold" to={newPath}><Icon name="plus" size={16} />New {t ? t.label.toLowerCase() : 'record'}</Link>} />
       <FilterBar>
         <form className="flex items-end gap-2" onSubmit={(e) => { e.preventDefault(); setF({ ...f, q, page: 1 }); }}>
           <TextInput label="Search" placeholder="Title, city…" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -43,13 +46,13 @@ export default function Content({ type: fixedType }) {
                 <tbody>
                   {d.items.map((e) => (
                     <tr key={e.id}>
-                      <td><Link to={`/admin/content/${e.id}`}>{e.title}</Link>{e.category ? <span className="sk-card-meta block">{e.category}</span> : null}</td>
+                      <td><Link to={editPath(e)}>{e.title}</Link>{e.category ? <span className="sk-card-meta block">{e.category}</span> : null}</td>
                       {!fixedType ? <td>{CONTENT_TYPES[e.type].label}</td> : null}
                       <td>{[e.city, e.country].filter(Boolean).join(', ')}{e.date ? <span className="block">{formatDate(e.date)}</span> : null}</td>
                       <td><Pill value={e.publishStatus} /></td>
                       <td><Pill value={e.verification.status} label={VERIFICATION_LABELS[e.verification.status]} /></td>
                       <td>{relativeTime(e.verification.updatedAt)}{e.updatedBy ? <span className="sk-card-meta block">{e.updatedBy}</span> : null}</td>
-                      <td><div className="flex gap-1"><Link className="sk-btn sk-btn-sm" to={`/admin/content/${e.id}`}>Edit</Link>{e.publishStatus === 'published' ? <Link className="sk-btn sk-btn-sm" to={e.url}>View</Link> : null}</div></td>
+                      <td><div className="flex gap-1"><Link className="sk-btn sk-btn-sm" to={editPath(e)}>Edit</Link>{e.publishStatus === 'published' ? <Link className="sk-btn sk-btn-sm" to={e.url}>View</Link> : null}</div></td>
                     </tr>
                   ))}
                 </tbody>
@@ -59,7 +62,7 @@ export default function Content({ type: fixedType }) {
           </>
         ) : (
           <Empty icon="globe" title={`No ${t ? t.plural.toLowerCase() : 'records'} yet`} text="Add one with its source, or approve a community submission.">
-            <Link className="sk-btn sk-btn-gold sk-btn-sm" to={`/admin/content/new${newType ? `?type=${newType}` : ''}`}>New {t ? t.label.toLowerCase() : 'record'}</Link>
+            <Link className="sk-btn sk-btn-gold sk-btn-sm" to={newPath}>New {t ? t.label.toLowerCase() : 'record'}</Link>
             <Link className="sk-btn sk-btn-sm" to="/admin/submissions">Review submissions</Link>
           </Empty>
         ))}

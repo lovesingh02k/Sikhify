@@ -22,6 +22,10 @@ export const NAV = [
     ['/admin/events', 'Events', 'calendar', 'content.manage'],
     ['/admin/personalities', 'Personalities', 'user', 'content.manage'],
     ['/admin/news', 'News', 'external', 'content.manage'],
+    ['/admin/blog', 'Blog', 'book', 'content.manage'],
+    ['/admin/kids', 'Kids — Learn Sikhi', 'heart', 'content.manage'],
+    ['/admin/downloads', 'Downloads', 'file', 'content.manage'],
+    ['/admin/sikh-store', 'Sikh Store', 'store', 'content.manage'],
     ['/admin/content', 'All directory content', 'globe', 'content.manage', true],
   ]],
   ['People & settings', [

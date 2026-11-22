@@ -14,9 +14,6 @@ export const PHOTO_CREDITS = [
   { use: 'Homepage — Kids card', subject: 'A child having a turban tied', author: 'World Sikh Organization of Canada', url: 'https://www.pexels.com/photo/a-person-putting-an-orange-head-turban-on-a-child-14797819/', ...PEXELS },
   { use: 'Homepage — Sikh Media card', subject: 'Studio microphone', author: 'Reel Focus Productions', url: 'https://www.pexels.com/photo/podcast-microphone-27616685/', ...PEXELS },
   { use: 'Homepage — Blog card', subject: 'Pen on an open notebook', author: 'Negative Space', url: 'https://www.pexels.com/photo/coffee-notebook-pen-writing-34587/', ...PEXELS },
-  { use: 'Homepage — Sikh Store preview', subject: 'Steel bracelet (Kara)', author: 'credited on Pexels', url: 'https://www.pexels.com/photo/16461255/', ...PEXELS },
-  { use: 'Homepage — Sikh Store preview', subject: 'Leather-bound book', author: 'Jess Bailey Designs', url: 'https://www.pexels.com/photo/1018133/', ...PEXELS },
-  { use: 'Homepage — Sikh Store preview', subject: 'Pendant necklace', author: 'monicore', url: 'https://www.pexels.com/photo/135486/', ...PEXELS },
 ];
 
 /* Directory section covers (data/directoryVisuals.js) — Wikimedia Commons. */

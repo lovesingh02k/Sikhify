@@ -42,6 +42,34 @@ export function LocationSelects({ country, state, city, place, onPlace }) {
   );
 }
 
+/**
+ * The same three steps as a draft for the search hero: choosing a place only fills the next list
+ * (nothing is searched yet); the form's button applies it. `value` = { country, state, city } slugs.
+ */
+export function PlaceSteps({ value, onChange, place }) {
+  const { country, state, city } = value;
+  const loc = useAsync(() => gurdwaraService.locations(country, state), [country, state]);
+  const d = loc.data || {};
+  const withCurrent = (list, slug, named) => {
+    const items = list || [];
+    return slug && named && !items.some((x) => x.slug === slug) ? [{ slug, name: named.name }, ...items] : items;
+  };
+  const waiting = loc.loading;
+  return (
+    <>
+      <SelectRow label="Country" value={country} allLabel="Choose a country" options={withCurrent(d.countries, country, place && place.country)}
+        onChange={(v) => onChange({ country: v || '', state: '', city: '' })} />
+      <SelectRow label="State / Province" value={state} disabled={!country || waiting}
+        allLabel={!country ? 'Choose a country first' : waiting ? 'Loading…' : 'All states / provinces'}
+        options={country ? withCurrent(d.states, state, place && place.state) : []} onChange={(v) => onChange({ country, state: v || '', city: '' })} />
+      <SelectRow label="City" value={city} disabled={!state || waiting}
+        allLabel={!state ? 'Choose a state first' : waiting ? 'Loading…' : 'All cities'}
+        options={state ? withCurrent(d.cities, city, place && place.city) : []} onChange={(v) => onChange({ country, state, city: v || '' })} />
+      {loc.error ? <p className="sk-form-error">Places couldn&apos;t be loaded. Please try again.</p> : null}
+    </>
+  );
+}
+
 function CheckGroup({ legend, items, selected, onToggle }) {
   return (
     <fieldset className="sk-gfilter-group">

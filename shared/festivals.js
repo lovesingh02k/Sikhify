@@ -200,7 +200,7 @@ export function selectHomeCards(observances, today, { limit = 8, fallbackLimit =
 /* ---------- destinations */
 
 const LEGACY_PAGES = ['/', '/learn-sikhism', '/gurbani', '/nitnem', '/hukamnama', '/sikh-history', '/rehat-maryada', '/faq', '/sikh-media', '/sitemap'];
-const REACT_PAGES = ['/about', '/festivals', '/gurus', '/directory', '/directory/gurdwaras', '/community', '/submit', '/image-credits'];
+const REACT_PAGES = ['/about', '/contact', '/festivals', '/gurus', '/directory', '/directory/gurdwaras', '/community', '/submit', '/image-credits'];
 const SLUG = '[a-z0-9][a-z0-9-]{0,119}';
 
 /**

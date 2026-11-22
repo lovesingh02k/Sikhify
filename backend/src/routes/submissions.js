@@ -71,13 +71,19 @@ export default function register(router, deps) {
       if (message.length < 10) fields.message = 'Tell us what you would like us to do (for example: delete my account)';
       if (!who.userId && !who.guestEmail) fields.guestEmail = 'Add your email address so we can reply and confirm the request is yours';
       title = 'Privacy or data request';
+    } else if (def.general) {
+      if (message.length < 10) fields.message = 'Write your suggestion in a sentence or two';
+      targetUrl = str(c.body.targetUrl, { max: 500 }); // optional: the page it is about
+      title = str(c.body.title, { max: 200 }) || 'Suggestion';
     } else {
       targetUrl = str(c.body.targetUrl, { max: 500 });
       if (!targetUrl) fields.targetUrl = 'Which page or record is this about?';
       if (message.length < 10) fields.message = 'Describe what is wrong and what it should say';
       title = str(c.body.title, { max: 200 }) || targetUrl;
     }
-    if (def.privacy) { /* no source needed */ } else if (!source) fields.source = 'Tell us where this information comes from (a link or a reference)';
+    // A source is needed for new or corrected information; a report of a mistake or a suggestion can come without one.
+    const sourceOptional = def.privacy || def.general || kind === 'incorrect';
+    if (!source) { if (!sourceOptional) fields.source = 'Tell us where this information comes from (a link or a reference)'; }
     else if (/^https?:/i.test(source) && !isHttpUrl(source)) fields.source = 'That link is not valid';
     if (Object.keys(fields).length) throw badRequest('Please fix the highlighted fields', fields);
 

@@ -56,7 +56,10 @@ export const DIRECTORY_VISUALS = {
   website: { icon: 'globe', glyph: 'ਵੈੱਬਸਾਈਟਾਂ', tone: 'teal', layout: 'site' },
   app: { icon: 'phone', glyph: 'ਐਪਸ', tone: 'slate', layout: 'site' },
   book: { icon: 'book', glyph: 'ਪੁਸਤਕਾਂ', tone: 'saffron', layout: 'book', image: local(folio) },
+  blog: { icon: 'book', glyph: 'ਲੇਖ', tone: 'saffron', layout: 'news' },
+  download: { icon: 'file', glyph: 'ਡਾਊਨਲੋਡ', tone: 'teal', layout: 'landscape' },
   kids: { icon: 'heart', glyph: 'ਬੱਚੇ', tone: 'kids', layout: 'kids' },
+  product: { icon: 'store', glyph: 'ਸਟੋਰ', tone: 'gold', layout: 'landscape' },
 };
 
 export const visualFor = (key) => DIRECTORY_VISUALS[key] || { icon: 'compass', glyph: 'ਸਿੱਖ', tone: 'gold' };

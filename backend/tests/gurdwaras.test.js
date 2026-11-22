@@ -73,6 +73,7 @@ test('admin creates a record; it is listed as "needs verification" until verifie
   const ok = await admin.post('/api/admin/gurdwaras', {
     name: 'Test Fixture Gurdwara Singh Sabha', country: 'IN', state: 'Testland Pradesh', city: 'Testpur', address: '1 Test Road', postal_code: '492001',
     latitude: 21.2514, longitude: 81.6296, phone: '+91 00000 00001', website: 'https://gss.example', facilities: ['langar', 'parking'], services: ['kirtan'],
+    description: 'Visited by Guru Fixturedev Ji on the way to the hills.', management_organization: 'Testpur Fixture Committee', programs: 'Sukhmani Sahib every Sunday',
   });
   assert.equal(ok.status, 200, JSON.stringify(ok.data));
   raipurId = ok.data.gurdwara.id;
@@ -99,6 +100,10 @@ test('1 record: search (name, partial, city, state, country, postal code, addres
     assert.equal(r.data.total, 1, `search "${q}"`);
   }
   assert.equal((await guest.get('/api/gurdwaras?q=nowhere-at-all')).data.total, 0);
+  // Searched by what it is known for, not only by name and place (migration 16).
+  for (const q of ['Fixturedev', 'Fixture Committee', 'Sukhmani', 'langar', 'parking', 'kirtan']) {
+    assert.equal((await guest.get('/api/gurdwaras?q=' + encodeURIComponent(q))).data.total, 1, `search by information "${q}"`);
+  }
   const card = (await guest.get('/api/gurdwaras')).data.items[0];
   assert.deepEqual(card.facilities.sort(), ['langar', 'parking']);
   assert.equal(card.distanceKm, null, 'no distance without the visitor’s location');

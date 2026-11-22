@@ -140,6 +140,9 @@ export default function SubmitPage() {
                       <TextArea label="Your request" required rows={5} value={extra.message} onChange={(e) => setExtra({ ...extra, message: e.target.value })} error={fields.message}
                         help="For example: “Please delete my account and everything I posted” or “What data do you hold about me?”. Please don’t include passwords." />
                     </>
+                  ) : def.general ? (
+                    <TextArea label="Your suggestion or feedback" required rows={5} value={extra.message} onChange={(e) => setExtra({ ...extra, message: e.target.value })} error={fields.message}
+                      help="An idea for a new feature, something that is hard to use, or anything else you would like us to know." />
                   ) : !creates ? (
                     <>
                       <TextInput label="Which page or record?" required value={extra.targetUrl} onChange={(e) => setExtra({ ...extra, targetUrl: e.target.value })} error={fields.targetUrl}
@@ -149,7 +152,7 @@ export default function SubmitPage() {
                   ) : (
                     <TextArea label="Note for the reviewers (optional)" rows={3} value={extra.message} onChange={(e) => setExtra({ ...extra, message: e.target.value })} />
                   )}
-                  {def.privacy ? null : <TextInput label="Where did you get this information?" required value={extra.source} onChange={(e) => setExtra({ ...extra, source: e.target.value })} error={fields.source}
+                  {def.privacy || def.general ? null : <TextInput label={kind === 'incorrect' ? 'Where is the correct information from? (optional)' : 'Where did you get this information?'} required={kind !== 'incorrect'} value={extra.source} onChange={(e) => setExtra({ ...extra, source: e.target.value })} error={fields.source}
                     help="A link to an official website or announcement, or a book with its page number. Please don't guess addresses or phone numbers." />}
                   {!user ? <GuestContact value={guest} onChange={setGuest} errors={fields} next="%2Fsubmit" /> : null}
                   <div className="sk-form-actions">

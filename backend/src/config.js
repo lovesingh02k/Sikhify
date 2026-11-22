@@ -52,6 +52,9 @@ export function loadConfig(overrides = {}) {
     trustProxy: bool(env.SIKHIFY_TRUST_PROXY, !!env.VERCEL),
     sessionDays: Number(env.SIKHIFY_SESSION_DAYS || 30),
     resendApiKey: env.RESEND_API_KEY || '',
+    // Vercel Blob store for video files (Kids videos). The browser uploads straight to the store with a
+    // short-lived token from POST /api/uploads/video-token; without this token video upload is switched off.
+    blobToken: env.BLOB_READ_WRITE_TOKEN || '',
     mailFrom: env.MAIL_FROM || '',
     serveStatic: bool(env.SIKHIFY_SERVE_STATIC, production),
     // Maintenance scripts only: work on the database without applying pending schema migrations

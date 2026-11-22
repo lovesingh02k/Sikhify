@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import PageHero from '../components/common/PageHero.jsx';
 import { useReactPage } from '../hooks/useReactPage.js';
 
-const UPDATED = '10 October 2026';
+const UPDATED = '16 November 2026';
 
 const SECTIONS = [
   ['summary', 'In short'],
@@ -14,6 +14,7 @@ const SECTIONS = [
   ['use', 'How we use it'],
   ['public', 'What other people can see'],
   ['cookies', 'Cookies and browser storage'],
+  ['app', 'The Sikhify mobile app'],
   ['third', 'Services we rely on'],
   ['keep', 'How long we keep it'],
   ['security', 'How we protect it'],
@@ -100,6 +101,21 @@ export default function PrivacyPolicy() {
             <p>Sikhify sets <strong>one cookie</strong>, <code>sk_session</code>, and only when you sign in. It keeps you signed in, is not readable by scripts on the page, and expires after 30 days or when you sign out.</p>
             <p>Your browser&apos;s local storage (names beginning with <code>sikhify:</code>) remembers conveniences on <em>your device only</em> — light/dark theme, reading preferences such as text size and transliteration, bookmarks, where you were on a page, and whether you are signed in (so the menu shows the right buttons straight away). This never leaves your device; clearing your browser&apos;s site data removes it.</p>
             <p>We use no advertising or analytics cookies.</p>
+          </div>
+        </section>
+
+        <section id="app" aria-labelledby="app-h">
+          <h2 className="sk-section-title" id="app-h">The Sikhify mobile app</h2>
+          <div className="fest-prose pp-prose mt-3">
+            <p>The Sikhify app for Android (<code>in.sikhify.app</code>) has <strong>no accounts and no sign-in</strong>. It sends Sikhify nothing about you, except what you choose to send in its &ldquo;Add / Suggest / Report&rdquo; forms.</p>
+            <ul>
+              <li><strong>Stored on your phone only:</strong> the name you type on the Profile page (if any), bookmarks, lessons read, Nitnem progress, Daily Quiz answers, reading settings, language, theme, reminder times, and saved Banis for offline reading. None of this leaves your phone; uninstalling the app or clearing its data removes it.</li>
+              <li><strong>Add / Suggest / Report:</strong> when you send a suggestion, a report of a mistake, a new Gurdwara or another listing, or a phone number or note for a Gurdwara, the app sends what you wrote to Sikhify for review, together with a name and email address <strong>only if you fill them in</strong> (so we can reply). These are handled like submissions on the website — see <a className="panel-view-all" href="#collect">What we collect</a> and <a className="panel-view-all" href="#keep">How long we keep it</a>. The email you enter is also remembered on your phone to fill in next time.</li>
+              <li><strong>Notifications:</strong> if you turn on reminders, the app asks for permission to show notifications. Reminders are scheduled on your phone; no server is involved.</li>
+              <li><strong>Content it loads:</strong> Gurbani and the Hukamnama from BaniDB and Sikhify, festivals, Gurdwaras, Kirtan &amp; Katha and directory pages from the Sikhify API, Hukamnama audio from SGPC, videos from YouTube, map tiles from OpenStreetMap, and pictures from Wikimedia Commons and other image hosts (see <a className="panel-view-all" href="#third">Services we rely on</a>). As with any app or website, these services receive your IP address when content loads.</li>
+              <li><strong>Sharing:</strong> &ldquo;Share App&rdquo; opens your phone&apos;s share menu with the app file or the website link; you choose where it goes.</li>
+              <li>The app contains <strong>no advertising, analytics or tracking</strong>, and does not access your location, contacts, camera, microphone or files.</li>
+            </ul>
           </div>
         </section>
 

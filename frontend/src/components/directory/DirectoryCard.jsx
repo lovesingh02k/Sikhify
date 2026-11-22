@@ -13,6 +13,7 @@ import OptimizedImage from '../images/OptimizedImage.jsx';
 import { SectionTile } from './DirectoryVisual.jsx';
 import { VerificationBadge } from './DirectoryTrust.jsx';
 import { visualFor, commonsThumb } from '../../data/directoryVisuals.js';
+import { CONTENT_TYPES } from '../../../../shared/contentTypes.js';
 import { formatDate, initials } from '../../utils/format.js';
 import './directory.css';
 
@@ -20,13 +21,28 @@ export const hostOf = (url) => { try { return new URL(url).hostname.replace(/^ww
 const placeOf = (e) => [e.city, e.state, e.country].filter(Boolean).join(', ');
 const todayIso = () => new Date().toISOString().slice(0, 10);
 
-/** The link a record points to outside Sikhify, with a label for its kind. */
-export function externalLinkOf(type, f = {}) {
+/** A Sikhify upload's "save this file" link (the server answers ?download=1 as an attachment). */
+export const downloadHref = (url) => (url.startsWith('/uploads/') ? url + '?download=1' : url);
+
+/** The first picture of a Kids item whose pictures may be downloaded (cover image, else its first photo). */
+export function kidsDownloadOf(type, f = {}, imageUrl = '') {
+  if (type !== 'kids' || !f.downloadable) return null;
+  const href = imageUrl || (f.photos || [])[0];
+  return href ? { href: downloadHref(href), label: 'Download image', download: true } : null;
+}
+
+/** Link attributes: a download saves the file; anything else opens in a new tab. */
+export const linkAttrs = (link) => (link.download ? { download: '' } : { target: '_blank', rel: 'noopener noreferrer' });
+
+/** The link a record points to outside Sikhify (or a Kids picture to download), with a label for its kind. */
+export function externalLinkOf(type, f = {}, imageUrl = '') {
+  if (type === 'kids') return kidsDownloadOf(type, f, imageUrl);
   if (type === 'website') return f.url && { href: f.url, label: 'Visit website' };
   if (type === 'app') return (f.store_url || f.website) && { href: f.store_url || f.website, label: f.store_url ? 'Get the app' : 'Website' };
   if (type === 'organization') return f.website && { href: f.website, label: 'Official website' };
   if (type === 'news') return f.source_url && { href: f.source_url, label: 'Read article' };
   if (type === 'book') return f.url && { href: f.url, label: 'Where to find it' };
+  if (type === 'download') return f.drive_url && { href: f.drive_url, label: 'Download' };
   if (type === 'event') return (f.registration_url || f.livestream_url) && { href: f.registration_url || f.livestream_url, label: f.registration_url ? 'Register' : 'Livestream' };
   return null;
 }
@@ -63,6 +79,15 @@ function Media({ e, layout, type }) {
   }
   if (layout === 'event' && e.date) {
     const d = new Date(e.date + 'T00:00:00');
+    // An event with a photo shows it, with the date on top; without one, the date tile.
+    if (e.imageUrl) {
+      return (
+        <>
+          <OptimizedImage src={e.imageUrl} sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" width={1600} height={1000} alt="" decorative fallback={<SectionTile type={type} />} />
+          <span className="sk-ddate-chip"><b>{d.getDate()}</b>{d.toLocaleDateString('en-IN', { month: 'short' })}</span>
+        </>
+      );
+    }
     return (
       <SectionTile type={type}>
         <span className="sk-ddate">
@@ -117,6 +142,15 @@ function metaFor(e, type) {
     if (f.source_name) out.push(['globe', f.source_name]);
     if (e.date) out.push(['calendar', formatDate(e.date)]);
   }
+  if (type === 'blog') {
+    if (f.author) out.push(['user', f.author]);
+    if (e.date) out.push(['calendar', formatDate(e.date)]);
+    if (f.reading_time) out.push(['history', `${f.reading_time} min read`]);
+  }
+  if (type === 'download') {
+    if (f.file_type || f.file_size) out.push(['file', [f.file_type, f.file_size].filter(Boolean).join(' · ')]);
+    if (f.language) out.push(['globe', f.language]);
+  }
   if (type === 'kids' && f.age_group) out.push(['users', `Ages ${f.age_group}`]);
   return out;
 }
@@ -125,7 +159,7 @@ export default function DirectoryCard({ entry: e, type, headingLevel = 2 }) {
   const v = visualFor(type);
   const layout = v.layout || 'landscape';
   const H = `h${headingLevel}`;
-  const ext = externalLinkOf(type, e.fields);
+  const ext = externalLinkOf(type, e.fields, e.imageUrl);
   const meta = metaFor(e, type);
   const status = type === 'event' && e.date ? (e.date >= todayIso() ? 'Upcoming' : 'Past') : null;
   return (
@@ -144,10 +178,10 @@ export default function DirectoryCard({ entry: e, type, headingLevel = 2 }) {
         ) : null}
         {e.summary ? <p className="sk-dcard-text">{e.summary}</p> : null}
         <div className="sk-dcard-foot">
-          <VerificationBadge status={e.verification.status} />
+          {!(CONTENT_TYPES[type] || {}).ownContent ? <VerificationBadge status={e.verification.status} /> : null}
           {ext ? (
-            <a className="sk-dlink sk-dcard-ext" href={ext.href} target="_blank" rel="noopener noreferrer">
-              {ext.label} <Icon name="external" size={13} /><span className="sr-only"> for {e.title} (opens in a new tab)</span>
+            <a className="sk-dlink sk-dcard-ext" href={ext.href} {...linkAttrs(ext)}>
+              {ext.label} <Icon name={ext.download ? 'upload' : 'external'} size={13} className={ext.download ? 'sk-flip' : ''} /><span className="sr-only"> for {e.title}{ext.download ? '' : ' (opens in a new tab)'}</span>
             </a>
           ) : <span className="sk-dlink sk-dcard-cta" aria-hidden="true">Explore <span className="sk-darrow">→</span></span>}
         </div>

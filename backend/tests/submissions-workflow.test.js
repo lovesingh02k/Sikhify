@@ -310,3 +310,24 @@ test('every new submission notifies the staff who review submissions (not member
   assert.equal((await newest(mod)).id, before);
   assert.ok((await newest(admin)).message.includes('QA Notify By Moderator'), 'the other reviewers are told');
 });
+
+test('app contributions: a suggestion needs only a message; a report needs no source; a correction still does', async () => {
+  resetGuestLimits();
+  const short = await guest.post('/api/submissions', { kind: 'suggestion', message: 'hi' });
+  assert.equal(short.status, 422);
+  assert.ok(short.data.error.fields.message);
+
+  const idea = await guest.post('/api/submissions', { kind: 'suggestion', message: 'QA: please add a dark mode to the Gutka view.' });
+  assert.equal(idea.status, 200, JSON.stringify(idea.data));
+  assert.match(idea.data.submission.reference, /^S-/);
+
+  const report = await guest.post('/api/submissions', { kind: 'incorrect', targetUrl: 'https://www.sikhify.in/festivals/qa', message: 'QA: the date shown for this festival is wrong.' });
+  assert.equal(report.status, 200, JSON.stringify(report.data));
+
+  const correction = await guest.post('/api/submissions', { kind: 'correction', targetUrl: 'https://www.sikhify.in/festivals/qa', message: 'QA: the date should be 5 January.' });
+  assert.equal(correction.status, 422);
+  assert.ok(correction.data.error.fields.source);
+
+  const queue = await admin.get('/api/admin/submissions?kind=suggestion');
+  assert.ok(queue.data.items.some((s) => s.message.includes('Gutka view') && s.kindLabel === 'A suggestion or feedback'));
+});

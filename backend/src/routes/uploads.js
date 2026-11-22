@@ -19,10 +19,12 @@ import { badRequest, HttpError, oneOf } from '../lib/http.js';
 import { optimizeImage, ImageError, THUMB_WIDTH, variantPath } from '../lib/images.js';
 import { LIMITS } from '../../../shared/community.js';
 import { can } from '../../../shared/roles.js';
+import { VIDEO_TYPES } from '../../../shared/contentTypes.js';
+import { generateClientTokenFromReadWriteToken } from '@vercel/blob/client';
 
-const PURPOSES = ['avatar', 'post', 'group-cover', 'gurdwara', 'festival', 'banner'];
-/** Photos for the directory, festival pages and homepage banners are added by staff only. */
-const STAFF_PURPOSES = ['gurdwara', 'festival', 'banner'];
+const PURPOSES = ['avatar', 'post', 'group-cover', 'gurdwara', 'festival', 'banner', 'blog', 'kids', 'download', 'product', 'entry'];
+/** Photos for the directory, festival pages, homepage banners, blog posts and the store are added by staff only. */
+const STAFF_PURPOSES = ['gurdwara', 'festival', 'banner', 'blog', 'kids', 'download', 'product', 'entry'];
 
 export function sniff(buf) {
   if (buf.length > 8 && buf[0] === 0x89 && buf.toString('ascii', 1, 4) === 'PNG') return { mime: 'image/png', ext: 'png' };
@@ -99,5 +101,31 @@ export default function register(router, { db, config, rate, log }) {
     const user = c.requireUser();
     const row = db.prepare('SELECT COALESCE(SUM(bytes), 0) AS bytes, COUNT(*) AS files FROM uploads WHERE owner_id = ?').get(user.id);
     return { bytes: row.bytes, files: row.files, quota: quotaFor(user) };
+  });
+
+  /**
+   * Video files (Kids videos) are too big to pass through the API, so the browser uploads them
+   * straight to the Vercel Blob store. This hands staff a one-hour token for exactly one new file:
+   * a random name we choose, one of the allowed video types, and a size cap.
+   */
+  router.post('/api/uploads/video-token', async (c) => {
+    const user = c.require('content.manage');
+    rate('upload', 'upload:' + user.id);
+    if (!config.blobToken) {
+      throw new HttpError(503, 'Video upload is not set up yet: connect a Vercel Blob store to the project (BLOB_READ_WRITE_TOKEN).');
+    }
+    const contentType = String(c.body.contentType || '').toLowerCase();
+    const ext = VIDEO_TYPES[contentType];
+    if (!ext) throw badRequest('Only MP4, WebM or MOV videos can be uploaded');
+    const size = Number(c.body.size);
+    if (!Number.isFinite(size) || size <= 0) throw badRequest('The video is empty');
+    if (size > LIMITS.videoUploadBytes) throw new HttpError(413, `Videos must be ${Math.round(LIMITS.videoUploadBytes / 1048576)} MB or smaller`);
+    const now = new Date();
+    const pathname = `videos/${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, '0')}/${crypto.randomBytes(16).toString('hex')}.${ext}`;
+    const token = await generateClientTokenFromReadWriteToken({
+      token: config.blobToken, pathname, allowedContentTypes: [contentType], maximumSizeInBytes: LIMITS.videoUploadBytes,
+      validUntil: Date.now() + 60 * 60 * 1000, addRandomSuffix: false, allowOverwrite: false,
+    });
+    return { token, pathname, contentType };
   });
 }

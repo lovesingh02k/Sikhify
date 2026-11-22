@@ -3,7 +3,8 @@
    (services/hukamnama/hukamnamaService.js): the Hukamnama published by a
    Sikhify admin, or the live BaniDB feed when none has been published. */
 import { hukamnamaService, firstLines } from '../services/hukamnama/hukamnamaService.js';
-import { eventService } from '../services/content/contentService.js';
+import { eventService, entryService } from '../services/content/contentService.js';
+import { formatPrice } from '../../../shared/store.js';
 import { festivalService } from '../services/festivals/festivalService.js';
 import { festivalCardHtml, festivalDateLabel } from '../utils/festivalCard.js';
 import GURUS from '../data/gurus.js';
@@ -115,9 +116,23 @@ function renderFestivals() {
   });
 }
 
+/** "Sikh Store" panel: up to three real products with photos (nothing is shown until some are published). */
+function renderStore() {
+  var box = document.querySelector("[data-home-store]");
+  if (!box) return;
+  var esc = window.Sikhify.esc;
+  entryService.list("product", { limit: 12 }).then(function (res) {
+    box.innerHTML = res.items.filter(function (p) { return p.imageUrl; }).slice(0, 3).map(function (p) {
+      return '<a class="product-thumb" href="' + esc(p.url) + '"><img alt="" decoding="async" loading="lazy" width="400" height="400" src="' + esc(p.imageUrl) + '">' +
+        '<span class="product-thumb-title">' + esc(p.title) + '</span><span class="product-thumb-price">' + esc(formatPrice(p.fields.price)) + "</span></a>";
+    }).join("");
+  }).catch(function () { /* API unavailable: the panel still links to the store */ });
+}
+
 export function initHome() {
 "use strict";
   renderEvents();
+  renderStore();
   renderBanners();
   renderFestivals();
   var card = document.querySelector("[data-hk-gurmukhi]");

@@ -35,6 +35,11 @@ const ImageCredits = lazy(() => import('../pages/ImageCredits.jsx'));
 // File named neutrally: ad/cookie blockers (e.g. Brave Shields) block scripts called "PrivacyPolicy".
 const PrivacyPolicy = lazy(() => import('../pages/YourData.jsx'));
 const About = lazy(() => import('../pages/About.jsx'));
+const Kids = lazy(() => import('../pages/Kids.jsx'));
+const StoreList = lazy(() => import('../pages/Store/StoreList.jsx'));
+const ProductDetail = lazy(() => import('../pages/Store/ProductDetail.jsx'));
+const Contact = lazy(() => import('../pages/Contact.jsx'));
+const QuizLink = lazy(() => import('../pages/QuizLink.jsx'));
 const FestivalsIndex = lazy(() => import('../pages/Festivals/FestivalsIndex.jsx'));
 const FestivalDetail = lazy(() => import('../pages/Festivals/FestivalDetail.jsx'));
 const GurdwaraSearch = lazy(() => import('../pages/Gurdwaras/GurdwaraSearch.jsx'));
@@ -67,6 +72,7 @@ const AdminReports = lazy(() => import('../pages/Admin/Reports.jsx'));
 const AdminSubmissions = lazy(() => import('../pages/Admin/Submissions.jsx'));
 const AdminContent = lazy(() => import('../pages/Admin/Content.jsx'));
 const AdminEntryEditor = lazy(() => import('../pages/Admin/EntryEditor.jsx'));
+const AdminBlogEditor = lazy(() => import('../pages/Admin/BlogEditor.jsx'));
 const AdminMedia = lazy(() => import('../pages/Admin/Media.jsx'));
 const AdminHukamnamaList = lazy(() => import('../pages/Admin/HukamnamaList.jsx'));
 const AdminHukamnamaEditor = lazy(() => import('../pages/Admin/HukamnamaEditor.jsx'));
@@ -96,7 +102,7 @@ const LEGACY_PAGES = [
 /** Short and legacy URLs → canonical pages (search and hash are kept). */
 const REDIRECTS = [
   ['/media', '/sikh-media'], ['/learn', '/learn-sikhism'], ['/history', '/sikh-history'], ['/rehat', '/rehat-maryada'],
-  ['/signin', '/login'], ['/kids-zone', '/kids'], ['/sikh-calendar', '/festivals'],
+  ['/signin', '/login'], ['/kids-zone', '/kids'], ['/wallpapers', '/downloads?category=Wallpapers'], ['/sikh-calendar', '/festivals'],
 ];
 
 /** Legacy `page.html` URLs (from the original static site) keep working. */
@@ -187,13 +193,15 @@ export default function App() {
             <Route path="/gurdwaras/:slug" element={<OldGurdwaraRedirect />} />
             <Route path="/directory/:type" element={<DirectoryTypeRedirect />} />
             {Object.entries(CONTENT_TYPES).flatMap(([type, t]) => [
-              <Route key={type} path={'/' + t.path} element={<DirectoryList type={type} />} />,
-              <Route key={type + '-detail'} path={'/' + t.path + '/:slug'} element={<EntryDetail type={type} />} />,
+              <Route key={type} path={'/' + t.path} element={type === 'kids' ? <Kids /> : type === 'product' ? <StoreList /> : <DirectoryList type={type} />} />,
+              <Route key={type + '-detail'} path={'/' + t.path + '/:slug'} element={type === 'product' ? <ProductDetail /> : <EntryDetail type={type} />} />,
             ])}
             <Route path="/submit" element={<SubmitPage />} />
             <Route path="/image-credits" element={<ImageCredits />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/quiz" element={<QuizLink />} />
 
             {/* Sikh Festivals & Important Days */}
             <Route path="/festivals" element={<FestivalsIndex />} />
@@ -238,6 +246,12 @@ export default function App() {
               <Route path="events" element={admin('content.manage', <AdminContent type="event" />)} />
               <Route path="personalities" element={admin('content.manage', <AdminContent type="personality" />)} />
               <Route path="news" element={admin('content.manage', <AdminContent type="news" />)} />
+              <Route path="blog" element={admin('content.manage', <AdminContent type="blog" />)} />
+              <Route path="kids" element={admin('content.manage', <AdminContent type="kids" />)} />
+              <Route path="downloads" element={admin('content.manage', <AdminContent type="download" />)} />
+              <Route path="sikh-store" element={admin('content.manage', <AdminContent type="product" />)} />
+              <Route path="blog/new" element={admin('content.manage', <AdminBlogEditor />)} />
+              <Route path="blog/:id" element={admin('content.manage', <AdminBlogEditor />)} />
               <Route path="media" element={admin('content.manage', <AdminMedia />)} />
               <Route path="hukamnama" element={admin('content.manage', <AdminHukamnamaList />)} />
               <Route path="festivals" element={admin('content.manage', <AdminFestivals />)} />

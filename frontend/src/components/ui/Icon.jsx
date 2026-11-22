@@ -1,6 +1,7 @@
 /* Sikhify — inline SVG icons (same stroke style as the core controller's S.icon set). */
 const PATHS = {
   close: <path d="M6 6l12 12M18 6L6 18" />,
+  store: <><path d="M4 9l1.5-4.5h13L20 9" /><path d="M4 9h16v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18z" /><path d="M9 13a3 3 0 0 0 6 0" /></>,
   search: <><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></>,
   bookmark: <path d="M6 4h12v17l-6-4-6 4z" />,
   share: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></>,

@@ -2877,3 +2877,248 @@ html.sk-admin-mode .sk-admin form.sk-form:not(.sk-card) > .sk-form-actions{ marg
 .obs-hero.has-custom .obs-hero-art::after{ background: none; }
 @media (max-width: 899px){ .obs-hero.has-custom .obs-hero-art::after{ background: linear-gradient(180deg, rgba(255,249,240,0) 70%, var(--obs-cream) 100%); } }
 .obs-hero.has-custom .obs-hero-khanda.k2{ display:none; }
+
+/* ==========================================================================
+   HOVER CLARITY — a link looks like a link, and anything clickable answers the pointer
+   ========================================================================== */
+main a:not([class]){ text-underline-offset: 3px; transition: color var(--dur) var(--ease-ui), text-decoration-color var(--dur) var(--ease-ui); }
+/* Links inside running text: saffron and underlined before any hover, so they can be found by eye. */
+main :is(p, dd, td, li):not(.sk-card-title) > a:not([class]){ color: var(--gold-text); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: rgba(240,169,59,0.5); }
+main a:not([class]):hover{ color: var(--gold-text); text-decoration: underline; text-decoration-color: currentColor; }
+.sk-card-title a{ transition: color var(--dur) var(--ease-ui); }
+.sk-card-title a:hover{ color: var(--gold-text); }
+
+/* A card whose title is its only link: the whole card is the click target, and it lifts on hover. */
+.sk-card:not(.sk-card-link):has(.sk-card-title a){ transition: transform var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui), border-color var(--dur) var(--ease-ui); }
+.sk-card:not(.sk-card-link):has(.sk-card-title a):hover{ border-color: rgba(240,169,59,0.45); box-shadow: var(--shadow-float); }
+.sk-card:not(.sk-card-link):has(.sk-card-title a):not(:has(:is(a, button, input, select, textarea):not(.sk-card-title a))):hover{ transform: translateY(var(--lift)); }
+.sk-card:not(.sk-card-link):has(.sk-card-title a):not(:has(:is(a, button, input, select, textarea):not(.sk-card-title a))) .sk-card-title a::after{ content:""; position:absolute; inset:0; border-radius: inherit; }
+.sk-card-link:hover, .content-card:hover, .store-product-card:hover{ border-color: rgba(240,169,59,0.45); }
+
+/* Buttons and small controls: a visible change of fill, not only a hairline. */
+.sk-btn:hover:not(:disabled):not(.sk-btn-onnavy, .sk-btn-ghost, .sk-btn-gold, .sk-btn-navy, .sk-btn-danger){ background: var(--gold-100); }
+.sk-btn-gold:hover:not(:disabled){ background: var(--gold-600); box-shadow: 0 8px 22px -10px rgba(221,149,34,0.8); }
+.sk-btn-navy:hover:not(:disabled){ background: var(--navy-800); }
+.sk-btn-danger:hover:not(:disabled){ background: #9A3412; }
+.sk-nav-card:hover{ background: var(--gold-100); }
+.sk-chip:hover, .sk-chip-toggle:hover{ background: var(--gold-100); }
+.sk-btn:active:not(:disabled), .sk-chip:active, .sk-card-link:active{ transform: translateY(0); }
+summary, [role="button"], label[for]{ cursor: pointer; }
+
+html.theme-dark .sk-btn:hover:not(:disabled):not(.sk-btn-onnavy, .sk-btn-ghost, .sk-btn-gold, .sk-btn-navy, .sk-btn-danger), html.theme-dark .sk-nav-card:hover, html.theme-dark .sk-chip:hover, html.theme-dark .sk-chip-toggle:hover{ background: rgba(240,169,59,0.12); }
+html.theme-dark .sk-btn-gold:hover:not(:disabled){ background: var(--gold-600); }
+html.theme-dark .sk-btn-navy:hover:not(:disabled){ background: var(--navy-700); }
+
+@media (hover: none){
+  .sk-card:not(.sk-card-link):has(.sk-card-title a):hover{ transform:none; box-shadow: var(--shadow-card); border-color: transparent; }
+}
+
+/* ==========================================================================
+   HOVER — PAGE BY PAGE (controls that had no hover state of their own)
+   ========================================================================== */
+/* Mobile menu */
+.mobile-nav-link, .mobile-nav-toggle{ transition: color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui), padding-left var(--dur) var(--ease-ui); border-radius: 8px; }
+.mobile-nav-link:hover, .mobile-nav-toggle:hover{ color: var(--gold-500); background: rgba(255,255,255,0.04); padding-left: 0.6rem; }
+.nav-dropdown-trigger:hover{ color: var(--gold-500); }
+.nav-dropdown-trigger:hover::after{ transform: scaleX(1); }
+
+/* Tabs (community, profile, Gurbani/Nitnem bani tabs) */
+.sk-tabs a, .sk-tabs button{ transition: color var(--dur) var(--ease-ui), border-color var(--dur) var(--ease-ui); }
+.sk-tabs a:not([aria-current="page"]):hover, .sk-tabs button:not([aria-selected="true"]):hover{ color: var(--text); border-bottom-color: rgba(240,169,59,0.45); }
+.sk-bani-tab{ transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui), transform var(--dur) var(--ease-ui); }
+.sk-bani-tab:not([aria-selected="true"]):hover{ border-color: var(--gold-500); background: var(--gold-100); transform: translateY(var(--lift)); }
+
+/* Accordions — FAQ, Learn lessons, Rehat Maryada */
+.sk-acc-btn, .sk-collapse-btn, .sk-toc-toggle{ transition: background-color var(--dur) var(--ease-ui), color var(--dur) var(--ease-ui); }
+.sk-acc-btn:hover, .sk-collapse-btn:hover{ background: rgba(240,169,59,0.08); }
+.sk-acc-btn:hover .sk-acc-q, .sk-collapse-btn:hover .sk-collapse-title{ color: var(--gold-text); }
+.sk-acc-btn:hover .sk-chev, .sk-collapse-btn:hover .sk-chev{ color: var(--gold-600); }
+.sk-acc:hover{ box-shadow: var(--shadow-float); }
+.sk-toc-toggle:hover{ color: var(--gold-text); }
+.sk-lesson-nav a:hover, .sk-next:hover{ color: var(--gold-text); }
+
+/* Choices, selects and small controls */
+.sk-choice{ transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui); }
+.sk-choice:hover{ border-color: rgba(240,169,59,0.6); }
+.sk-sidenav-toggle{ transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui); }
+.sk-sidenav-toggle:hover{ border-color: var(--gold-500); background: var(--gold-100); }
+.sk-search-esc:hover{ border-color: var(--gold-500); color: var(--text); }
+.sk-select{ transition: border-color var(--dur) var(--ease-ui); }
+.sk-select:hover, .sk-input:hover:not(:focus){ border-color: rgba(240,169,59,0.6); }
+.sk-field-clear:hover, .sk-dsearch-clear:hover{ color: var(--gold-600); }
+.sk-check-open{ transition: color var(--dur) var(--ease-ui); }
+.sk-check:hover .sk-check-open{ text-decoration: underline; text-underline-offset: 3px; }
+
+/* Audio — Gurbani, Hukamnama, Kirtan player */
+.sk-play-btn{ transition: background-color var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui); }
+.sk-play-btn:hover{ box-shadow: 0 0 0 6px rgba(240,169,59,0.22); }
+.sk-range:hover{ background: color-mix(in srgb, var(--gold-500) 30%, var(--line)); }
+.sk-back-top{ transition: background-color var(--dur) var(--ease-ui), transform var(--dur) var(--ease-ui); }
+.sk-back-top:hover{ background: var(--gold-500); color: var(--ink-900); transform: translateY(var(--lift)); }
+html.theme-dark .sk-back-top:hover{ background: var(--gold-600); }
+
+/* Home */
+.hb-video-close{ transition: background-color var(--dur) var(--ease-ui); }
+.hb-video-close:hover{ background: #fff; }
+.pill-link-soft:hover{ background: rgba(240,169,59,0.28); }
+.newsletter-link:hover{ color: #fff; }
+.sk-dash-hk-btn{ transition: box-shadow var(--dur) var(--ease-ui), transform var(--dur) var(--ease-ui), filter var(--dur) var(--ease-ui); }
+.sk-dash-hk-btn:hover{ filter: brightness(1.06); transform: translateY(var(--lift)); }
+
+/* Gurus, Gurdwaras, Media — images brighten instead of zooming */
+.sk-guru-card-media .sk-img, .sk-gcard-media img, .sk-media-thumb img, .sk-dcard-media img{ transition: filter var(--dur) var(--ease-ui); }
+.sk-guru-card:hover .sk-guru-card-media .sk-img, .sk-gcard:hover .sk-gcard-media img, .sk-media-thumb:hover img, .sk-dcard:hover .sk-dcard-media img{ filter: brightness(1.08) saturate(1.05); }
+.sk-ggs-card{ transition: box-shadow var(--dur) var(--ease-ui), transform var(--dur) var(--ease-ui); }
+.sk-ggs-card:hover{ box-shadow: var(--shadow-float), inset 0 0 0 1px rgba(240,169,59,0.45); }
+.sk-ggs-card:hover .sk-guru-card-cta{ text-decoration: underline; text-underline-offset: 3px; }
+.sk-gcard:hover .sk-gcard-cta{ text-decoration: underline; text-underline-offset: 3px; }
+.sk-dcard-ext:hover{ color: var(--gold-text); }
+.sk-media-letter{ transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui); }
+.sk-media-letter:hover{ background: var(--gold-100); }
+.sk-video-related{ transition: background-color var(--dur) var(--ease-ui); }
+.sk-video-related:hover{ box-shadow: inset 3px 0 0 var(--gold-500); }
+
+/* Festivals, timeline, archive */
+.fest-card-wide{ transition: transform var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui), border-color var(--dur) var(--ease-ui); }
+.timeline-item{ transition: background-color var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui); }
+.timeline-item:hover{ box-shadow: inset 3px 0 0 var(--gold-500); }
+.sk-archive-item{ transition: border-color var(--dur) var(--ease-ui), transform var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui); }
+.sk-archive-item:hover{ box-shadow: var(--shadow-float); }
+
+/* Community */
+.sk-action{ transition: background-color var(--dur) var(--ease-ui), color var(--dur) var(--ease-ui); }
+.sk-post-author, .sk-comment-tools button{ transition: color var(--dur) var(--ease-ui); }
+.sk-sidenav a, .sk-sidenav button{ transition: background-color var(--dur) var(--ease-ui), color var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui); }
+.sk-sidenav a:not([aria-current="page"]):hover, .sk-sidenav button:hover{ box-shadow: inset 3px 0 0 var(--gold-500); }
+
+/* Dark theme versions of the light gold fills above */
+html.theme-dark .sk-bani-tab:not([aria-selected="true"]):hover, html.theme-dark .sk-sidenav-toggle:hover, html.theme-dark .sk-media-letter:hover{ background: rgba(240,169,59,0.12); }
+html.theme-dark .sk-acc-btn:hover, html.theme-dark .sk-collapse-btn:hover{ background: rgba(240,169,59,0.08); }
+
+@media (hover: none){
+  .sk-bani-tab:hover, .sk-back-top:hover, .sk-dash-hk-btn:hover{ transform: none; }
+  .mobile-nav-link:hover, .mobile-nav-toggle:hover{ padding-left: 0.25rem; }
+}
+
+/* ==========================================================================
+   BLOG — the article body (public page and editor preview) and the admin writing screen
+   ========================================================================== */
+.sk-article > * + *{ margin-top: 1.1rem; }
+.sk-article-h{ font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1.3rem; line-height: 1.35; color: var(--text); margin-top: 2rem !important; }
+.sk-article-figure{ margin: 1.75rem 0 !important; }
+.sk-article-figure img{ display:block; width:100%; height:auto; border-radius: 14px; background: var(--surface-2); }
+.sk-article-figure figcaption{ margin-top: 0.55rem; font-size: 0.85rem; color: var(--text-muted); text-align: center; }
+
+.sk-blog-editor{ display:grid; gap: 1.25rem; grid-template-columns: minmax(0,1fr); align-items:start; }
+@media (min-width: 1100px){
+  .sk-blog-editor{ grid-template-columns: minmax(0,1fr) 300px; }
+  .sk-blog-side{ position: sticky; top: 1rem; }
+}
+.sk-blog-toolbar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap: 0.6rem; margin-bottom: 0.75rem; }
+.sk-blog-tabs{ display:inline-flex; padding: 3px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); }
+.sk-blog-tabs button{ display:inline-flex; align-items:center; gap: 0.35rem; font: inherit; font-size: 0.84rem; font-weight: 600; padding: 0.4rem 0.85rem; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; transition: background-color var(--dur) var(--ease-ui), color var(--dur) var(--ease-ui); }
+.sk-blog-tabs button:hover{ color: var(--text); }
+.sk-blog-tabs button[aria-selected="true"]{ background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(15,34,66,0.12); }
+.sk-blog-tools{ display:flex; flex-wrap:wrap; gap: 0.5rem; }
+.sk-blog-tools b{ font-family: 'Poppins', sans-serif; }
+.sk-blog-body textarea{ min-height: 420px; font-size: 1rem; line-height: 1.75; resize: vertical; }
+.sk-blog-body .sk-form-label{ position:absolute; width:1px; height:1px; overflow:hidden; clip: rect(0 0 0 0); }
+.sk-blog-preview{ min-height: 420px; padding: 1.25rem 1.4rem; border: 1px dashed var(--line); border-radius: 12px; background: var(--surface); }
+.sk-blog-preview .sk-section-title{ margin-bottom: 1rem; }
+.sk-blog-publish{ border-color: rgba(240,169,59,0.45); }
+.sk-blog-editor details > summary{ font-weight: 600; font-size: 0.9rem; color: var(--text); }
+
+/* ==========================================================================
+   KIDS — Learn Sikhi (/kids): bigger tap targets, rounder shapes, warmer colours
+   ========================================================================== */
+.sk-kids{ --kids-sky: #E8F3FF; --kids-mint: #E6F6EE; --kids-sun: #FFF4DA; }
+.sk-kids-head{ display:flex; align-items:center; gap: 0.9rem; margin-bottom: 1.25rem; }
+.sk-kids-badge{ flex-shrink:0; width: 52px; height: 52px; border-radius: 16px; display:flex; align-items:center; justify-content:center; font-size: 1.6rem; font-weight: 700; background: var(--kids-sun); color: var(--gold-text); box-shadow: inset 0 0 0 2px rgba(240,169,59,0.35); }
+.sk-kids-section{ scroll-margin-top: 90px; }
+.sk-kids-pa{ font-family: 'Noto Sans Gurmukhi', sans-serif; color: var(--gold-text); font-weight: 600; font-size: 1.15rem; display:block; }
+.sk-kids-card{ border-radius: 20px; }
+
+.sk-kids-gurus{ display:grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); list-style:none; padding:0; margin:0; }
+.sk-kids-guru{ display:flex; align-items:center; gap: 0.85rem; padding: 0.9rem 1rem; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow-card); border: 2px solid transparent; color: inherit; transition: transform var(--dur) var(--ease-ui), border-color var(--dur) var(--ease-ui), box-shadow var(--dur) var(--ease-ui); }
+.sk-kids-guru:hover{ transform: translateY(var(--lift)); border-color: var(--gold-500); box-shadow: var(--shadow-float); }
+.sk-kids-num{ flex-shrink:0; width: 42px; height: 42px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight: 800; font-size: 1.1rem; background: var(--navy-900); color: #fff; }
+.sk-kids-guru:hover .sk-kids-num{ background: var(--gold-500); color: var(--ink-900); }
+
+.sk-kids-letters{ display:grid; gap: 0.6rem; grid-template-columns: repeat(5, minmax(0, 1fr)); list-style:none; padding:0; margin:0; max-width: 620px; }
+.sk-kids-letter{ width:100%; aspect-ratio: 1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 2px; border-radius: 18px; border: 2px solid var(--line); background: var(--surface); color: var(--text); cursor:pointer; font: inherit; transition: transform var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui), border-color var(--dur) var(--ease-ui); }
+.sk-kids-letter span{ font-family: 'Noto Sans Gurmukhi', sans-serif; font-size: clamp(1.6rem, 6vw, 2.3rem); line-height: 1.1; }
+.sk-kids-letter small{ font-size: 0.72rem; font-weight: 700; color: var(--gold-text); min-height: 1em; }
+.sk-kids-letter:hover{ border-color: var(--gold-500); background: var(--kids-sun); transform: translateY(var(--lift)); }
+.sk-kids-letter[aria-pressed="true"]{ border-color: var(--gold-500); background: var(--kids-sun); }
+
+.sk-kids-icon{ width: 44px; height: 44px; border-radius: 14px; display:inline-flex; align-items:center; justify-content:center; background: var(--kids-mint); color: #1F7A4C; }
+.sk-kids-ks{ display:grid; gap: 0.9rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); list-style:none; padding:0; margin:0; }
+
+.sk-kids-quiz{ display:grid; gap: 0.9rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); list-style:none; padding:0; margin:0; }
+.sk-kids-qnum{ display:inline-flex; align-items:center; justify-content:center; width: 26px; height: 26px; margin-right: 0.5rem; border-radius: 50%; background: var(--kids-sky); color: #1F5FBF; font-size: 0.8rem; font-weight: 800; vertical-align: 2px; }
+.sk-kids-options{ display:flex; flex-direction:column; gap: 0.5rem; margin-top: 0.85rem; }
+.sk-kids-option{ display:flex; align-items:center; justify-content:space-between; gap: 0.5rem; min-height: 46px; padding: 0.6rem 0.95rem; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); color: var(--text); font: inherit; font-weight: 600; text-align:left; cursor:pointer; transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui); }
+.sk-kids-option:hover:not(:disabled){ border-color: #2F6FD1; background: var(--kids-sky); }
+.sk-kids-option:disabled{ cursor: default; opacity: 0.6; }
+.sk-kids-option.is-right{ opacity: 1; border-color: #1F7A4C; background: var(--kids-mint); color: #14532D; }
+.sk-kids-option.is-wrong{ opacity: 1; border-color: #C2410C; background: #FDECE4; color: #7C2D12; }
+.sk-kids-feedback{ margin-top: 0.6rem; font-weight: 700; font-size: 0.9rem; color: var(--text); }
+.sk-kids-score{ display:flex; flex-wrap:wrap; align-items:center; gap: 0.75rem; margin-top: 1rem; padding: 0.85rem 1.1rem; border-radius: 16px; background: var(--kids-sun); color: var(--ink-900); }
+
+html.theme-dark .sk-kids{ --kids-sky: rgba(47,111,209,0.18); --kids-mint: rgba(31,122,76,0.2); --kids-sun: rgba(240,169,59,0.14); }
+html.theme-dark .sk-kids-score{ color: var(--text); }
+html.theme-dark .sk-kids-option.is-right{ color: #BBF7D0; }
+html.theme-dark .sk-kids-option.is-wrong{ background: rgba(194,65,12,0.18); color: #FED7AA; }
+html.theme-dark .sk-kids-qnum{ color: #9CC2FF; }
+html.theme-dark .sk-kids-icon{ color: #86EFAC; }
+@media (hover: none){ .sk-kids-guru:hover, .sk-kids-letter:hover{ transform:none; } }
+
+/* -- Video files: admin upload previews and the story page player -- */
+.sk-video-uploads{ display:grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); list-style:none; padding:0; margin: 0 0 0.75rem; }
+.sk-video-uploads li{ display:flex; flex-direction:column; gap: 0.4rem; align-items:flex-start; }
+.sk-video-uploads video{ width:100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #000; }
+.sk-video-progress{ display:flex; flex-direction:column; gap: 0.35rem; padding: 0.75rem 0.9rem; border-radius: 12px; background: var(--surface-2); font-size: 0.86rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+.sk-video-progress small{ font-weight: 500; color: var(--text-muted); }
+.sk-dvideo{ display:block; width:100%; max-height: 70vh; border-radius: 14px; background: #000; }
+
+/* -- Kids quizzes: admin quiz builder and the "More quizzes" list -- */
+.sk-flip{ transform: rotate(180deg); }
+.sk-kids-morequiz{ display:grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); list-style:none; padding:0; margin:0; }
+.sk-quizb{ display:flex; flex-direction:column; gap: 1rem; }
+.sk-quizb-q{ position:relative; margin:0; padding: 1rem 1rem 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); min-width: 0; }
+.sk-quizb-q legend{ display:flex; align-items:center; padding: 0 0.35rem; font-weight: 700; font-size: 0.9rem; color: var(--text); }
+.sk-quizb-tools{ position:absolute; top: 0.4rem; right: 0.5rem; display:flex; gap: 0.15rem; }
+.sk-quizb-options{ display:flex; flex-direction:column; gap: 0.45rem; list-style:none; padding:0; margin: 0.35rem 0 0; }
+.sk-quizb-options li{ display:flex; align-items:center; gap: 0.5rem; padding: 0.25rem 0.35rem; border-radius: 10px; border: 1.5px solid transparent; transition: border-color var(--dur) var(--ease-ui), background-color var(--dur) var(--ease-ui); }
+.sk-quizb-options li.is-right{ border-color: #1F7A4C; background: color-mix(in srgb, #1F7A4C 8%, var(--surface)); }
+.sk-quizb-options input[type="radio"]{ width: 20px; height: 20px; flex-shrink:0; accent-color: #1F7A4C; cursor:pointer; }
+.sk-quizb-options .sk-form-input{ flex:1; min-width: 0; }
+.sk-quizb-preview{ padding: 1rem; border: 1px dashed var(--line); border-radius: 14px; }
+
+/* -- Kids pictures that can be downloaded (colouring pages, printables) -- */
+.sk-kids-downloads{ display:grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); list-style:none; padding:0; margin:0; }
+.sk-kids-downloads li{ display:flex; flex-direction:column; gap: 0.55rem; align-items:flex-start; padding: 0.6rem; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-card); }
+.sk-kids-downloads img{ width:100%; aspect-ratio: 4 / 3; object-fit: contain; border-radius: 12px; background: var(--surface-2); }
+
+/* -- Gurdwara directory hero: choose a place step by step (Country → State → City) -- */
+.sk-gplace{ counter-reset: gstep; display:grid; gap: 0.6rem; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 1.5rem; max-width: 880px; padding: 0.75rem; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow-float); }
+.sk-gplace .sk-gfilter-field{ position:relative; }
+.sk-gplace .sk-gfilter-label{ counter-increment: gstep; display:flex; align-items:center; gap: 0.4rem; color: var(--text-muted); }
+.sk-gplace .sk-gfilter-label::before{ content: counter(gstep); display:inline-flex; align-items:center; justify-content:center; width: 20px; height: 20px; border-radius: 50%; background: var(--gold-500); color: var(--ink-900); font-size: 0.7rem; letter-spacing: 0; }
+.sk-gplace .sk-gfilter-field + .sk-gfilter-field::before{ content: "→"; position:absolute; left: -0.55rem; top: 2.15rem; transform: translateX(-50%); color: var(--gold-600); font-weight: 700; }
+.sk-gplace select:disabled{ opacity: 0.55; cursor: not-allowed; }
+.sk-gplace .sk-form-error{ grid-column: 1 / -1; }
+.sk-gplace + .sk-gsearch{ margin-top: 0.75rem; }
+@media (max-width: 640px){
+  .sk-gplace{ grid-template-columns: minmax(0, 1fr); }
+  .sk-gplace .sk-gfilter-field + .sk-gfilter-field::before{ display:none; }
+}
+
+/* The hero finder: one card with the three place steps on top and the optional name search below. */
+.sk-gfinder{ margin-top: 1.5rem; max-width: 880px; padding: 0.85rem; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-float); }
+.sk-gfinder .sk-gplace{ margin-top: 0; max-width: none; padding: 0; background: none; box-shadow: none; }
+.sk-gfinder-row{ display:flex; flex-wrap:wrap; gap: 0.5rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+.sk-gfinder-row .sk-gsearch-field{ flex: 1 1 260px; min-width: 0; border: 1px solid var(--line); border-radius: 10px; }
+.sk-gfinder-row .sk-gsearch-btn{ gap: 0.4rem; }
+.sk-gfinder-reset{ flex: 0 0 auto; }
+@media (max-width: 560px){ .sk-gfinder-row .sk-gsearch-btn, .sk-gfinder-reset{ flex: 1 1 100%; } }

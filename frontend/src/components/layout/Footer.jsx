@@ -37,6 +37,8 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 <li><a href="/directory">Sikh Directory</a></li>
 <li><a href="/festivals">Festivals &amp; Important Days</a></li>
 <li><a href="/kids">Kids — Learn Sikhi</a></li>
+<li><a href="/downloads">Downloads</a></li>
+<li><a href="/sikh-store">Sikh Store</a></li>
 </ul>
 </nav>
 <nav aria-label="Community" class="footer-nav-column">
@@ -52,8 +54,7 @@ const FOOTER_HTML = `<footer class="site-footer" role="contentinfo">
 <h3 class="footer-heading">Support</h3>
 <ul role="list">
 <li><a href="/about">About Us</a></li>
-<li><a href="/contact">Contact Us <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
-<li><a href="/donate">Donate <span class="soon-pill" aria-label="coming soon">Soon</span></a></li>
+<li><a href="/contact">Contact Us</a></li>
 <li><a href="/sitemap">Sitemap</a></li>
 <li><a href="/image-credits">Image credits</a></li>
 <li><a href="/privacy-policy">Privacy Policy</a></li>

@@ -2,15 +2,18 @@
    /<type>/:slug — one directory record, as an editorial page.
    Fields are rendered from the shared schema (shared/contentTypes.js); empty
    fields are simply not shown. Sources, references and verification status
-   are always shown. "More in this section" lists real records of the same
+   are always shown (blog posts — Sikhify's own articles — show their sources
+   only when they cite some, and carry no verification badge). "More in this section" lists real records of the same
    type (same category first) — no invented relationships.
    ========================================================================== */
 import { Link, useParams } from 'react-router-dom';
 import YouTubePlayer from '../../components/media/YouTubePlayer.jsx';
 import Icon from '../../components/ui/Icon.jsx';
 import OptimizedImage from '../../components/images/OptimizedImage.jsx';
-import DirectoryCard, { externalLinkOf, SiteIcon, hostOf } from '../../components/directory/DirectoryCard.jsx';
+import DirectoryCard, { externalLinkOf, linkAttrs, downloadHref, SiteIcon, hostOf } from '../../components/directory/DirectoryCard.jsx';
 import { VerificationBadge } from '../../components/directory/DirectoryTrust.jsx';
+import ArticleBody from '../../components/directory/ArticleBody.jsx';
+import KidsQuiz from '../../components/kids/KidsQuiz.jsx';
 import { DirectoryEmpty, DirectoryError } from '../../components/directory/DirectoryStates.jsx';
 import { useAsync } from '../../hooks/useAsync.js';
 import { useReactPage } from '../../hooks/useReactPage.js';
@@ -21,9 +24,9 @@ import { formatDate } from '../../utils/format.js';
 import '../../components/directory/directory.css';
 
 /** Long-form fields get their own section; the rest are "key information". */
-const LONG = new Set(['videos', 'photos', 'history', 'contribution', 'timeline', 'books', 'related_people']);
+const LONG = new Set(['videos', 'video_files', 'photos', 'history', 'contribution', 'timeline', 'books', 'related_people']);
 /** Shown in the hero or the location panel instead of the facts list. */
-const ELSEWHERE = new Set(['country', 'state', 'district', 'city', 'map_url', 'image_credit']);
+const ELSEWHERE = new Set(['quiz', 'downloadable', 'country', 'state', 'district', 'city', 'map_url', 'image_credit']);
 
 function Value({ field, value }) {
   if (field.kind === 'url') return <a className="panel-view-all" href={value} target="_blank" rel="noopener noreferrer">{value.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '').slice(0, 60)}<span className="sr-only"> (opens in a new tab)</span></a>;
@@ -72,7 +75,7 @@ export default function EntryDetail({ type }) {
 
   const f = (e && e.fields) || {};
   const place = e ? [e.city, e.district, e.state, e.country].filter(Boolean).join(', ') : '';
-  const ext = e ? externalLinkOf(type, f) : null;
+  const ext = e ? externalLinkOf(type, f, e.imageUrl) : null;
   const portrait = v.layout === 'portrait';
   const hasMedia = !!(e && e.imageUrl);
 
@@ -94,8 +97,8 @@ export default function EntryDetail({ type }) {
               {e && e.summary ? <p className="page-hero-sub sk-dentry-lede">{e.summary}</p> : null}
               {e ? (
                 <div className="sk-dentry-badges" data-motion="hero-item">
-                  <VerificationBadge status={e.verification.status} />
-                  {ext ? <a className="sk-btn sk-btn-gold sk-btn-sm" href={ext.href} target="_blank" rel="noopener noreferrer">{ext.label}<Icon name="external" size={13} /><span className="sr-only"> (opens in a new tab)</span></a> : null}
+                  {!t.ownContent ? <VerificationBadge status={e.verification.status} /> : null}
+                  {ext ? <a className="sk-btn sk-btn-gold sk-btn-sm" href={ext.href} {...linkAttrs(ext)}>{ext.label}<Icon name={ext.download ? 'upload' : 'external'} size={13} className={ext.download ? 'sk-flip' : ''} />{ext.download ? null : <span className="sr-only"> (opens in a new tab)</span>}</a> : null}
                 </div>
               ) : null}
             </div>
@@ -137,8 +140,10 @@ export default function EntryDetail({ type }) {
 function EntryBody({ type, e, f, place, ext }) {
   const t = CONTENT_TYPES[type];
   const facts = t.fields.filter((fl) => f[fl.name] !== undefined && f[fl.name] !== '' && !LONG.has(fl.name) && !ELSEWHERE.has(fl.name));
-  const long = t.fields.filter((fl) => LONG.has(fl.name) && f[fl.name] && fl.name !== 'videos' && fl.name !== 'photos');
+  const long = t.fields.filter((fl) => LONG.has(fl.name) && f[fl.name] && fl.name !== 'videos' && fl.name !== 'video_files' && fl.name !== 'photos');
   const videos = f.videos || [];
+  const videoFiles = f.video_files || [];
+  const quiz = Array.isArray(f.quiz) ? f.quiz : [];
   const photos = f.photos || [];
   const v = e.verification;
   const siteUrl = f.url || f.website || f.store_url;
@@ -146,10 +151,18 @@ function EntryBody({ type, e, f, place, ext }) {
     <div className="sk-dentry-grid">
       <article className="min-w-0">
         {e.preview ? <div className="sk-notice mb-6" role="note">Preview — this record is not published, so only staff can see it.</div> : null}
-        <section className="sk-dblock" aria-labelledby="about-h">
-          <h2 className="sk-dblock-title" id="about-h">About</h2>
-          {e.body ? <p className="sk-dprose">{e.body}</p> : e.summary ? <p className="sk-dprose">{e.summary}</p> : <p className="sk-muted">A full description hasn&apos;t been added yet.</p>}
-        </section>
+        {e.body || e.summary || !quiz.length ? (
+          <section className="sk-dblock" aria-labelledby="about-h">
+            <h2 className="sk-dblock-title" id="about-h">{type === 'blog' ? 'Article' : 'About'}</h2>
+            {e.body ? (type === 'blog' ? <ArticleBody text={e.body} /> : <p className="sk-dprose">{e.body}</p>) : e.summary ? <p className="sk-dprose">{e.summary}</p> : <p className="sk-muted">A full description hasn&apos;t been added yet.</p>}
+          </section>
+        ) : null}
+        {quiz.length ? (
+          <section className="sk-dblock sk-kids" aria-labelledby="quiz-h">
+            <h2 className="sk-dblock-title" id="quiz-h">Quiz — {quiz.length} question{quiz.length === 1 ? '' : 's'}</h2>
+            <KidsQuiz questions={quiz} />
+          </section>
+        ) : null}
         {long.map((fl) => (
           <section className="sk-dblock" key={fl.name} aria-labelledby={`f-${fl.name}`}>
             <h2 className="sk-dblock-title" id={`f-${fl.name}`}>{fl.label}</h2>
@@ -164,10 +177,25 @@ function EntryBody({ type, e, f, place, ext }) {
             {videos.map((id) => <YouTubePlayer key={id} videoId={id} title={`${e.title} — video`} />)}
           </section>
         ) : null}
+        {videoFiles.length ? (
+          <section className="sk-dblock sk-stack" aria-labelledby="vfiles-h">
+            <h2 className="sk-dblock-title" id="vfiles-h">{videos.length ? 'More videos' : 'Videos'}</h2>
+            {videoFiles.map((src) => <video key={src} className="sk-dvideo" src={src} controls preload="metadata" playsInline />)}
+          </section>
+        ) : null}
         {photos.length ? (
           <section className="sk-dblock" aria-labelledby="photos-h">
             <h2 className="sk-dblock-title" id="photos-h">Photos</h2>
-            <div className="sk-post-images">{photos.map((p) => <img key={p} src={p} alt={e.title} loading="lazy" />)}</div>
+            {type === 'kids' && f.downloadable ? (
+              <ul className="sk-kids-downloads" role="list">
+                {photos.map((p, i) => (
+                  <li key={p}>
+                    <img src={p} alt={`${e.title} — picture ${i + 1}`} loading="lazy" />
+                    <a className="sk-btn sk-btn-sm sk-btn-gold" href={downloadHref(p)} download=""><Icon name="upload" size={14} className="sk-flip" />Download picture {i + 1}</a>
+                  </li>
+                ))}
+              </ul>
+            ) : <div className="sk-post-images">{photos.map((p) => <img key={p} src={p} alt={e.title} loading="lazy" />)}</div>}
           </section>
         ) : null}
       </article>
@@ -182,7 +210,7 @@ function EntryBody({ type, e, f, place, ext }) {
             <dl className="sk-dfacts">
               {facts.map((fl) => <div key={fl.name}><dt>{fl.label}</dt><dd><Value field={fl} value={f[fl.name]} /></dd></div>)}
             </dl>
-            {ext ? <a className="sk-btn sk-btn-gold w-full mt-4" href={ext.href} target="_blank" rel="noopener noreferrer">{ext.label}<Icon name="external" size={14} /><span className="sr-only"> (opens in a new tab)</span></a> : null}
+            {ext ? <a className="sk-btn sk-btn-gold w-full mt-4" href={ext.href} {...linkAttrs(ext)}>{ext.label}<Icon name={ext.download ? 'upload' : 'external'} size={14} className={ext.download ? 'sk-flip' : ''} />{ext.download ? null : <span className="sr-only"> (opens in a new tab)</span>}</a> : null}
           </section>
         ) : null}
         {place ? (
@@ -192,6 +220,14 @@ function EntryBody({ type, e, f, place, ext }) {
             {f.map_url ? <a className="sk-btn sk-btn-sm mt-3" href={f.map_url} target="_blank" rel="noopener noreferrer"><Icon name="map" size={14} />Open map<span className="sr-only"> (opens in a new tab)</span></a> : null}
           </section>
         ) : null}
+        {t.ownContent ? (v.references.length ? (
+          <section className="sk-dpanel" aria-labelledby="src-h">
+            <h2 className="sk-dpanel-title" id="src-h">Sources</h2>
+            <ul className="sk-dsources">
+              {v.references.map((r) => <li key={r.url}><a href={r.url} target="_blank" rel="noopener noreferrer"><Icon name="external" size={13} />{r.label}<span className="sr-only"> (opens in a new tab)</span></a></li>)}
+            </ul>
+          </section>
+        ) : null) : (
         <section className="sk-dpanel" aria-labelledby="src-h">
           <h2 className="sk-dpanel-title" id="src-h">Sources &amp; verification</h2>
           <VerificationBadge status={v.status} />
@@ -204,6 +240,7 @@ function EntryBody({ type, e, f, place, ext }) {
           ) : null}
           <Link className="sk-btn sk-btn-sm mt-4" to={`/submit?kind=correction&target=${encodeURIComponent(e.url)}&entry=${e.id}`}><Icon name="edit" size={14} />Suggest a correction</Link>
         </section>
+        )}
       </aside>
     </div>
   );

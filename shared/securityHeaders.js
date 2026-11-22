@@ -28,7 +28,7 @@ export const CONTENT_SECURITY_POLICY = [
   "font-src 'self' data: https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob: https:",
-  "connect-src 'self' https://api.banidb.com",
+  "connect-src 'self' https://api.banidb.com https://vercel.com https://*.blob.vercel-storage.com",
   'frame-src https://www.youtube-nocookie.com https://www.youtube.com',
   "object-src 'none'",
   "base-uri 'self'",

@@ -11,7 +11,7 @@ import Dialog from '../../components/ui/Dialog.jsx';
 import Pagination from '../../components/ui/Pagination.jsx';
 import { ErrorState, ServiceUnavailable } from '../../components/ui/States.jsx';
 import GurdwaraCard from '../../components/gurdwaras/GurdwaraCard.jsx';
-import FilterPanel, { LocationSelects } from '../../components/gurdwaras/FilterPanel.jsx';
+import FilterPanel, { LocationSelects, PlaceSteps } from '../../components/gurdwaras/FilterPanel.jsx';
 import { SuggestCard, CardSkeleton } from '../../components/gurdwaras/GurdwaraBits.jsx';
 import { PanjTakhtSection, FeaturedGurdwaras, StateChips } from '../../components/gurdwaras/GurdwaraShowcase.jsx';
 import MapView from '../../components/map/MapView.jsx';
@@ -107,7 +107,6 @@ export default function GurdwaraSearch() {
   }), [queryKey]);
 
   const [qInput, setQInput] = useState(filters.q);
-  const [heroCountry, setHeroCountry] = useState(country);
   const [selectedId, setSelectedId] = useState(null);
   const [drawer, setDrawer] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
@@ -116,7 +115,9 @@ export default function GurdwaraSearch() {
   // Set by a search / near-me / page change; consumed once the new layout is in place.
   const pendingScroll = useRef(false);
   useEffect(() => { setQInput(filters.q); }, [filters.q]);
-  useEffect(() => { setHeroCountry(country); }, [country]);
+  // The hero's place steps start from the current page's place and follow it when the URL changes.
+  const [draft, setDraft] = useState({ country, state, city });
+  useEffect(() => { setDraft({ country, state, city }); }, [country, state, city]);
 
   const p = place.data || {};
   const placeName = p.city ? `${p.city.name}, ${p.state.name}` : p.state ? `${p.state.name}, ${p.country.name}` : p.country ? p.country.name : '';
@@ -154,12 +155,13 @@ export default function GurdwaraSearch() {
     e.preventDefault();
     const q = qInput.trim();
     if (q && !/[\p{L}\p{N}]/u.test(q)) { setQError('Search with letters or numbers — a name, city, state, country or postal code.'); return; }
+    if (!q && !draft.country && !country) { setQError('Choose a country (then a state and city), or type a Gurdwara name.'); return; }
     setQError('');
-    if (heroCountry !== country) {
+    if (draft.country !== country || draft.state !== state || draft.city !== city) {
       const next = new URLSearchParams(params);
       if (q) next.set('q', q); else next.delete('q');
       next.delete('page');
-      navigate(pathFor({ country: heroCountry }) + (next.toString() ? '?' + next : ''));
+      navigate(pathFor(draft) + (next.toString() ? '?' + next : ''));
     } else setQuery({ q });
     // Close the on-screen keyboard first (it resizes the viewport on phones), then scroll after re-render.
     if (document.activeElement && document.activeElement.blur && window.matchMedia('(max-width: 1023px)').matches) document.activeElement.blur();
@@ -232,19 +234,22 @@ export default function GurdwaraSearch() {
           </nav>
           <h1 className="page-hero-title" id="page-title" key={placeName}>{placeName ? <>Gurdwaras in <span className="gold">{p.city ? p.city.name : p.state ? p.state.name : p.country.name}</span></> : <>Global <span className="gold">Gurdwara</span> Directory</>}</h1>
           <p className="page-hero-sub">Explore Gurdwaras around the world. Find nearby Gurdwaras, search by location or discover new ones.</p>
-          <form className="sk-gsearch" role="search" onSubmit={submitSearch}>
-            <div className="sk-gsearch-field">
-              <Icon name="search" size={18} />
-              <label className="sr-only" htmlFor="g-q">Search Gurdwaras</label>
-              <input id="g-q" type="search" className="sk-gsearch-input" autoComplete="off" maxLength={120}
-                placeholder="Search Gurdwara, city, state or country..." value={qInput} onChange={(e) => setQInput(e.target.value)} aria-invalid={qError ? 'true' : undefined} aria-describedby={qError ? 'g-q-err' : undefined} />
+          {/* Step by step: country, then its states, then that state's cities (only places with listings).
+              Choosing only fills the next list; "Find Gurdwaras" applies the place and the search text together. */}
+          <form className="sk-gfinder" role="search" onSubmit={submitSearch}>
+            <div className="sk-gplace" role="group" aria-label="Choose a place: country, then state, then city">
+              <PlaceSteps value={draft} onChange={(next) => { setDraft(next); if (next.country) setQError(''); }} place={p} />
             </div>
-            <label className="sr-only" htmlFor="g-country">Country</label>
-            <select id="g-country" className="sk-gsearch-country" value={heroCountry} onChange={(e) => setHeroCountry(e.target.value)}>
-              <option value="">All countries</option>
-              <CountryOptions current={p.country} />
-            </select>
-            <button type="submit" className="sk-btn sk-btn-gold sk-gsearch-btn">Search</button>
+            <div className="sk-gfinder-row">
+              <div className="sk-gsearch-field">
+                <Icon name="search" size={18} />
+                <label className="sr-only" htmlFor="g-q">Search Gurdwaras</label>
+                <input id="g-q" type="search" className="sk-gsearch-input" autoComplete="off" maxLength={120}
+                  placeholder="Gurdwara name or postal code (optional)" value={qInput} onChange={(e) => setQInput(e.target.value)} aria-invalid={qError ? 'true' : undefined} aria-describedby={qError ? 'g-q-err' : undefined} />
+              </div>
+              <button type="submit" className="sk-btn sk-btn-gold sk-gsearch-btn"><Icon name="search" size={16} />Find Gurdwaras</button>
+              {country || draft.country || filters.q ? <button type="button" className="sk-btn sk-gfinder-reset" onClick={() => { setDraft({ country: '', state: '', city: '' }); clearAll(); }}>Reset</button> : null}
+            </div>
           </form>
           {qError ? <p className="sk-gsearch-error" id="g-q-err" role="alert">{qError}</p> : null}
           <div className="sk-gquick">
@@ -387,12 +392,4 @@ export default function GurdwaraSearch() {
 /** A key that changes when the directory switches between its front page and a results view. */
 function isFrontKey(country, filters, statusParam, coords) {
   return !country && !filters.q && !filters.facilities.length && !filters.services.length && statusParam === null && !coords && filters.page === 1 ? 'front' : 'results';
-}
-
-/** All countries that have listings (from the database), for the hero's country selector. */
-function CountryOptions({ current }) {
-  const loc = useAsync(() => gurdwaraService.locations(), []);
-  const countries = loc.data ? loc.data.countries : [];
-  const all = current && !countries.some((c) => c.slug === current.slug) ? [current, ...countries] : countries;
-  return all.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>);
 }
