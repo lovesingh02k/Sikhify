@@ -40,6 +40,7 @@ const StoreList = lazy(() => import('../pages/Store/StoreList.jsx'));
 const ProductDetail = lazy(() => import('../pages/Store/ProductDetail.jsx'));
 const Contact = lazy(() => import('../pages/Contact.jsx'));
 const QuizLink = lazy(() => import('../pages/QuizLink.jsx'));
+const DailyQuiz = lazy(() => import('../pages/DailyQuiz.jsx'));
 const FestivalsIndex = lazy(() => import('../pages/Festivals/FestivalsIndex.jsx'));
 const FestivalDetail = lazy(() => import('../pages/Festivals/FestivalDetail.jsx'));
 const GurdwaraSearch = lazy(() => import('../pages/Gurdwaras/GurdwaraSearch.jsx'));
@@ -202,6 +203,7 @@ export default function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/quiz" element={<QuizLink />} />
+            <Route path="/daily-quiz" element={<DailyQuiz />} />
 
             {/* Sikh Festivals & Important Days */}
             <Route path="/festivals" element={<FestivalsIndex />} />

@@ -3,7 +3,7 @@ description: "Sikhify: Nitnem, Gurbani and the daily Hukamnama."
 publish_to: 'none'
 
 # Raise the number after + (and the version before it) for every new APK, so phones accept it as an update.
-version: 1.0.0+16
+version: 1.0.0+17
 
 environment:
   sdk: ^3.13.2

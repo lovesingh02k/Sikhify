@@ -24,6 +24,7 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <div class="nav-dropdown-panel">
 <a href="/learn-sikhism">Learn Sikhism</a>
 <a href="/kids">Kids — Learn Sikhi</a>
+<a href="/daily-quiz">Daily Quiz</a>
 <a href="/gurus">The Ten Gurus</a>
 <a href="/sikh-history">Sikh History</a>
 <a href="/rehat-maryada">Rehat Maryada</a>
@@ -104,6 +105,7 @@ const HEADER_HTML = `<header class="site-header" role="banner">
 <div class="mobile-subnav" hidden="" id="m-learn">
 <a href="/learn-sikhism">Learn Sikhism</a>
 <a href="/kids">Kids — Learn Sikhi</a>
+<a href="/daily-quiz">Daily Quiz</a>
 <a href="/gurus">The Ten Gurus</a>
 <a href="/sikh-history">Sikh History</a>
 <a href="/rehat-maryada">Rehat Maryada</a>

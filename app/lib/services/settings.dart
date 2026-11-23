@@ -48,6 +48,10 @@ class Settings extends ChangeNotifier {
   bool get pageView => _p.getBool('pageView') ?? true;
   set pageView(bool v) => _set(() => _p.setBool('pageView', v));
 
+  /// The Daily Quiz's own language ('en', 'pa' or 'hi'); null follows the app's language.
+  String? get quizLanguage => _p.getString('quizLanguage');
+  set quizLanguage(String? v) => _set(() => v == null ? _p.remove('quizLanguage') : _p.setString('quizLanguage', v));
+
   /// Live Kirtan in the lower quality, which uses about a third of the mobile data.
   bool get liveDataSaver => _p.getBool('liveDataSaver') ?? false;
   set liveDataSaver(bool v) => _set(() => _p.setBool('liveDataSaver', v));

@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sikhify/services/i18n.dart';
 import 'package:sikhify/services/library.dart';
 import 'package:sikhify/services/quiz.dart';
 import 'package:sikhify/services/settings.dart';
+
+import 'quiz_bank_export.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -58,5 +63,38 @@ void main() {
     final pa = Quiz.bank().firstWhere((q) => q.id == 'guru-order-1');
     expect(pa.options[pa.answer], 'ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ');
     Settings.instance.language = 'en';
+  });
+
+  test('every question has the same options and answer position in English, Punjabi and Hindi', () {
+    final en = Quiz.bank('en');
+    for (final l in ['pa', 'hi']) {
+      final other = {for (final q in Quiz.bank(l)) q.id: q};
+      for (final q in en) {
+        expect(other[q.id], isNotNull, reason: '${q.id} in $l');
+        expect(other[q.id]!.options.length, q.options.length, reason: '${q.id} in $l');
+        expect(other[q.id]!.answer, q.answer, reason: 'switching language must keep the same answer: ${q.id} in $l');
+      }
+    }
+  });
+
+  test('the quiz language changes the questions without changing the app language', () {
+    Settings.instance.language = 'en';
+    Settings.instance.quizLanguage = 'pa';
+    expect(Quiz.bank().firstWhere((q) => q.id == 'guru-order-1').options, contains('ਗੁਰੂ ਨਾਨਕ ਦੇਵ ਜੀ'));
+    expect(tr('Home'), 'Home');
+    Settings.instance.quizLanguage = null;
+    expect(Quiz.bank().firstWhere((q) => q.id == 'guru-order-1').options, contains('Guru Nanak Dev Ji'));
+  });
+
+  test("the website's copy of the questions is up to date (run: flutter test --tags export)", () {
+    final file = File(websiteBankPath);
+    expect(file.existsSync(), isTrue);
+    expect(jsonDecode(file.readAsStringSync()), jsonDecode(jsonEncode(quizBankForWebsite())));
+    for (final l in ['pa', 'hi']) {
+      final ui = (quizBankForWebsite()['ui'] as Map)[l] as Map;
+      for (final w in quizUiWords) {
+        expect(ui[w], isNot(w), reason: '"$w" has no $l translation');
+      }
+    }
   });
 }

@@ -198,24 +198,26 @@ class DailyQuizScreen extends StatefulWidget {
 }
 
 class _DailyQuizScreenState extends State<DailyQuizScreen> {
-  late final List<QuizQuestion> _questions = Quiz.today();
   late List<int?> _answers = Quiz.answers();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ListenableBuilder(listenable: Settings.instance, builder: (context, _) => _page(context, Quiz.today()));
+
+  // Today's questions, in the quiz's language (they change language with the button, keeping the answers).
+  Widget _page(BuildContext context, List<QuizQuestion> questions) {
     return Scaffold(
-      appBar: AppBar(title: Text(tr('Daily Quiz'))),
+      appBar: AppBar(title: Text(tr('Daily Quiz')), actions: const [QuizLanguageButton()]),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 32), children: [
         Text(tr('5 new questions every day — on the Gurus, Sikh history, Gurbani and Sikh life.'), style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
         const SizedBox(height: 16),
         QuizStepper(
-          questions: _questions,
+          questions: questions,
           answers: _answers,
           onAnswer: (i, j) {
             Quiz.answer(i, j);
             setState(() => _answers = Quiz.answers());
           },
-          finished: (context, score) => _Score(score: score, total: _questions.length, questions: _questions, answers: _answers),
+          finished: (context, score) => _Score(score: score, total: questions.length, questions: questions, answers: _answers),
         ),
       ]),
     );
@@ -346,6 +348,34 @@ class _DailyQuizCardState extends State<DailyQuizCard> {
   }
 }
 
+/// Picks the Daily Quiz's language (English, ਪੰਜਾਬੀ, हिंदी), without changing the rest of the app.
+class QuizLanguageButton extends StatelessWidget {
+  const QuizLanguageButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final current = Quiz.language;
+    return PopupMenuButton<String>(
+      tooltip: tr('Quiz language'),
+      initialValue: current,
+      onSelected: (l) => Settings.instance.quizLanguage = l,
+      itemBuilder: (_) => [
+        for (final MapEntry(key: code, value: name) in I18n.languages.entries)
+          CheckedPopupMenuItem(value: code, checked: code == current, child: Text(name)),
+      ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          const Icon(Icons.translate_rounded, size: 20),
+          const SizedBox(width: 6),
+          Text(I18n.languages[current] ?? current, style: const TextStyle(fontWeight: FontWeight.w700)),
+          const Icon(Icons.arrow_drop_down_rounded),
+        ]),
+      ),
+    );
+  }
+}
+
 /// "I got 4/5 in today's Sikhify Daily Quiz ✅✅❌✅✅" with today's questions (no answers), so friends can try them.
 String shareScoreText({required int score, required List<QuizQuestion> questions, required List<int?> answers, required int streak}) {
   final marks = [for (final (i, q) in questions.indexed) answers[i] == q.answer ? '✅' : '❌'].join();
@@ -387,12 +417,19 @@ class FriendQuizScreen extends StatefulWidget {
 
 class _FriendQuizScreenState extends State<FriendQuizScreen> {
   late List<int?> _answers = List<int?>.filled(widget.questions.length, null);
+  late final _ids = [for (final q in widget.questions) q.id];
 
   @override
-  Widget build(BuildContext context) {
-    final n = widget.questions.length;
+  Widget build(BuildContext context) => ListenableBuilder(listenable: Settings.instance, builder: (context, _) {
+        // The same questions in the quiz's language (all of them, or as they were sent).
+        final found = Quiz.byIds(_ids);
+        return _page(context, found.length == _ids.length ? found : widget.questions);
+      });
+
+  Widget _page(BuildContext context, List<QuizQuestion> questions) {
+    final n = questions.length;
     return Scaffold(
-      appBar: AppBar(title: Text(tr('Quiz from a friend'))),
+      appBar: AppBar(title: Text(tr('Quiz from a friend')), actions: const [QuizLanguageButton()]),
       body: ListView(padding: const EdgeInsets.fromLTRB(16, 8, 16, 32), children: [
         Container(
           padding: const EdgeInsets.all(14),
@@ -410,7 +447,7 @@ class _FriendQuizScreenState extends State<FriendQuizScreen> {
         ),
         const SizedBox(height: 16),
         QuizStepper(
-          questions: widget.questions,
+          questions: questions,
           answers: _answers,
           onAnswer: (i, j) => setState(() => _answers = [..._answers]..[i] = j),
           finished: (context, score) => Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -430,7 +467,7 @@ class _FriendQuizScreenState extends State<FriendQuizScreen> {
             const SizedBox(height: 12),
             FilledButton.icon(
               style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50), shape: const StadiumBorder()),
-              onPressed: () => SharePlus.instance.share(ShareParams(text: shareScoreText(score: score, questions: widget.questions, answers: _answers, streak: 0))),
+              onPressed: () => SharePlus.instance.share(ShareParams(text: shareScoreText(score: score, questions: questions, answers: _answers, streak: 0))),
               icon: const Icon(Icons.share_rounded),
               label: Text(tr('Share my score')),
             ),

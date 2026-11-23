@@ -22,7 +22,19 @@ class I18n {
     }
   }
 
-  String get lang => Settings.instance.language;
+  String? _override;
+  String get lang => _override ?? Settings.instance.language;
+
+  /// Runs [build] as if the app were in [language] (e.g. the Daily Quiz in its own language).
+  T inLanguage<T>(String? language, T Function() build) {
+    final before = _override;
+    _override = language;
+    try {
+      return build();
+    } finally {
+      _override = before;
+    }
+  }
 
   Map<String, dynamic>? _section(String key) {
     final c = _content[lang];
@@ -180,6 +192,7 @@ const _ui = <String, List<String>>{
   'Sunday': ['ਐਤਵਾਰ', 'रविवार'],
   'Events': ['ਸਮਾਗਮ', 'कार्यक्रम'],
   'Upcoming Events': ['ਆਉਣ ਵਾਲੇ ਸਮਾਗਮ', 'आने वाले कार्यक्रम'],
+  'Quiz language': ['ਕੁਇਜ਼ ਦੀ ਭਾਸ਼ਾ', 'क्विज़ की भाषा'],
   'Go to page': ['ਪੰਨੇ ’ਤੇ ਜਾਓ', 'पृष्ठ पर जाएँ'],
   'Page number': ['ਪੰਨਾ ਨੰਬਰ', 'पृष्ठ संख्या'],
   'Go to Ang': ['ਅੰਗ ’ਤੇ ਜਾਓ', 'अंग पर जाएँ'],

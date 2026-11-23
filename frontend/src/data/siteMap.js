@@ -22,6 +22,7 @@ export const SITE_SECTIONS = [
       { href: '/gurus', title: 'The Ten Gurus', text: 'Profiles of the Ten Gurus: biography, timeline, teachings and Bani.' },
       { href: '/blog', title: 'Blog', text: 'Articles on Sikhism, lifestyle, spirituality and history.' },
       { href: '/kids', title: 'Kids — Learn Sikhi', text: 'Stories, Sakhis, values and Gurmukhi for children.' },
+      { href: '/daily-quiz', title: 'Daily Quiz', text: '5 new questions every day, in English, Punjabi or Hindi.' },
     ],
   },
   {
